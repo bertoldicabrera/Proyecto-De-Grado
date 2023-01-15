@@ -6,7 +6,7 @@ RAECO - Realidad aumentada aplicada al ecoturismo
 https://git-scm.com/download/win
 
 
-git https://github.com/bertoldicabrera/Proyecto-De-Grado/ (clone Ruta del respositorio)
+git https://github.com/bertoldicabrera/Proyecto-De-Grado.git(clone Ruta del respositorio)
 
 haceb ==n cambios en el codigo
 
