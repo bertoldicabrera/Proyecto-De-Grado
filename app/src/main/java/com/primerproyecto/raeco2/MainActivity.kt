@@ -23,28 +23,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-        sceneViewerIntent.data =
+//        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+//        sceneViewerIntent.data =
+//            Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
+//        sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
+//        startActivity(sceneViewerIntent)
+         simple_btn = findViewById(R.id.button)
+         simple_btn?.setOnClickListener {
+           val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+         sceneViewerIntent.data =
             Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
-        sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
-        startActivity(sceneViewerIntent)
-       // simple_btn?.setOnClickListener {
-//            val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-//            println("32" + sceneViewerIntent)
-//            val intentUri = createIntentUri()
-//            println("34" + intentUri)
-//            println("Tu vieja en tanga")
-            /* Alternative version */
-            /* val intentUri = Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
-                    .appendQueryParameter("file", "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf")
-                    .appendQueryParameter("mode", "ar_only")
-                    .appendQueryParameter("title", "Duck")
-                    .appendQueryParameter("resizable", "false")
-                    .build() */
-//            sceneViewerIntent.setData(intentUri);
-//            sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
-//            startActivity(sceneViewerIntent)
-////        //}
+
+             sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
+             startActivity(sceneViewerIntent)
+         }
+
+
+
 //        println("ON CREATE TEST  42")
 //        message = findViewById(R.id.menssage)
 //        message?.text = "Puto"
