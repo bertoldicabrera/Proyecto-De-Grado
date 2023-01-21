@@ -37,24 +37,24 @@ public class Animal(
         return this.region
     }
 
-    fun setearNombreAnimal(name :String) {
+    fun setearNombreAnimal(name :String?) {
 
         this.nombre =name
     }
-    fun setearDescripcionAnimal(desc: String) {
+    fun setearDescripcionAnimal(desc: String?) {
 
         this.descripcion =desc
     }
-    fun setearUrlAnimal(link: String) {
+    fun setearUrlAnimal(link: String?) {
 
         this.url =link
     }
-    fun setearObjetoAnimal(obj: String) {
+    fun setearObjetoAnimal(obj: String?) {
 
         this.objeto3D =obj
     }
 
-    fun setearRegionAnimal(idregion: Int) {
+    fun setearRegionAnimal(idregion: Int?) {
 
         this.region =idregion
     }

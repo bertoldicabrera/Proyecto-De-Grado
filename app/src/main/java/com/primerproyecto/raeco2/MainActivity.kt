@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private var btnCrear : Button? = null;
     private var simple_btn : Button? = null;
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,8 +32,7 @@ class MainActivity : AppCompatActivity() {
          simple_btn = findViewById(R.id.button)
          simple_btn?.setOnClickListener {
            val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-         sceneViewerIntent.data =
-            Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
+         sceneViewerIntent.data = Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
 
              sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
              startActivity(sceneViewerIntent)

@@ -1,5 +1,6 @@
 package com.primerproyecto.raeco2.bd
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -17,13 +18,13 @@ public class DbHelper (context: Context?) :
 
         println("c DB XXXXXXXXXXXX")
         sqLiteDatabase.execSQL(
-            "CREATE TABLE " + TABLE_ANIMALES + "(" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "nombre TEXT NOT NULL," +
-                    "descripcion TEXT NOT NULL," +
-                    "url TEXT NOT NULL," +
-                    "objeto3D TEXT NOT NULL," +
-                    "region INTEGER NOT NULL)"
+            "CREATE TABLE " + TABLE_ANIMALES + "(" + KEY_IDAnimal+
+                    " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME+
+                    " TEXT NOT NULL," + KEY_DES+
+                    " TEXT NOT NULL," + KEY_URL+
+                    " TEXT NOT NULL," + KEY_OBJ+
+                    " TEXT NOT NULL," + KEY_REG+
+                    " INTEGER NOT NULL)"
         )
     }
 
@@ -36,10 +37,16 @@ public class DbHelper (context: Context?) :
         private const val DATABASE_VERSION = 2
         private const val DATABASE_NOMBRE = "Raeco.db"
         const val TABLE_ANIMALES = "t_animales"
-
+        const val KEY_IDAnimal= "id"
+        const val KEY_NAME= "name"
+        const val KEY_DES= "descripcion"
+        const val KEY_URL= "url"
+        const val KEY_OBJ= "objeto"
+        const val KEY_REG= "region"
     }
 
     fun existeAnimalDbHelper(nombre: String): Boolean {
+
         val TABLE_NAME =TABLE_ANIMALES
         val db = writableDatabase
         val selectQuery = "Select * from $TABLE_NAME where nombre = '$nombre'"
@@ -51,11 +58,44 @@ public class DbHelper (context: Context?) :
         cursor.close()
         return true
     }
-    fun insertarAnimalDbHelper(nombre: String, descripcion: String, url: String, objeto: String, region: Int){
+    fun insertarAnimalDbHelper(animalNew:Animal):Long{
 
+        val nombre = animalNew.obtenerNombreAnimal()
+        var descripcion= animalNew.obtenerDescripcionAnimal()
+        var url= animalNew.obtenerUrlAnimal()
+        var objeto3D= animalNew.obtenerObjetoAnimal()
+        var region=animalNew.obtenerRegionAnimal()
+
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        //contentValues.put(KEY_ID, emp.userId)
+        contentValues.put(KEY_NAME, nombre)
+        contentValues.put(KEY_DES,descripcion )
+        contentValues.put(KEY_URL,url )
+        contentValues.put(KEY_OBJ,objeto3D )
+        contentValues.put(KEY_REG,region )
+
+        // Inserting Row
+        //https://www.javatpoint.com/kotlin-android-sqlite-tutorial
+        val success = db.insert(TABLE_ANIMALES, null, contentValues)
+        //2nd argument is String containing nullColumnHack(ver teorico)
+        db.close() // Closing database connection
+        return success
         //Seguir acá ver como se hace el insert
 
+
     }
+    fun eliminarAnimalDbHelper(nombre:String):Int{
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(KEY_NAME, nombre) //  Id
+        // Deleting Row
+        val success = db.delete(TABLE_ANIMALES,KEY_NAME+"="+nombre,null)
+        //2nd argument is String containing nullColumnHack
+        db.close() // Closing database connection
+        return success
+    }
+
 
     fun obtenerAnimalDbHelperxRegion(region: Int): Animal {
         val animal = Animal(null,null,null,null,null)
