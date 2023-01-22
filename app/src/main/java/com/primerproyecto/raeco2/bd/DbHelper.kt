@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.primerproyecto.raeco2.Animal
+import com.primerproyecto.raeco2.Localization
 import com.primerproyecto.raeco2.R
 
 public class DbHelper (context: Context?) :
@@ -45,7 +46,7 @@ public class DbHelper (context: Context?) :
         const val KEY_REG= "region"
     }
 
-    fun existeAnimalDbHelper(nombre: String): Boolean {
+    fun existeAnimalDbHelper(nombre: String?): Boolean {
 
         val TABLE_NAME =TABLE_ANIMALES
         val db = writableDatabase
@@ -126,6 +127,43 @@ public class DbHelper (context: Context?) :
         return animal
     }
 
+    fun obtenerLocalizacion(latitud:Double?, longitud:Double?): Localization {
+        val localizacion = Localization(null,null,null,null)
+        localizacion.setearLatitud(latitud)
+        localizacion.setearLongitud(longitud)
+        val db = writableDatabase
+        var index: Int
+        //falta acá
+        val selectQuery = R.string.queryObtenerRegionXLocalizacion // ver como argar el where longitud=? and latitud=?
+        val cursor = db.rawQuery(selectQuery.toString(), null)
+        if (cursor != null) {
+            cursor.moveToFirst()
+            while (cursor.moveToNext()) {
+//Cambiar todos los sets por el correspondiente al de localizacion
+                // probar si acepta numeros el cursor.getColumnIndex
+                index = cursor.getColumnIndexOrThrow("id")
+                localizacion.setearID(cursor.getInt(index))
+                index = cursor.getColumnIndexOrThrow("regionNombre")
+                localizacion.setearNombreRegion(cursor.getString(index))
+            }
+        }
+        cursor.close()
+
+        return localizacion
+    }
+
+    fun existeLocalizacion(latitud: Double?, longitud: Double?): Boolean {
+        //falta desarrollar
+    return true
+    }
+
+    fun insertarLocalizacion(localizacion: Localization) {
+//falta desarrollar
+    }
+
+    fun eliminarLocalizacion(latitud: Double?, longitud: Double?) {
+//falta desarrollar
+    }
 
 
 }

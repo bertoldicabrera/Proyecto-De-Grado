@@ -9,10 +9,41 @@ import android.util.Log
 import android.widget.TextView
 
 
-public class Localization : LocationListener {
+public class Localization constructor(
+  private var id: Int? = null,
+  private var nombreRegion: String? = null,
+  private var latitud: Double? = null,
+  private var longitud: Double? =null
+): LocationListener {
 
     var mainActivity: MainActivity? = null
     var menssage: TextView? = null
+
+
+    fun obtenerID():Int?{
+        return this.id
+    }
+    fun obtenerNombreRegion():String?{
+        return this.nombreRegion
+    }
+    fun obtenerLongitud(): Double? {
+        return this.longitud
+    }
+    fun obtenerLatitud(): Double? {
+        return this.latitud
+    }
+    fun setearID(identificador:Int?){
+        this.id=identificador
+    }
+    fun setearNombreRegion(nombreRegionAnimal:String?){
+        this.nombreRegion =nombreRegionAnimal
+    }
+    fun setearLongitud(longitudx:Double?){
+        this.longitud =longitudx
+    }
+    fun setearLatitud(latitudy:Double?){
+        this.latitud =latitudy
+    }
 
 
     fun setMainActivity(mainActivity: MainActivity?, menssage: TextView?) {
@@ -22,12 +53,13 @@ public class Localization : LocationListener {
 
     override fun onLocationChanged(location: Location) {
         // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
-
-        println("1111111111111111111111111111111111111111111111111111111111")
+        setearLongitud(location.longitude)
+        setearLatitud(location.longitude)
+        println("111111111111Nueva Coordena recibida")
         val text = """
-              My ubication is: 
-              Latitude = ${location.latitude}
-              Longitude = ${location.longitude}
+              Mi ubicacion actual es: 
+              Latitud = ${obtenerLatitud()}
+              Longitud = ${obtenerLongitud()}
               """.trimIndent()
         menssage?.text = text
         println(text)
@@ -48,11 +80,11 @@ public class Localization : LocationListener {
 
 
     override fun onProviderEnabled(provider: String) {
-        menssage?.text = "GPS activated"
+        menssage?.text = "GPS activado"
     }
 
     override fun onProviderDisabled(provider: String) {
-        menssage?.text ="GPS deactived"
+        menssage?.text ="GPS desactivado"
     }
 
 

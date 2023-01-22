@@ -1,16 +1,15 @@
 package com.primerproyecto.raeco2
 
-
-public class Animal(
+class voAnimal (
     private var nombre: String?,
-    private  var descripcion: String?,
+    private var descripcion: String?,
     private var url:String?,
     private var objeto3D:String?,
     private var region: Int?
 )
 {
 
-    fun obtenerAnimal(): Animal {
+    fun obtenerAnimal(): voAnimal {
 
         return this
     }
