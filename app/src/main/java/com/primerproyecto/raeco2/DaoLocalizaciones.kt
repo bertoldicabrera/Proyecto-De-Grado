@@ -24,7 +24,8 @@ class DaoLocalizaciones constructor(
     }
 
     fun delete (latitud:Double?, longitud:Double?){
-        dataBase.eliminarLocalizacion(latitud, longitud)
+
+       val ok= dataBase.eliminarLocalizacion(latitud, longitud)
 
     }
 

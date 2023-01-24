@@ -15,10 +15,12 @@ public class DbHelper (context: Context?) :
         null,
         DATABASE_VERSION) {
 
+
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
 
         println("c DB XXXXXXXXXXXX")
-        sqLiteDatabase.execSQL(
+
+       sqLiteDatabase.execSQL(
             "CREATE TABLE " + TABLE_ANIMALES + "(" + KEY_IDAnimal+
                     " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME+
                     " TEXT NOT NULL," + KEY_DES+
@@ -27,45 +29,59 @@ public class DbHelper (context: Context?) :
                     " TEXT NOT NULL," + KEY_REG+
                     " INTEGER NOT NULL)"
         )
+
+
+        sqLiteDatabase.execSQL(
+            "CREATE TABLE " + TABLE_LOCALIZACIONES + "(" + KEY_IDLocalizacion+
+                    " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NOMBRE_REGION+
+                    " TEXT NOT NULL," + KEY_LONGITUD+
+                    " REAL NOT NULL," + KEY_LATITUD+
+                    " REAL NOT NULL)"
+        )
     }
 
     override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, i: Int, i1: Int) {
         sqLiteDatabase.execSQL("DROP TABLE " + TABLE_ANIMALES)
+        sqLiteDatabase.execSQL("DROP TABLE " + TABLE_LOCALIZACIONES)
         onCreate(sqLiteDatabase)
     }
 
     companion object {
         private const val DATABASE_VERSION = 2
-        private const val DATABASE_NOMBRE = "Raeco.db"
+        private const val DATABASE_NOMBRE = "Raeco2.db"
         const val TABLE_ANIMALES = "t_animales"
         const val KEY_IDAnimal= "id"
         const val KEY_NAME= "name"
         const val KEY_DES= "descripcion"
         const val KEY_URL= "url"
         const val KEY_OBJ= "objeto"
-        const val KEY_REG= "region"
+        const val KEY_REG= "registro"
+        const val TABLE_LOCALIZACIONES = "t_Localizaciones"
+        const val KEY_IDLocalizacion= "idLocalizacion"
+        const val KEY_NOMBRE_REGION= "nombreRegion"
+        const val KEY_LATITUD= "latitud"
+        const val KEY_LONGITUD= "longitud"
     }
 
     fun existeAnimalDbHelper(nombre: String?): Boolean {
-
+var existe=true
         val TABLE_NAME =TABLE_ANIMALES
         val db = writableDatabase
         val selectQuery = "Select * from $TABLE_NAME where nombre = '$nombre'"
         val cursor: Cursor = db.rawQuery(selectQuery, null)
         if (cursor.getCount() <= 0) {
-            cursor.close()
-            return false
+            existe= false
         }
         cursor.close()
-        return true
+        return existe
     }
     fun insertarAnimalDbHelper(animalNew:Animal):Long{
 
         val nombre = animalNew.obtenerNombreAnimal()
-        var descripcion= animalNew.obtenerDescripcionAnimal()
-        var url= animalNew.obtenerUrlAnimal()
-        var objeto3D= animalNew.obtenerObjetoAnimal()
-        var region=animalNew.obtenerRegionAnimal()
+        val descripcion= animalNew.obtenerDescripcionAnimal()
+        val url= animalNew.obtenerUrlAnimal()
+        val objeto3D= animalNew.obtenerObjetoAnimal()
+        val region=animalNew.obtenerRegionAnimal()
 
         val db = this.writableDatabase
         val contentValues = ContentValues()
@@ -76,22 +92,18 @@ public class DbHelper (context: Context?) :
         contentValues.put(KEY_OBJ,objeto3D )
         contentValues.put(KEY_REG,region )
 
-        // Inserting Row
-        //https://www.javatpoint.com/kotlin-android-sqlite-tutorial
+
         val success = db.insert(TABLE_ANIMALES, null, contentValues)
         //2nd argument is String containing nullColumnHack(ver teorico)
         db.close() // Closing database connection
         return success
-        //Seguir acá ver como se hace el insert
-
-
     }
     fun eliminarAnimalDbHelper(nombre:String):Int{
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(KEY_NAME, nombre) //  Id
         // Deleting Row
-        val success = db.delete(TABLE_ANIMALES,KEY_NAME+"="+nombre,null)
+        val success = db.delete(TABLE_ANIMALES, "$KEY_NAME=$nombre",null)
         //2nd argument is String containing nullColumnHack
         db.close() // Closing database connection
         return success
@@ -112,14 +124,13 @@ public class DbHelper (context: Context?) :
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
 
-                // probar si acepta numeros el cursor.getColumnIndex
-                index = cursor.getColumnIndexOrThrow("NAME")
+                index = cursor.getColumnIndexOrThrow(KEY_NAME)
                 animal.setearNombreAnimal(cursor.getString(index))
-                index = cursor.getColumnIndexOrThrow("DESC")
+                index = cursor.getColumnIndexOrThrow(KEY_DES)
                 animal.setearDescripcionAnimal(cursor.getString(index))
-                index = cursor.getColumnIndexOrThrow("URL")
+                index = cursor.getColumnIndexOrThrow(KEY_URL)
                 animal.setearUrlAnimal(cursor.getString(index))
-                index = cursor.getColumnIndexOrThrow("OBJ")
+                index = cursor.getColumnIndexOrThrow(KEY_OBJ)
                 animal.setearObjetoAnimal(cursor.getString(index))
             }
         }
@@ -134,16 +145,16 @@ public class DbHelper (context: Context?) :
         val db = writableDatabase
         var index: Int
         //falta acá
-        val selectQuery = R.string.queryObtenerRegionXLocalizacion // ver como argar el where longitud=? and latitud=?
-        val cursor = db.rawQuery(selectQuery.toString(), null)
+        val consulta =R.string.queryObtenerLocalizacionxcoordenadas
+        val selectQuery = "$consulta $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
+        val cursor = db.rawQuery(selectQuery, null)
         if (cursor != null) {
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
-//Cambiar todos los sets por el correspondiente al de localizacion
-                // probar si acepta numeros el cursor.getColumnIndex
-                index = cursor.getColumnIndexOrThrow("id")
+
+                index = cursor.getColumnIndexOrThrow(KEY_IDLocalizacion)
                 localizacion.setearID(cursor.getInt(index))
-                index = cursor.getColumnIndexOrThrow("regionNombre")
+                index = cursor.getColumnIndexOrThrow(KEY_NOMBRE_REGION)
                 localizacion.setearNombreRegion(cursor.getString(index))
             }
         }
@@ -153,16 +164,54 @@ public class DbHelper (context: Context?) :
     }
 
     fun existeLocalizacion(latitud: Double?, longitud: Double?): Boolean {
-        //falta desarrollar
-    return true
+        var existe= true
+        val db = writableDatabase
+        val selectQuery = "Select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
+
+        val cursor: Cursor = db.rawQuery(selectQuery, null)
+        if (cursor.getCount() <= 0) {
+            existe= false
+        }
+        cursor.close()
+        return existe
     }
 
-    fun insertarLocalizacion(localizacion: Localization) {
-//falta desarrollar
+    fun insertarLocalizacion(localizacion: Localization):Long {
+
+        val nombre = localizacion.obtenerNombreRegion()
+        val latitud= localizacion.obtenerLatitud()
+        val longitud= localizacion.obtenerLongitud()
+
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+
+        contentValues.put(KEY_NOMBRE_REGION, nombre)
+        contentValues.put(KEY_LATITUD,latitud )
+        contentValues.put(KEY_LONGITUD,longitud )
+
+        // Inserting Row
+        //https://www.javatpoint.com/kotlin-android-sqlite-tutorial
+        val success = db.insert(TABLE_LOCALIZACIONES, null, contentValues)
+        //2nd argument is String containing nullColumnHack(ver teorico)
+        db.close() // Closing database connection
+        return success //el ID de fila de la fila recién insertada, o -1 si ocurrió un error
     }
 
-    fun eliminarLocalizacion(latitud: Double?, longitud: Double?) {
-//falta desarrollar
+    fun eliminarLocalizacion(latitud: Double?, longitud: Double?):Int {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(KEY_LATITUD, latitud) //  Id
+        contentValues.put(KEY_LONGITUD, longitud)
+        // Deleting Row
+        val success = db.delete(TABLE_LOCALIZACIONES,KEY_LATITUD+"="+latitud+"AND"+ KEY_LONGITUD+"="+longitud,null)
+        //2nd argument is String containing nullColumnHack
+        db.close() // Closing database connection
+        return success
+        /*
+        el número de filas afectadas si se pasa una cláusula where,
+         0 en caso contrario. Para eliminar todas las filas y obtener un recuento,
+         pase "1" como cláusula where.
+         */
     }
 
 

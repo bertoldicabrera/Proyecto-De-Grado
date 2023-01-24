@@ -55,16 +55,21 @@ public class Localization constructor(
         // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
         setearLongitud(location.longitude)
         setearLatitud(location.longitude)
-        println("111111111111Nueva Coordena recibida")
+        println("****Localización 58, Coordena recibida")
+
+        /*
         val text = """
-              Mi ubicacion actual es: 
+        Mi ubicacion actual es:
               Latitud = ${obtenerLatitud()}
               Longitud = ${obtenerLongitud()}
               """.trimIndent()
         menssage?.text = text
         println(text)
+         */
+
     }
 
+    //Es necesaria esta funcion ?
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
         when (status) {
 

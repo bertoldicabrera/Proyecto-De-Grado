@@ -2,5 +2,7 @@
 <resources>
 
     <string name="queryObtenerAnimalDadaRegion">select * from animales where region=</string>
-    <string name="queryObtenerRegionXLocalizacion">select * from Localizacion where </string>
+    <string name="queryObtenerLocalizacionxcoordenadas">select * from Localizacion where</string>
+
+
 </resources>
