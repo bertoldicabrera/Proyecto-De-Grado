@@ -8,8 +8,8 @@ import android.util.Log
 import android.widget.TextView
 
 class voLocalizacion constructor(
-    private var id: Int? = null,
-    private var nombreRegion: String? = null,
+   // private var id: Int? = null,
+    //private var nombreRegion: String? = null,
     private var latitud: Double? = null,
     private var longitud: Double? =null
 ): LocationListener {
@@ -18,24 +18,30 @@ class voLocalizacion constructor(
     var menssage: TextView? = null
 
 
-    fun obtenerID():Int?{
-        return this.id
-    }
-    fun obtenerNombreRegion():String?{
+
+  /*
+      fun obtenerNombreRegion():String?{
         return this.nombreRegion
     }
+      fun obtenerID():Int?{
+        return this.id
+    }
+        fun setearID(identificador:Int?){
+        this.id=identificador
+    }
+    fun setearNombreRegion(nombreRegionAnimal:String?){
+        this.nombreRegion =nombreRegionAnimal
+    }
+
+   */
+
     fun obtenerLongitud(): Double? {
         return this.longitud
     }
     fun obtenerLatitud(): Double? {
         return this.latitud
     }
-    fun setearID(identificador:Int?){
-        this.id=identificador
-    }
-    fun setearNombreRegion(nombreRegionAnimal:String?){
-        this.nombreRegion =nombreRegionAnimal
-    }
+
     fun setearLongitud(longitudx:Double?){
         this.longitud =longitudx
     }

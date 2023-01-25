@@ -12,7 +12,6 @@ class Facade {
     fun agregarAnimal(nuevoAnimal: voAnimal) {
         val animal: Animal= Animal(null, null,null,null,null, null)
 
-
         if(!animales.member(nuevoAnimal.obtenerNombreAnimal()))
         {
             animal.setearNombreAnimal(nuevoAnimal.obtenerNombreAnimal() )//Pasar el set ?
@@ -41,9 +40,11 @@ class Facade {
 
     }
 
- fun buscarAnimal(localiza: Int): Animal {
+ fun buscarAnimal(localiza: Int): voAnimal {
+     var animalSalida = voAnimal(null,null,null,null,null)
      //controlar si la localizacion existe
-     return animales.find(localiza)
+     animales.find(localiza)
+     return animalSalida
  }
 
 }

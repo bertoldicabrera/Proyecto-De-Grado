@@ -7,7 +7,8 @@ public class Animal(
     private var urlPrincipal:String?,
     private var urlBackUp:String?,
     private var objeto3D:String?,
-    private var region: Int?
+    private var region: Int?,
+    private var sonido: String?
 )
 {
 
@@ -41,6 +42,17 @@ public class Animal(
 
         return this.region
     }
+
+    fun obtenerSonido(): String? {
+
+        return this.sonido
+    }
+
+    fun setearSonido(son: String?) {
+
+        this.sonido= son
+    }
+
 
     fun setearNombreAnimal(name :String?) {
 

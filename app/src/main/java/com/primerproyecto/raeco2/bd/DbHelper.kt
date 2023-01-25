@@ -27,6 +27,7 @@ public class DbHelper (context: Context?) :
                     " TEXT NOT NULL," + KEY_URL+
                     " TEXT NOT NULL," + KEY_OBJ+
                     " TEXT NOT NULL," + KEY_REG+
+                    " TEXT NOT NULL," + KEY_SONIDO+
                     " INTEGER NOT NULL)"
         )
 
@@ -56,6 +57,7 @@ public class DbHelper (context: Context?) :
         const val KEY_URL= "url"
         const val KEY_URLBACKUP= "urlBackUp"
         const val KEY_OBJ= "objeto"
+        const val KEY_SONIDO= "sonido"
         const val KEY_REG= "registro"
         const val TABLE_LOCALIZACIONES = "t_Localizaciones"
         const val KEY_IDLocalizacion= "idLocalizacion"
@@ -84,7 +86,7 @@ var existe=true
         val urlBack= animalNew.obtenerUrlBackUpAnimal()
         val objeto3D= animalNew.obtenerObjetoAnimal()
         val region=animalNew.obtenerRegionAnimal()
-
+        val sonido=animalNew.obtenerSonido()
         val db = this.writableDatabase
         val contentValues = ContentValues()
         //contentValues.put(KEY_ID, emp.userId)
@@ -94,7 +96,7 @@ var existe=true
         contentValues.put(KEY_URLBACKUP,urlBack )
         contentValues.put(KEY_OBJ,objeto3D )
         contentValues.put(KEY_REG,region )
-
+        contentValues.put(KEY_SONIDO,sonido )
 
         val success = db.insert(TABLE_ANIMALES, null, contentValues)
         //2nd argument is String containing nullColumnHack(ver teorico)
@@ -114,7 +116,7 @@ var existe=true
 
 
     fun obtenerAnimalDbHelperxRegion(region: Int): Animal {
-        val animal = Animal(null,null,null,null,null, null)
+        val animal = Animal(null,null,null,null,null, null, null)
         animal.setearRegionAnimal(region)
         val db = writableDatabase
         var index: Int
@@ -137,6 +139,8 @@ var existe=true
                 animal.setearUrlBackUpAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_OBJ)
                 animal.setearObjetoAnimal(cursor.getString(index))
+                index = cursor.getColumnIndexOrThrow(KEY_SONIDO)
+                animal.setearSonido(cursor.getString(index))
             }
         }
         cursor.close()
