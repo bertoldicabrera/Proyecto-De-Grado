@@ -21,7 +21,7 @@ public class DbHelper (context: Context?) :
         println("c DB XXXXXXXXXXXX")
 
        sqLiteDatabase.execSQL(
-            "CREATE TABLE " + TABLE_ANIMALES + "(" + KEY_IDAnimal+
+            "CREATE TABLE IF NOT EXISTS " + TABLE_ANIMALES + "(" + KEY_IDAnimal+
                     " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME+
                     " TEXT NOT NULL," + KEY_DES+
                     " TEXT NOT NULL," + KEY_URL+
@@ -32,7 +32,7 @@ public class DbHelper (context: Context?) :
 
 
         sqLiteDatabase.execSQL(
-            "CREATE TABLE " + TABLE_LOCALIZACIONES + "(" + KEY_IDLocalizacion+
+            "CREATE TABLE IF NOT EXISTS " + TABLE_LOCALIZACIONES + "(" + KEY_IDLocalizacion+
                     " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NOMBRE_REGION+
                     " TEXT NOT NULL," + KEY_LONGITUD+
                     " REAL NOT NULL," + KEY_LATITUD+
@@ -41,8 +41,8 @@ public class DbHelper (context: Context?) :
     }
 
     override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, i: Int, i1: Int) {
-        sqLiteDatabase.execSQL("DROP TABLE " + TABLE_ANIMALES)
-        sqLiteDatabase.execSQL("DROP TABLE " + TABLE_LOCALIZACIONES)
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ANIMALES)
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCALIZACIONES)
         onCreate(sqLiteDatabase)
     }
 
@@ -54,6 +54,7 @@ public class DbHelper (context: Context?) :
         const val KEY_NAME= "name"
         const val KEY_DES= "descripcion"
         const val KEY_URL= "url"
+        const val KEY_URLBACKUP= "urlBackUp"
         const val KEY_OBJ= "objeto"
         const val KEY_REG= "registro"
         const val TABLE_LOCALIZACIONES = "t_Localizaciones"
@@ -80,6 +81,7 @@ var existe=true
         val nombre = animalNew.obtenerNombreAnimal()
         val descripcion= animalNew.obtenerDescripcionAnimal()
         val url= animalNew.obtenerUrlAnimal()
+        val urlBack= animalNew.obtenerUrlBackUpAnimal()
         val objeto3D= animalNew.obtenerObjetoAnimal()
         val region=animalNew.obtenerRegionAnimal()
 
@@ -89,6 +91,7 @@ var existe=true
         contentValues.put(KEY_NAME, nombre)
         contentValues.put(KEY_DES,descripcion )
         contentValues.put(KEY_URL,url )
+        contentValues.put(KEY_URLBACKUP,urlBack )
         contentValues.put(KEY_OBJ,objeto3D )
         contentValues.put(KEY_REG,region )
 
@@ -111,7 +114,7 @@ var existe=true
 
 
     fun obtenerAnimalDbHelperxRegion(region: Int): Animal {
-        val animal = Animal(null,null,null,null,null)
+        val animal = Animal(null,null,null,null,null, null)
         animal.setearRegionAnimal(region)
         val db = writableDatabase
         var index: Int
@@ -130,6 +133,8 @@ var existe=true
                 animal.setearDescripcionAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_URL)
                 animal.setearUrlAnimal(cursor.getString(index))
+                index = cursor.getColumnIndexOrThrow(KEY_URLBACKUP)
+                animal.setearUrlBackUpAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_OBJ)
                 animal.setearObjetoAnimal(cursor.getString(index))
             }

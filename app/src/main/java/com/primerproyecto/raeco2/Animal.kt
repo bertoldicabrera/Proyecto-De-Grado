@@ -4,7 +4,8 @@ package com.primerproyecto.raeco2
 public class Animal(
     private var nombre: String?,
     private  var descripcion: String?,
-    private var url:String?,
+    private var urlPrincipal:String?,
+    private var urlBackUp:String?,
     private var objeto3D:String?,
     private var region: Int?
 )
@@ -25,7 +26,11 @@ public class Animal(
     }
     fun obtenerUrlAnimal(): String? {
 
-        return this.url
+        return this.urlPrincipal
+    }
+    fun obtenerUrlBackUpAnimal(): String? {
+
+        return this.urlBackUp
     }
     fun obtenerObjetoAnimal(): String? {
 
@@ -47,7 +52,11 @@ public class Animal(
     }
     fun setearUrlAnimal(link: String?) {
 
-        this.url =link
+        this.urlPrincipal =link
+    }
+    fun setearUrlBackUpAnimal(link: String?) {
+
+        this.urlBackUp =link
     }
     fun setearObjetoAnimal(obj: String?) {
 

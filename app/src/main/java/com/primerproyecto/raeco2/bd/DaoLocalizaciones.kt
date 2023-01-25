@@ -1,9 +1,10 @@
-package com.primerproyecto.raeco2
+package com.primerproyecto.raeco2.bd
 
-import com.primerproyecto.raeco2.bd.DbHelper
+import com.primerproyecto.raeco2.Localization
 
 class DaoLocalizaciones constructor(
-    var localizaciones: DaoLocalizaciones){
+    var localizaciones: DaoLocalizaciones
+){
 
     private val dataBase : DbHelper = DbHelper(context = null)// ver si no es esto
 

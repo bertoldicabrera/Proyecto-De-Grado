@@ -10,7 +10,7 @@ class Facade {
 
 
     fun agregarAnimal(nuevoAnimal: voAnimal) {
-        val animal: Animal= Animal(null, null,null,null,null)
+        val animal: Animal= Animal(null, null,null,null,null, null)
 
 
         if(!animales.member(nuevoAnimal.obtenerNombreAnimal()))
