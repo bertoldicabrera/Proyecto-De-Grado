@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- https://developer.android.com/training/articles/security-config?fbclid=IwAR30rMzIo5rQua_LBEuBer8FijWAXl2y_6ZPwtiPVlKQvX_-tPCt8GDaktg&hl=es-419-->
+<network-security-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">127.0.0.1/</domain>
+        <domain includeSubdomains="true">raw.githubusercontent.com/</domain>
+
+    </domain-config>
+</network-security-config>

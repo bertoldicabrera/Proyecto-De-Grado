@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+
 import android.provider.Settings
 import android.view.View
 import android.widget.Button
@@ -16,6 +17,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.primerproyecto.raeco2.bd.DbHelper
+
+import java.net.HttpURLConnection
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,8 +33,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        println("****38")
+
+        val gfgThread = Thread {
+            try {
+                println("****40")
+                sendGET()
+                println("****42")
+            } catch (e: java.lang.Exception) {
+                println("****GET request responseCode $e")
+            }
+        }
+
+        gfgThread.start()
+
+
+
+
 
 /*
+        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+        sceneViewerIntent.data =
+           Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
+       sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
+
 //        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
 //        sceneViewerIntent.data =
 //            Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
@@ -51,6 +77,8 @@ class MainActivity : AppCompatActivity() {
         message = findViewById(R.id.menssage)
         message?.text = "Puto"
         println("${message?.text}")
+
+
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             !== PackageManager.PERMISSION_GRANTED
@@ -91,11 +119,54 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+//    @Throws(IOException::class)
+
+
+    private fun sendGET() {
+        println("****Entra el sendGet")
+        val macacoGitLab= "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/macacogitlab.gltf"
+        val macacoGitHUb = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf"
+
+        val connection = URL(macacoGitLab).openConnection() as HttpURLConnection
+        connection.requestMethod ="GET"
+       //val responseCode= connection.responseCode
+        println("****133************")
+            val responseCode= connection.responseCode
+        if(responseCode ==HttpURLConnection.HTTP_OK)
+        {
+            println("****GET request responseCode $responseCode")
+        }else
+        {
+            println("****GET request responseCode $responseCode")
+        }
 
 
 
 
 
+
+
+        connection.disconnect()
+    }
+    /*
+if (responseCode == HttpURLConnection.HTTP_OK) { // success
+      println("GET request 200")
+
+      val `in` = BufferedReader(InputStreamReader(con.getInputStream()))
+      var inputLine: String?
+      val response = StringBuffer()
+      while (`in`.readLine().also { inputLine = it } != null) {
+          response.append(inputLine)
+
+
+            }
+            //`in`.close()
+
+            // print result
+           // println(response.toString())
+         else {
+            println("GET request no está funcionando")
+        }*/
 
 
 
