@@ -33,142 +33,91 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        println("****38")
 
-        val gfgThread = Thread {
-            try {
-                println("****40")
-                sendGET()
-                println("****42")
-            } catch (e: java.lang.Exception) {
-                println("****GET request responseCode $e")
-            }
-        }
-
-        gfgThread.start()
-
-
-
-
-
-/*
-        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-        sceneViewerIntent.data =
-           Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
-       sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
-
-//        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-//        sceneViewerIntent.data =
-//            Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
-//        sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
-//        startActivity(sceneViewerIntent)
-         simple_btn = findViewById(R.id.button)
-         simple_btn?.setOnClickListener {
-           val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-         sceneViewerIntent.data = Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
-
-             sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
-             startActivity(sceneViewerIntent)
-         }
-
-*/
-
-        println("ON CREATE TEST  42")
         message = findViewById(R.id.menssage)
-        message?.text = "Puto"
-        println("${message?.text}")
+        message?.text = "Puto" //Carga este dato en la pantalla
+        permisosIniciarLocalizacion()
 
-
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            !== PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-            !== PackageManager.PERMISSION_GRANTED
-        ) {
-            println("ON CREATE TEST  31")
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                1000
-            )
-        } else {
-            println("ON CREATE TEST  38")
-            iniciarLocalizacion()
+        simple_btn = findViewById(R.id.button)
+        simple_btn?.setOnClickListener {
+            crearAnimal()
         }
 
         btnCrear = findViewById(R.id.btnCrear)
 
         btnCrear?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                val dbHelper = DbHelper(this@MainActivity)
-                val db: SQLiteDatabase = dbHelper.getWritableDatabase()
-                if (db != null) {
-                    Toast.makeText(this@MainActivity, "BASE DE DATOS CREADA", Toast.LENGTH_LONG)
-                        .show()
-                } else {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "ERROR AL CREAR BASE DE DATOS",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+                crearBD()
             }
         })
 
+    }
 
+    //lamado por el boton
+    private fun crearBD(){
+        val dbHelper = DbHelper(this@MainActivity)
+        val db: SQLiteDatabase = dbHelper.getWritableDatabase()
+        if (db != null) {
+            Toast.makeText(this@MainActivity, "BASE DE DATOS CREADA", Toast.LENGTH_LONG)
+                .show()
+        } else {
+            Toast.makeText(
+                this@MainActivity,
+                "ERROR AL CREAR BASE DE DATOS",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
 
-//    @Throws(IOException::class)
+    //llamado al inciar requiere los permisos e inicia la localizacion
+private fun permisosIniciarLocalizacion()
+{
+    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        !== PackageManager.PERMISSION_GRANTED
+        && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        !== PackageManager.PERMISSION_GRANTED
+    ) {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            1000
+        )
+    } else {
+        iniciarLocalizacion()
+    }
+}
 
+    private fun crearAnimal()
+    {
+    //https://developers.google.com/ar/develop/scene-viewer
+            val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+            sceneViewerIntent.data = Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
+            sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
+            startActivity(sceneViewerIntent)
+    }
 
-    private fun sendGET() {
-        println("****Entra el sendGet")
-        val macacoGitLab= "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/macacogitlab.gltf"
-        val macacoGitHUb = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf"
-
-        val connection = URL(macacoGitLab).openConnection() as HttpURLConnection
-        connection.requestMethod ="GET"
-       //val responseCode= connection.responseCode
-        println("****133************")
-            val responseCode= connection.responseCode
-        if(responseCode ==HttpURLConnection.HTTP_OK)
-        {
-            println("****GET request responseCode $responseCode")
-        }else
-        {
-            println("****GET request responseCode $responseCode")
+    //hacer un get y devuelve true si el sitio retorna un response code200
+    private fun sitioUp(urlValidar:String): Boolean {
+        var estaUp= false
+        val gfgThread = Thread {
+            try {
+                val connection = URL(urlValidar).openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"
+                val responseCode = connection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    estaUp= true
+                }
+                connection.disconnect()
+            } catch (e: java.lang.Exception) {
+            println("****GET request responseCode $e")
+        }
         }
 
+        gfgThread.start()
 
-
-
-
-
-
-        connection.disconnect()
+        return estaUp
     }
-    /*
-if (responseCode == HttpURLConnection.HTTP_OK) { // success
-      println("GET request 200")
-
-      val `in` = BufferedReader(InputStreamReader(con.getInputStream()))
-      var inputLine: String?
-      val response = StringBuffer()
-      while (`in`.readLine().also { inputLine = it } != null) {
-          response.append(inputLine)
-
-
-            }
-            //`in`.close()
-
-            // print result
-           // println(response.toString())
-         else {
-            println("GET request no está funcionando")
-        }*/
-
-
 
     private fun iniciarLocalizacion() {
         val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
@@ -196,35 +145,48 @@ if (responseCode == HttpURLConnection.HTTP_OK) { // success
     }
 
 
-    private fun createIntentUri() : Uri {
+    private fun createIntentUriExplicito() : Uri {
         val intentUri = Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
-        val params = getIntentParams()
+
+//obtener estos datos del usuario
+        //SEGUIR ACÁ, ARREGLAR LAS CONSULTAS A LA BASE DE DATOS,
+         //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
+        var config:Configuracion= TODO()
+        var voAnimalMostrar:voAnimal = TODO()
+        var cualURL:Boolean = TODO()
+
+        val params = cargarParametrosDelAnimal(config, voAnimalMostrar, cualURL)
         params.forEach { (key, value) -> intentUri.appendQueryParameter(key, value) }
         return intentUri.build()
     }
 
-    private fun getIntentParams() : HashMap<String, String> {
+    //Pasar a configracion
+    //configuracion, voAnimal
+
+    private fun cargarParametrosDelAnimal(config:Configuracion, voAnimalMostrar: voAnimal, cualURL:Boolean) : HashMap<String, String> {
+
+        //https://developers.google.com/ar/develop/scene-viewer
         val map = HashMap<String, String> ()
         map["file"] = {
-            "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf"
-                }.toString()
+            if(cualURL==true)
+            {
+                voAnimalMostrar.obtenerObjetoAnimal()
+            }else
+            {
+                voAnimalMostrar.obtenerObjetoBackUpAnimal()
+            }
+        }.toString()
 
-            map["title"] = "Here is your title"
+        map["title"] = voAnimalMostrar.obtenerNombreAnimal().toString()//si
 
+        map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()//si
 
-            map["link"] = "https://google.com"
+        map["mode"] = "ar_preferred"
 
-
-/*
-           //ar_only_rbt.isChecked ->  map["mode"] = "ar_only"
-          //ar_preferred.isChecked -> map["mode"] = "ar_preferred"
-
- */
-       map["mode"] = "ar_preferred"
-
-
-            map["resizable"] = "true"
+        map["resizable"] = config.obtenerTamano().toString()// si
 
         return map
     }
+
+
 }

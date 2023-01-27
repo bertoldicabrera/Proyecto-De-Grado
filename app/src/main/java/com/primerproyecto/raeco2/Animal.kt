@@ -4,10 +4,10 @@ package com.primerproyecto.raeco2
 public class Animal(
     private var nombre: String?,
     private  var descripcion: String?,
-    private var urlPrincipal:String?,
-    private var urlBackUp:String?,
+    private var link:String?,
+    private var objetoBackUp:String?,
     private var objeto3D:String?,
-    private var region: Int?,
+    private var region: String?,
     private var sonido: String?
 )
 {
@@ -25,20 +25,20 @@ public class Animal(
 
         return this.descripcion
     }
-    fun obtenerUrlAnimal(): String? {
+    fun obtenerLinkAnimal(): String? {
 
-        return this.urlPrincipal
+        return this.link
     }
-    fun obtenerUrlBackUpAnimal(): String? {
+    fun obtenerObjetoBackUpAnimal(): String? {
 
-        return this.urlBackUp
+        return this.objetoBackUp
     }
     fun obtenerObjetoAnimal(): String? {
 
         return this.objeto3D
     }
 
-    fun obtenerRegionAnimal(): Int? {
+    fun obtenerRegionAnimal(): String? {
 
         return this.region
     }
@@ -62,20 +62,20 @@ public class Animal(
 
         this.descripcion =desc
     }
-    fun setearUrlAnimal(link: String?) {
+    fun setearLinkAnimal(link: String?) {
 
-        this.urlPrincipal =link
+        this.link =link
     }
     fun setearUrlBackUpAnimal(link: String?) {
 
-        this.urlBackUp =link
+        this.objetoBackUp =link
     }
     fun setearObjetoAnimal(obj: String?) {
 
         this.objeto3D =obj
     }
 
-    fun setearRegionAnimal(idregion: Int?) {
+    fun setearRegionAnimal(idregion: String?) {
 
         this.region =idregion
     }

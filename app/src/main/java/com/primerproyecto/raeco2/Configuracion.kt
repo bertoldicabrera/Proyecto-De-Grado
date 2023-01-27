@@ -23,19 +23,19 @@ class Configuracion(
     fun seterSonido(varSonido: Boolean?){
         this.sonido = varSonido
     }
-    fun getTitulo(): Boolean? {
+    fun obtenerTitulo(): Boolean? {
         return this.titulo
 
     }
-    fun getLink(): Boolean? {
+    fun obtenerLink(): Boolean? {
         return this.link
 
     }
-    fun getTamano(): Boolean? {
+    fun obtenerTamano(): Boolean? {
         return this.tamano
     }
 
-    fun getSonido(): Boolean? {
+    fun obtenerSonido(): Boolean? {
         return this.sonido
     }
 

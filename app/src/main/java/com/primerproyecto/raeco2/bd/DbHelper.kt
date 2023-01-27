@@ -28,7 +28,7 @@ public class DbHelper (context: Context?) :
                     " TEXT NOT NULL," + KEY_OBJ+
                     " TEXT NOT NULL," + KEY_REG+
                     " TEXT NOT NULL," + KEY_SONIDO+
-                    " INTEGER NOT NULL)"
+                    " TEXT NOT NULL)"
         )
 
 
@@ -82,8 +82,8 @@ var existe=true
 
         val nombre = animalNew.obtenerNombreAnimal()
         val descripcion= animalNew.obtenerDescripcionAnimal()
-        val url= animalNew.obtenerUrlAnimal()
-        val urlBack= animalNew.obtenerUrlBackUpAnimal()
+        val url= animalNew.obtenerLinkAnimal()
+        val urlBack= animalNew.obtenerObjetoBackUpAnimal()
         val objeto3D= animalNew.obtenerObjetoAnimal()
         val region=animalNew.obtenerRegionAnimal()
         val sonido=animalNew.obtenerSonido()
@@ -115,15 +115,16 @@ var existe=true
     }
 
 
-    fun obtenerAnimalDbHelperxRegion(region: Int): Animal {
+    fun obtenerAnimalDbHelperxRegion(region: String?): Animal {
         val animal = Animal(null,null,null,null,null, null, null)
         animal.setearRegionAnimal(region)
         val db = writableDatabase
         var index: Int
+        var consulta =R.string.queryObtenerAnimalDadaRegion
 
-
-        val selectQuery = R.string.queryObtenerAnimalDadaRegion +region
-        val cursor = db.rawQuery(selectQuery.toString(), null)
+        val selectQuery = "$consulta $region ORDER BY random() \n" +
+                "LIMIT 1;"
+        val cursor = db.rawQuery(selectQuery, null)
 
         if (cursor != null) {
             cursor.moveToFirst()
@@ -134,7 +135,7 @@ var existe=true
                 index = cursor.getColumnIndexOrThrow(KEY_DES)
                 animal.setearDescripcionAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_URL)
-                animal.setearUrlAnimal(cursor.getString(index))
+                animal.setearLinkAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_URLBACKUP)
                 animal.setearUrlBackUpAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_OBJ)
