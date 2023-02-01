@@ -16,6 +16,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.primerproyecto.raeco2.activities.AR
+import com.primerproyecto.raeco2.activities.Bienvenida
 import com.primerproyecto.raeco2.bd.DbHelper
 
 import java.net.HttpURLConnection
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private var message: TextView? = null
     private var btnCrear : Button? = null;
     private var simple_btn : Button? = null;
+    private var bienvenida : Button? = null;
 
 
     @SuppressLint("SuspiciousIndentation")
@@ -51,7 +54,15 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        bienvenida = findViewById(R.id.bienvenida)
+        bienvenida?.setOnClickListener {
+            val intent = Intent(this, Bienvenida::class.java )
+            startActivity(intent)
+        }
+
     }
+
+
 
     //lamado por el boton
     private fun crearBD(){
