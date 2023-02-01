@@ -82,30 +82,30 @@ class MainActivity : AppCompatActivity() {
 
 
     //llamado al inciar requiere los permisos e inicia la localizacion
-private fun permisosIniciarLocalizacion()
-{
-    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        !== PackageManager.PERMISSION_GRANTED
-        && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-        !== PackageManager.PERMISSION_GRANTED
-    ) {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            1000
-        )
-    } else {
-        iniciarLocalizacion()
+    private fun permisosIniciarLocalizacion()
+    {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            !== PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+            !== PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1000
+            )
+        } else {
+            iniciarLocalizacion()
+        }
     }
-}
 
     private fun crearAnimal()
     {
-    //https://developers.google.com/ar/develop/scene-viewer
-            val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-            sceneViewerIntent.data = Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
-            sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
-            startActivity(sceneViewerIntent)
+        //https://developers.google.com/ar/develop/scene-viewer
+        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+        sceneViewerIntent.data = Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf")
+        sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
+        startActivity(sceneViewerIntent)
     }
 
     //hacer un get y devuelve true si el sitio retorna un response code200
@@ -121,8 +121,8 @@ private fun permisosIniciarLocalizacion()
                 }
                 connection.disconnect()
             } catch (e: java.lang.Exception) {
-            println("****GET request responseCode $e")
-        }
+                println("****GET request responseCode $e")
+            }
         }
 
         gfgThread.start()
@@ -161,7 +161,7 @@ private fun permisosIniciarLocalizacion()
 
 //obtener estos datos del usuario
         //SEGUIR ACÁ, ARREGLAR LAS CONSULTAS A LA BASE DE DATOS,
-         //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
+        //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
         var config:Configuracion= TODO()
         var voAnimalMostrar:voAnimal = TODO()
         var cualURL:Boolean = TODO()

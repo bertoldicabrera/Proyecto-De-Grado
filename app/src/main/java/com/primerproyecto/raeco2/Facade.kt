@@ -1,7 +1,10 @@
 package com.primerproyecto.raeco2
 
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import com.primerproyecto.raeco2.bd.DaoAnimales
 import com.primerproyecto.raeco2.bd.DaoLocalizaciones
+import com.primerproyecto.raeco2.bd.DbHelper
 
 private val animales : DaoAnimales = TODO() //Ver si va así
 private val localizaciones : DaoLocalizaciones = TODO() //Ver si va así
@@ -30,14 +33,28 @@ class Facade {
         }
 
     }
- fun buscarAnimal(localizacion: voLocalizacion): voAnimal {
+    fun buscarAnimal(localizacion: voLocalizacion): voAnimal {
 
      var region= obtenerRegionAnimal(localizacion)
      var animal = animales.find(region) // ver que pasa si es null
      var animalSalida = animalParavoAnimal(animal)
      return animalSalida
- }
+    }
+
+    fun crearBD(context: MainActivity): String? {
+        var mensaje: String? = null
+        val dbHelper = DbHelper(context)
+        val db: SQLiteDatabase = dbHelper.getWritableDatabase()
+        if (db != null) {
+            mensaje= "BASE DE DATOS CREADA"
+        } else {
+            mensaje= "ERROR AL CREAR BASE DE DATOS"
+        }
+        return mensaje
+    }
 }
+
+
 private fun obtenerRegionAnimal(localizacion: voLocalizacion):String?{
     var latitud = localizacion.obtenerLatitud()
     var longitud =localizacion.obtenerLongitud()
