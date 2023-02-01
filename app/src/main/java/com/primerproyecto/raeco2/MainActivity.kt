@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var btnCrear : Button? = null;
     private var simple_btn : Button? = null;
     private var bienvenida : Button? = null;
+    private var facade: Facade =Facade()
 
 
     @SuppressLint("SuspiciousIndentation")
@@ -43,14 +44,15 @@ class MainActivity : AppCompatActivity() {
 
         simple_btn = findViewById(R.id.button)
         simple_btn?.setOnClickListener {
-            crearAnimal()
+            crearAnimal3DImplisito()
+            //crearAnimal3DExplisito() //llamar a este cuando terminemos
         }
 
         btnCrear = findViewById(R.id.btnCrear)
 
         btnCrear?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                crearBD()
+                crearBDLocal()
             }
         })
 
@@ -61,23 +63,13 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-
-
     //lamado por el boton
-    private fun crearBD(){
-        val dbHelper = DbHelper(this@MainActivity)
-        val db: SQLiteDatabase = dbHelper.getWritableDatabase()
-        if (db != null) {
-            Toast.makeText(this@MainActivity, "BASE DE DATOS CREADA", Toast.LENGTH_LONG)
-                .show()
-        } else {
-            Toast.makeText(
-                this@MainActivity,
-                "ERROR AL CREAR BASE DE DATOS",
-                Toast.LENGTH_LONG
-            ).show()
-        }
+    private fun crearBDLocal(){
+        var mensaje: String? = facade.crearBD(this@MainActivity)
+
+        Toast.makeText(this@MainActivity, mensaje, Toast.LENGTH_LONG)
+            .show()
+
     }
 
 
@@ -99,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun crearAnimal()
+    private fun crearAnimal3DImplisito()
     {
         //https://developers.google.com/ar/develop/scene-viewer
         val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
@@ -108,8 +100,75 @@ class MainActivity : AppCompatActivity() {
         startActivity(sceneViewerIntent)
     }
 
+    private fun crearAnimal3DExplisito()
+    {
+        //https://developers.google.com/ar/develop/scene-viewer
+        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+        //string para el
+        val intentUri = createIntentUriExplicito()
+        sceneViewerIntent.setData(intentUri);
+        sceneViewerIntent.setPackage("com.google.ar.core");
+        startActivity(sceneViewerIntent);
+    }
+
+    private fun createIntentUriExplicito() : Uri {
+        val intentUri = Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
+
+//obtener estos datos del usuario
+        //SEGUIR ACÁ, ARREGLAR LAS CONSULTAS A LA BASE DE DATOS,
+        //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
+        var config:Configuracion= TODO()
+        var voAnimalMostrar:voAnimal = TODO()
+
+        val params = cargarParametrosDelAnimal(config, voAnimalMostrar)
+        params.forEach {
+                (key, value) -> intentUri.appendQueryParameter(key, value)
+        }
+        return intentUri.build()
+    }
+
+    //Pasar a configracion
+    //configuracion, voAnimal
+
+    private fun cargarParametrosDelAnimal(config:Configuracion, voAnimalMostrar: voAnimal) : HashMap<String, String> {
+
+        var url1= voAnimalMostrar.obtenerObjetoAnimal()
+        var sitioOK=sitioUp(url1)
+
+        //https://developers.google.com/ar/develop/scene-viewer
+        val map = HashMap<String, String> ()
+        map["file"] = {
+            if(sitioOK)
+            {
+                url1
+            }else
+            {
+                voAnimalMostrar.obtenerObjetoBackUpAnimal()
+            }
+        }.toString()
+
+        map["mode"] = "ar_preferred"
+        map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()//si
+        map["title"] = voAnimalMostrar.obtenerNombreAnimal().toString()//si
+        map["sound"] = voAnimalMostrar.obtenerSonido().toString()//si ver de cargar en la bd
+        /*
+        	Una URL a una pista de audio en bucle que se sincroniza con la primera animación
+        	 incorporada en un archivo glTF. Se debe proporcionar junto con un glTF
+        	 con una animación que coincida con la longitud. Si está presente, el sonido se repite
+        	  una vez cargado el modelo.
+         */
+        map["resizable"] = config.obtenerTamano().toString()// si
+        map["disable_occlusion"] = true.toString()
+        /*
+        Cuando se configura en true, los objetos ubicados en la escena
+         siempre aparecen delante de objetos reales de la escena.
+         */
+
+        return map
+    }
+
     //hacer un get y devuelve true si el sitio retorna un response code200
-    private fun sitioUp(urlValidar:String): Boolean {
+    private fun sitioUp(urlValidar:String?): Boolean {
         var estaUp= false
         val gfgThread = Thread {
             try {
@@ -153,50 +212,6 @@ class MainActivity : AppCompatActivity() {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0.0f, localization)
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0.0f, localization)
         message?.text = "Localizacion agregada"
-    }
-
-
-    private fun createIntentUriExplicito() : Uri {
-        val intentUri = Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
-
-//obtener estos datos del usuario
-        //SEGUIR ACÁ, ARREGLAR LAS CONSULTAS A LA BASE DE DATOS,
-        //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
-        var config:Configuracion= TODO()
-        var voAnimalMostrar:voAnimal = TODO()
-        var cualURL:Boolean = TODO()
-
-        val params = cargarParametrosDelAnimal(config, voAnimalMostrar, cualURL)
-        params.forEach { (key, value) -> intentUri.appendQueryParameter(key, value) }
-        return intentUri.build()
-    }
-
-    //Pasar a configracion
-    //configuracion, voAnimal
-
-    private fun cargarParametrosDelAnimal(config:Configuracion, voAnimalMostrar: voAnimal, cualURL:Boolean) : HashMap<String, String> {
-
-        //https://developers.google.com/ar/develop/scene-viewer
-        val map = HashMap<String, String> ()
-        map["file"] = {
-            if(cualURL==true)
-            {
-                voAnimalMostrar.obtenerObjetoAnimal()
-            }else
-            {
-                voAnimalMostrar.obtenerObjetoBackUpAnimal()
-            }
-        }.toString()
-
-        map["title"] = voAnimalMostrar.obtenerNombreAnimal().toString()//si
-
-        map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()//si
-
-        map["mode"] = "ar_preferred"
-
-        map["resizable"] = config.obtenerTamano().toString()// si
-
-        return map
     }
 
 
