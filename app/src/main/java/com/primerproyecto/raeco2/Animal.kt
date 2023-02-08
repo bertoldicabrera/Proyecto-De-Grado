@@ -75,9 +75,9 @@ public class Animal(
         this.objeto3D =obj
     }
 
-    fun setearRegionAnimal(idregion: String?) {
+    fun setearRegionAnimal(idRegion: String?) {
 
-        this.region =idregion
+        this.region =idRegion
     }
 
 }

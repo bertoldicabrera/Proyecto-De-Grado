@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.sqlite.SQLiteDatabase
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
@@ -16,9 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.primerproyecto.raeco2.activities.AR
 import com.primerproyecto.raeco2.activities.Bienvenida
-import com.primerproyecto.raeco2.bd.DbHelper
 
 import java.net.HttpURLConnection
 import java.net.URL
@@ -27,7 +24,7 @@ import java.net.URL
 class MainActivity : AppCompatActivity() {
 
     private var message: TextView? = null
-    private var btnCrear : Button? = null;
+    private var btn_Crear : Button? = null;
     private var simple_btn : Button? = null;
     private var bienvenida : Button? = null;
     private var facade: Facade =Facade()
@@ -44,15 +41,15 @@ class MainActivity : AppCompatActivity() {
 
         simple_btn = findViewById(R.id.button)
         simple_btn?.setOnClickListener {
-            crearAnimal3DImplisito()
+            crearAnimal3dImplisito()
             //crearAnimal3DExplisito() //llamar a este cuando terminemos
         }
 
-        btnCrear = findViewById(R.id.btnCrear)
+        btn_Crear = findViewById(R.id.btnCrear)
 
-        btnCrear?.setOnClickListener(object : View.OnClickListener {
+        btn_Crear?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-                crearBDLocal()
+                crearBdLocal()
             }
         })
 
@@ -64,8 +61,8 @@ class MainActivity : AppCompatActivity() {
 
     }
     //lamado por el boton
-    private fun crearBDLocal(){
-        var mensaje: String? = facade.crearBD(this@MainActivity)
+    private fun crearBdLocal(){
+        var mensaje: String? = facade.crearBd(this@MainActivity)
 
         Toast.makeText(this@MainActivity, mensaje, Toast.LENGTH_LONG)
             .show()
@@ -91,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun crearAnimal3DImplisito()
+    private fun crearAnimal3dImplisito()
     {
         //https://developers.google.com/ar/develop/scene-viewer
         val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
@@ -100,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(sceneViewerIntent)
     }
 
-    private fun crearAnimal3DExplisito()
+    private fun crearAnimal3dExplisito()
     {
         //https://developers.google.com/ar/develop/scene-viewer
         val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
@@ -118,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         //SEGUIR ACÁ, ARREGLAR LAS CONSULTAS A LA BASE DE DATOS,
         //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
         var config:Configuracion= TODO()
-        var voAnimalMostrar:voAnimal = TODO()
+        var voAnimalMostrar:VoAnimal = TODO()
 
         val params = cargarParametrosDelAnimal(config, voAnimalMostrar)
         params.forEach {
@@ -130,7 +127,7 @@ class MainActivity : AppCompatActivity() {
     //Pasar a configracion
     //configuracion, voAnimal
 
-    private fun cargarParametrosDelAnimal(config:Configuracion, voAnimalMostrar: voAnimal) : HashMap<String, String> {
+    private fun cargarParametrosDelAnimal(config:Configuracion, voAnimalMostrar: VoAnimal) : HashMap<String, String> {
 
         var url1= voAnimalMostrar.obtenerObjetoAnimal()
         var sitioOK=sitioUp(url1)

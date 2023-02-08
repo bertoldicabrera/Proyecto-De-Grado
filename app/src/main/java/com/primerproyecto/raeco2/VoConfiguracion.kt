@@ -1,6 +1,6 @@
 package com.primerproyecto.raeco2
 
-class voConfiguracion (
+class VoConfiguracion (
     private var titulo: Boolean?,
     private var link: Boolean?,
     private var tamano: Boolean?,

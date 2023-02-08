@@ -163,7 +163,7 @@ var existe=true
             while (cursor.moveToNext()) {
 
                 index = cursor.getColumnIndexOrThrow(KEY_IDLocalizacion)
-                localizacion.setearID(cursor.getInt(index))
+                localizacion.setearId(cursor.getInt(index))
                 index = cursor.getColumnIndexOrThrow(KEY_NOMBRE_REGION)
                 localizacion.setearNombreRegion(cursor.getString(index))
             }

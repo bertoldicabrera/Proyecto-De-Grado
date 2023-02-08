@@ -1,6 +1,6 @@
 package com.primerproyecto.raeco2
 
-class voAnimal (
+class VoAnimal (
     private var nombre: String?,
     private  var descripcion: String?,
     private var link:String?,
@@ -11,7 +11,7 @@ class voAnimal (
 )
 {
 
-    fun obtenerAnimal(): voAnimal {
+    fun obtenerAnimal(): VoAnimal {
 
         return this
     }
@@ -74,9 +74,9 @@ class voAnimal (
         this.objeto3D =obj
     }
 
-    fun setearRegionAnimal(idregion: String?) {
+    fun setearRegionAnimal(idRegion: String?) {
 
-        this.region =idregion
+        this.region =idRegion
     }
 
 }

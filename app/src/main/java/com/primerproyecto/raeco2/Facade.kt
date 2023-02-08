@@ -1,6 +1,5 @@
 package com.primerproyecto.raeco2
 
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.primerproyecto.raeco2.bd.DaoAnimales
 import com.primerproyecto.raeco2.bd.DaoLocalizaciones
@@ -10,7 +9,7 @@ private val animales : DaoAnimales = TODO() //Ver si va así
 private val localizaciones : DaoLocalizaciones = TODO() //Ver si va así
 
 class Facade {
-    fun agregarAnimal(voNuevoAnimal: voAnimal) {
+    fun agregarAnimal(voNuevoAnimal: VoAnimal) {
 
         if(!animales.member(voNuevoAnimal.obtenerNombreAnimal()))
         {
@@ -33,15 +32,15 @@ class Facade {
         }
 
     }
-    fun buscarAnimal(localizacion: voLocalizacion): voAnimal {
+    fun buscarAnimal(localizacion: VoLocalizacion): VoAnimal {
 
      var region= obtenerRegionAnimal(localizacion)
      var animal = animales.find(region) // ver que pasa si es null
-     var animalSalida = animalParavoAnimal(animal)
+     var animalSalida = animalParaVoAnimal(animal)
      return animalSalida
     }
 
-    fun crearBD(context: MainActivity): String? {
+    fun crearBd(context: MainActivity): String? {
         var mensaje: String? = null
         val dbHelper = DbHelper(context)
         val db: SQLiteDatabase = dbHelper.getWritableDatabase()
@@ -55,7 +54,7 @@ class Facade {
 }
 
 
-private fun obtenerRegionAnimal(localizacion: voLocalizacion):String?{
+private fun obtenerRegionAnimal(localizacion: VoLocalizacion):String?{
     var latitud = localizacion.obtenerLatitud()
     var longitud =localizacion.obtenerLongitud()
     var local :String?=null
@@ -69,27 +68,27 @@ private fun obtenerRegionAnimal(localizacion: voLocalizacion):String?{
     return local
 }
 
-private fun animalParavoAnimal(bicho:Animal):voAnimal{
+private fun animalParaVoAnimal(ani:Animal):VoAnimal{
 
-    var voAnimalSalida = voAnimal(null,null,null,null,null, null, null)
-    voAnimalSalida.setearNombreAnimal(bicho.obtenerNombreAnimal() )
-    voAnimalSalida.setearDescripcionAnimal(bicho.obtenerDescripcionAnimal())
-    voAnimalSalida.setearLinkAnimal(bicho.obtenerLinkAnimal())
-    voAnimalSalida.setearUrlBackUpAnimal(bicho.obtenerObjetoBackUpAnimal())
-    voAnimalSalida.setearObjetoAnimal(bicho.obtenerObjetoAnimal())
-    voAnimalSalida.setearRegionAnimal(bicho.obtenerRegionAnimal())
-    voAnimalSalida.setearSonido(bicho.obtenerSonido())
+    var voAnimalSalida = VoAnimal(null,null,null,null,null, null, null)
+    voAnimalSalida.setearNombreAnimal(ani.obtenerNombreAnimal() )
+    voAnimalSalida.setearDescripcionAnimal(ani.obtenerDescripcionAnimal())
+    voAnimalSalida.setearLinkAnimal(ani.obtenerLinkAnimal())
+    voAnimalSalida.setearUrlBackUpAnimal(ani.obtenerObjetoBackUpAnimal())
+    voAnimalSalida.setearObjetoAnimal(ani.obtenerObjetoAnimal())
+    voAnimalSalida.setearRegionAnimal(ani.obtenerRegionAnimal())
+    voAnimalSalida.setearSonido(ani.obtenerSonido())
     return voAnimalSalida
 }
-private fun voAnimalParaAnimal(voBicho:voAnimal):Animal{
+private fun voAnimalParaAnimal(voAni:VoAnimal):Animal{
 
     val animalSalida: Animal= Animal(null, null,null,null,null, null, null)
-    animalSalida.setearNombreAnimal(voBicho.obtenerNombreAnimal() )
-    animalSalida.setearDescripcionAnimal(voBicho.obtenerDescripcionAnimal())
-    animalSalida.setearLinkAnimal(voBicho.obtenerLinkAnimal())
-    animalSalida.setearUrlBackUpAnimal(voBicho.obtenerObjetoBackUpAnimal())
-    animalSalida.setearObjetoAnimal(voBicho.obtenerObjetoAnimal())
-    animalSalida.setearRegionAnimal(voBicho.obtenerRegionAnimal())
-    animalSalida.setearSonido(voBicho.obtenerSonido())
+    animalSalida.setearNombreAnimal(voAni.obtenerNombreAnimal() )
+    animalSalida.setearDescripcionAnimal(voAni.obtenerDescripcionAnimal())
+    animalSalida.setearLinkAnimal(voAni.obtenerLinkAnimal())
+    animalSalida.setearUrlBackUpAnimal(voAni.obtenerObjetoBackUpAnimal())
+    animalSalida.setearObjetoAnimal(voAni.obtenerObjetoAnimal())
+    animalSalida.setearRegionAnimal(voAni.obtenerRegionAnimal())
+    animalSalida.setearSonido(voAni.obtenerSonido())
     return animalSalida
 }

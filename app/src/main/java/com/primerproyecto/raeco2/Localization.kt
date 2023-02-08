@@ -1,6 +1,5 @@
 package com.primerproyecto.raeco2
 
-import android.annotation.SuppressLint
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationProvider
@@ -20,7 +19,7 @@ public class Localization constructor(
     var menssage: TextView? = null
 
 
-    fun obtenerID():Int?{
+    fun obtenerId():Int?{
         return this.id
     }
     fun obtenerNombreRegion():String?{
@@ -32,17 +31,17 @@ public class Localization constructor(
     fun obtenerLatitud(): Double? {
         return this.latitud
     }
-    fun setearID(identificador:Int?){
+    fun setearId(identificador:Int?){
         this.id=identificador
     }
     fun setearNombreRegion(nombreRegionAnimal:String?){
         this.nombreRegion =nombreRegionAnimal
     }
-    fun setearLongitud(longitudx:Double?){
-        this.longitud =longitudx
+    fun setearLongitud(longitud:Double?){
+        this.longitud =longitud
     }
-    fun setearLatitud(latitudy:Double?){
-        this.latitud =latitudy
+    fun setearLatitud(latitud:Double?){
+        this.latitud =latitud
     }
 
 

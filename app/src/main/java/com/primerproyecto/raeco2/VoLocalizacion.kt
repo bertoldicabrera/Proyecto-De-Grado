@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 
-class voLocalizacion constructor(
+class VoLocalizacion constructor(
 
     private var latitud: Double? = null,
     private var longitud: Double? =null
