@@ -26,19 +26,21 @@ public class DbHelper (context: Context?) :
                     " TEXT NOT NULL," + KEY_DES+
                     " TEXT NOT NULL," + KEY_URL+
                     " TEXT NOT NULL," + KEY_OBJ+
+                    " TEXT NOT NULL," + KEY_OBJBACKUP+
                     " TEXT NOT NULL," + KEY_REG+
-                    " TEXT NOT NULL," + KEY_SONIDO+
+                    " INTEGER NOT NULL," + KEY_SONIDO+
                     " TEXT NOT NULL)"
         )
 
 
         sqLiteDatabase.execSQL(
-            "CREATE TABLE IF NOT EXISTS " + TABLE_LOCALIZACIONES + "(" + KEY_IDLocalizacion+
-                    " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NOMBRE_REGION+
+            "CREATE TABLE IF NOT EXISTS " + TABLE_LOCALIZACIONES + "(" +KEY_NOMBRE_REGION+
                     " TEXT NOT NULL," + KEY_LONGITUD+
                     " REAL NOT NULL," + KEY_LATITUD+
                     " REAL NOT NULL)"
         )
+
+
     }
 
     override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, i: Int, i1: Int) {
@@ -55,12 +57,12 @@ public class DbHelper (context: Context?) :
         const val KEY_NAME= "name"
         const val KEY_DES= "descripcion"
         const val KEY_URL= "url"
-        const val KEY_URLBACKUP= "urlBackUp"
+        const val KEY_OBJBACKUP= "objetoBackUp"
         const val KEY_OBJ= "objeto"
         const val KEY_SONIDO= "sonido"
         const val KEY_REG= "registro"
         const val TABLE_LOCALIZACIONES = "t_Localizaciones"
-        const val KEY_IDLocalizacion= "idLocalizacion"
+        const val KEY_IDLOCALIZACION= "idLocalizacion"
         const val KEY_NOMBRE_REGION= "nombreRegion"
         const val KEY_LATITUD= "latitud"
         const val KEY_LONGITUD= "longitud"
@@ -83,7 +85,7 @@ var existe=true
         val nombre = animalNew.obtenerNombreAnimal()
         val descripcion= animalNew.obtenerDescripcionAnimal()
         val url= animalNew.obtenerLinkAnimal()
-        val urlBack= animalNew.obtenerObjetoBackUpAnimal()
+        val objetoBack= animalNew.obtenerObjetoBackUpAnimal()
         val objeto3D= animalNew.obtenerObjetoAnimal()
         val region=animalNew.obtenerRegionAnimal()
         val sonido=animalNew.obtenerSonido()
@@ -93,7 +95,7 @@ var existe=true
         contentValues.put(KEY_NAME, nombre)
         contentValues.put(KEY_DES,descripcion )
         contentValues.put(KEY_URL,url )
-        contentValues.put(KEY_URLBACKUP,urlBack )
+        contentValues.put(KEY_OBJBACKUP,objetoBack )
         contentValues.put(KEY_OBJ,objeto3D )
         contentValues.put(KEY_REG,region )
         contentValues.put(KEY_SONIDO,sonido )
@@ -136,7 +138,7 @@ var existe=true
                 animal.setearDescripcionAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_URL)
                 animal.setearLinkAnimal(cursor.getString(index))
-                index = cursor.getColumnIndexOrThrow(KEY_URLBACKUP)
+                index = cursor.getColumnIndexOrThrow(KEY_OBJBACKUP)
                 animal.setearUrlBackUpAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_OBJ)
                 animal.setearObjetoAnimal(cursor.getString(index))
@@ -162,7 +164,7 @@ var existe=true
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
 
-                index = cursor.getColumnIndexOrThrow(KEY_IDLocalizacion)
+                index = cursor.getColumnIndexOrThrow(KEY_IDLOCALIZACION)
                 localizacion.setearId(cursor.getInt(index))
                 index = cursor.getColumnIndexOrThrow(KEY_NOMBRE_REGION)
                 localizacion.setearNombreRegion(cursor.getString(index))
