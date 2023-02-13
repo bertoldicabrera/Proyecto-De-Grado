@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         message = findViewById(R.id.menssage)
-        message?.text = "Puto" //Carga este dato en la pantalla
+        message?.text = "xxxxxxxxxxxxxxxx" //Carga este dato en la pantalla
         permisosIniciarLocalizacion()
 
         simple_btn = findViewById(R.id.button)
