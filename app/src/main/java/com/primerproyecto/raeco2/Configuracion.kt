@@ -3,7 +3,7 @@ package com.primerproyecto.raeco2
 class Configuracion(
     private var titulo: Boolean?,
     private var link: Boolean?,
-    private var tamano: Boolean?,
+    private var renderizado: Boolean?,
     private var sonido: Boolean?
 
 ) {
@@ -16,26 +16,26 @@ class Configuracion(
         this.link = varLink
 
     }
-    fun seterTamano(varTamano: Boolean?){
-        this.tamano = varTamano
+    fun seterRenderizado(varTamano: Boolean?){
+        this.renderizado = varTamano
     }
 
     fun seterSonido(varSonido: Boolean?){
         this.sonido = varSonido
     }
-    fun obtenerTitulo(): Boolean? {
+    fun esTituloActivado(): Boolean? {
         return this.titulo
 
     }
-    fun obtenerLink(): Boolean? {
+    fun esLinkActivado(): Boolean? {
         return this.link
 
     }
-    fun obtenerTamano(): Boolean? {
-        return this.tamano
+    fun esRenderizadoActivado(): Boolean? {
+        return this.renderizado
     }
 
-    fun obtenerSonido(): Boolean? {
+    fun esSonidoActivado(): Boolean? {
         return this.sonido
     }
 

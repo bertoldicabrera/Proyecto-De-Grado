@@ -28,6 +28,10 @@ class MainActivity : AppCompatActivity() {
     private var simple_btn : Button? = null;
     private var bienvenida : Button? = null;
     private var facade: Facade =Facade()
+    private var animal: Animal? = null
+    private var voAnimal: VoAnimal? = null
+    private var config: Configuracion? = null
+    private var localizacion: Localization? =null
 
 
     @SuppressLint("SuspiciousIndentation")
@@ -38,6 +42,12 @@ class MainActivity : AppCompatActivity() {
         message = findViewById(R.id.menssage)
         message?.text = "xxxxxxxxxxxxxxxx" //Carga este dato en la pantalla
         permisosIniciarLocalizacion()
+        animal= Animal ("Pepito","desc","link","objbk","obj3d","region", "sonido")
+        voAnimal =VoAnimal("Pepito","desc","link","objbk","obj3d","region", "sonido")
+        config = Configuracion(true,false,true,true)
+        localizacion = Localization (1, "cuba", 1.0, 2.0 )
+
+        message?.text =localizacion!!.obtenerId().toString()+" "+localizacion!!.obtenerNombreRegion()+" "+localizacion!!.obtenerLatitud()+" "+localizacion!!.obtenerLongitud()
 
         simple_btn = findViewById(R.id.button)
         simple_btn?.setOnClickListener {
@@ -154,7 +164,7 @@ class MainActivity : AppCompatActivity() {
         	 con una animación que coincida con la longitud. Si está presente, el sonido se repite
         	  una vez cargado el modelo.
          */
-        map["resizable"] = config.obtenerTamano().toString()// si
+        map["resizable"] = config.esRenderizadoActivado().toString()// si
         map["disable_occlusion"] = true.toString()
         /*
         Cuando se configura en true, los objetos ubicados en la escena
