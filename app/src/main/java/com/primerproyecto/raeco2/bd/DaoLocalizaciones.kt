@@ -2,13 +2,11 @@ package com.primerproyecto.raeco2.bd
 
 import com.primerproyecto.raeco2.Localization
 
-class DaoLocalizaciones constructor(
-    var localizaciones: DaoLocalizaciones
-){
+class DaoLocalizaciones{
 
     private val dataBase : DbHelper = DbHelper(context = null)// ver si no es esto
 
-    fun find(latitud:Double?, longitud:Double?): Localization {
+    fun find(latitud:Double?, longitud:Double?): String? {
 
         return dataBase.obtenerLocalizacion(latitud, longitud)
     }
@@ -21,12 +19,12 @@ class DaoLocalizaciones constructor(
     }
     fun insert (localizacion: Localization){
 
-        dataBase.insertarLocalizacion(localizacion) // se cambio en dataBase
+    //    dataBase.insertarLocalizacion(localizacion) // se cambio en dataBase
     }
 
     fun delete (latitud:Double?, longitud:Double?){
 
-       val ok= dataBase.eliminarLocalizacion(latitud, longitud)
+     //  val ok= dataBase.eliminarLocalizacion(latitud, longitud)
 
     }
 

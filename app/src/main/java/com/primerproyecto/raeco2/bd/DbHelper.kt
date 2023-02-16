@@ -18,10 +18,11 @@ public class DbHelper (context: Context?) :
 
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
 
-        println("c DB XXXXXXXXXXXX")
+        println("Inicio crear tablas XXXXXXXXXXXX")
+
 
        sqLiteDatabase.execSQL(
-            "CREATE TABLE IF NOT EXISTS " + TABLE_ANIMALES + "(" + KEY_IDAnimal+
+            "CREATE TABLE IF NOT EXISTS " + TABLE_ANIMALES + "(" + KEY_IDANIMAL+
                     " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME+
                     " TEXT NOT NULL," + KEY_DES+
                     " TEXT NOT NULL," + KEY_URL+
@@ -35,25 +36,50 @@ public class DbHelper (context: Context?) :
 
         sqLiteDatabase.execSQL(
             "CREATE TABLE IF NOT EXISTS " + TABLE_LOCALIZACIONES + "(" +KEY_NOMBRE_REGION+
-                    " TEXT NOT NULL," + KEY_LONGITUD+
+                    " TEXT PRIMARY KEY," + KEY_LONGITUD+
                     " REAL NOT NULL," + KEY_LATITUD+
                     " REAL NOT NULL)"
         )
 
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_REGION " +
+                "($KEY_REGION INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "id_Animal_Region INTEGER, " +
+                "id_Animal_Localizacion TEXT, " +
+                "FOREIGN KEY (id_Animal_Region) REFERENCES $TABLE_ANIMALES($KEY_IDANIMAL), " +
+                "FOREIGN KEY (id_Animal_Localizacion) REFERENCES $TABLE_LOCALIZACIONES($KEY_NOMBRE_REGION))"
+        )
+
+
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
+                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_REG, $KEY_SONIDO) VALUES ('Perro', 'Animal doméstico popular'," +
+                " 'https://example.com/perro.jpg', 'https://example.com/gobjetoPerro', 'https://example.com/gobjeto_Perro_backup', 1, 'ladrido')"
+
+        )
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_REGION, $KEY_LONGITUD,$KEY_LATITUD)"+
+                "VALUES ('América del Sur',1.0,1.0)"
+        )
+
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION (id_Animal_Region, id_Animal_Localizacion)"+
+        "VALUES (1, 'América del Sur')"
+        )
+
+
+        println("Fin Crear tablas")
 
     }
 
     override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, i: Int, i1: Int) {
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_REGION)
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ANIMALES)
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCALIZACIONES)
-        onCreate(sqLiteDatabase)
+                onCreate(sqLiteDatabase)
     }
 
     companion object {
         private const val DATABASE_VERSION = 2
         private const val DATABASE_NOMBRE = "Raeco2.db"
         const val TABLE_ANIMALES = "t_animales"
-        const val KEY_IDAnimal= "id"
+        const val KEY_IDANIMAL= "id_animal"
         const val KEY_NAME= "name"
         const val KEY_DES= "descripcion"
         const val KEY_URL= "url"
@@ -62,10 +88,11 @@ public class DbHelper (context: Context?) :
         const val KEY_SONIDO= "sonido"
         const val KEY_REG= "registro"
         const val TABLE_LOCALIZACIONES = "t_Localizaciones"
-        const val KEY_IDLOCALIZACION= "idLocalizacion"
         const val KEY_NOMBRE_REGION= "nombreRegion"
         const val KEY_LATITUD= "latitud"
         const val KEY_LONGITUD= "longitud"
+        const val TABLE_REGION= "t_region"
+        const val KEY_REGION= "id_region"
     }
 
     fun existeAnimalDbHelper(nombre: String?): Boolean {
@@ -80,7 +107,8 @@ var existe=true
         cursor.close()
         return existe
     }
-    fun insertarAnimalDbHelper(animalNew:Animal):Long{
+
+    private fun insertarAnimalDbHelper(animalNew:Animal):Long{
 
         val nombre = animalNew.obtenerNombreAnimal()
         val descripcion= animalNew.obtenerDescripcionAnimal()
@@ -105,7 +133,7 @@ var existe=true
         db.close() // Closing database connection
         return success
     }
-    fun eliminarAnimalDbHelper(nombre:String):Int{
+   private fun eliminarAnimalDbHelper(nombre:String):Int{
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(KEY_NAME, nombre) //  Id
@@ -150,10 +178,8 @@ var existe=true
         return animal
     }
 
-    fun obtenerLocalizacion(latitud:Double?, longitud:Double?): Localization {
-        val localizacion = Localization(null,null,null,null)
-        localizacion.setearLatitud(latitud)
-        localizacion.setearLongitud(longitud)
+    fun obtenerLocalizacion(latitud:Double?, longitud:Double?): String? {
+        var localizacion =""
         val db = writableDatabase
         var index: Int
         //falta acá
@@ -163,11 +189,8 @@ var existe=true
         if (cursor != null) {
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
-
-                index = cursor.getColumnIndexOrThrow(KEY_IDLOCALIZACION)
-                localizacion.setearId(cursor.getInt(index))
                 index = cursor.getColumnIndexOrThrow(KEY_NOMBRE_REGION)
-                localizacion.setearNombreRegion(cursor.getString(index))
+                localizacion= cursor.getString(index)
             }
         }
         cursor.close()
@@ -188,7 +211,7 @@ var existe=true
         return existe
     }
 
-    fun insertarLocalizacion(localizacion: Localization):Long {
+   private fun insertarLocalizacion(localizacion: Localization):Long {
 
         val nombre = localizacion.obtenerNombreRegion()
         val latitud= localizacion.obtenerLatitud()
@@ -209,7 +232,7 @@ var existe=true
         return success //el ID de fila de la fila recién insertada, o -1 si ocurrió un error
     }
 
-    fun eliminarLocalizacion(latitud: Double?, longitud: Double?):Int {
+    private fun eliminarLocalizacion(latitud: Double?, longitud: Double?):Int {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(KEY_LATITUD, latitud) //  Id

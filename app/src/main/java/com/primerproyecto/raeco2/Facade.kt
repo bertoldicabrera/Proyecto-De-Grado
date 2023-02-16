@@ -5,8 +5,8 @@ import com.primerproyecto.raeco2.bd.DaoAnimales
 import com.primerproyecto.raeco2.bd.DaoLocalizaciones
 import com.primerproyecto.raeco2.bd.DbHelper
 
-private val animales : DaoAnimales = TODO() //Ver si va así
-private val localizaciones : DaoLocalizaciones = TODO() //Ver si va así
+private val animales : DaoAnimales = DaoAnimales() //Ver si va así
+private val localizaciones : DaoLocalizaciones = DaoLocalizaciones() //Ver si va así
 
 class Facade {
     fun agregarAnimal(voNuevoAnimal: VoAnimal) {
@@ -61,7 +61,7 @@ private fun obtenerRegionAnimal(localizacion: VoLocalizacion):String?{
 
     if(localizaciones.member(latitud,longitud ))
     {
-        local = localizaciones.find(latitud,longitud).obtenerNombreRegion()
+        local = localizaciones.find(latitud,longitud)
 
     }
 
