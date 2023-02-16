@@ -1,12 +1,156 @@
 package com.primerproyecto.raeco2.activities
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.Switch
+import com.primerproyecto.raeco2.Configuracion
 import com.primerproyecto.raeco2.R
+import com.primerproyecto.raeco2.VoAnimal
+import java.net.HttpURLConnection
+import java.net.URL
 
 class AR : AppCompatActivity() {
+
+
+    private var titulo: Boolean? = null
+    private var link: Boolean? = null
+    private var renderizado: Boolean? = null
+    private var sonido: Boolean? = null
+    private var ar_btn : Button? = null;
+    private var atras_btn : Button? = null;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ar)
+
+
+ // Obtener una referencia al objeto Switch desde la vista
+        val SwitchTitulo = findViewById<Switch>(R.id.switch1)
+        val SwitchLink = findViewById<Switch>(R.id.switch2)
+        val SwitchRenderizado = findViewById<Switch>(R.id.switch3)
+        val SwitchSonido = findViewById<Switch>(R.id.switch4)
+        SwitchTitulo.setOnCheckedChangeListener { buttonView, isChecked ->
+            titulo = isChecked
+        }
+        SwitchLink.setOnCheckedChangeListener { buttonView, isChecked ->
+            link = isChecked
+        }
+        SwitchRenderizado.setOnCheckedChangeListener { buttonView, isChecked ->
+            renderizado = isChecked
+        }
+        SwitchSonido.setOnCheckedChangeListener { buttonView, isChecked ->
+            sonido = isChecked
+        }
+       // var Configuracion : Configuracion = Configuracion(titulo, link, renderizado, sonido)
+         var con = Configuracion.apply(titulo, link, renderizado, sonido)
+
+        ar_btn = findViewById(R.id.button2)
+        ar_btn?.setOnClickListener {
+            crearAnimal3dExplicito(con)
+        }
+        atras_btn = findViewById(R.id.button3)
+        atras_btn?.setOnClickListener {
+            onBackPressed()
+        }
+
+
+        }
+
+    private fun crearAnimal3dExplicito(config:Configuracion)
+    {
+        //https://developers.google.com/ar/develop/scene-viewer
+        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+        //string para el
+        val intentUri = createIntentUriExplicito(config)
+        sceneViewerIntent.setData(intentUri);
+        sceneViewerIntent.setPackage("com.google.ar.core");
+        startActivity(sceneViewerIntent);
+
     }
+
+    private fun createIntentUriExplicito(config:Configuracion) : Uri {
+        val intentUri = Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
+
+        //obtener estos datos del usuario
+        //SEGUIR ACÁ, ARREGLAR LAS CONSULTAS A LA BASE DE DATOS,
+        //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
+        var config:Configuracion= config
+        var voAnimalMostrar:VoAnimal = TODO()
+
+        val params = cargarParametrosDelAnimal(config, voAnimalMostrar)
+        params.forEach {
+                (key, value) -> intentUri.appendQueryParameter(key, value)
+        }
+        return intentUri.build()
+    }
+
+    private fun cargarParametrosDelAnimal(config:Configuracion, voAnimalMostrar: VoAnimal) : HashMap<String, String> {
+
+        var url1= voAnimalMostrar.obtenerObjetoAnimal()
+        var sitioOK=sitioUp(url1)
+
+        //https://developers.google.com/ar/develop/scene-viewer
+        val map = HashMap<String, String> ()
+        map["file"] = {
+            if(sitioOK)
+            {
+                url1
+            }else
+            {
+                voAnimalMostrar.obtenerObjetoBackUpAnimal()
+            }
+        }.toString()
+
+        map["mode"] = "ar_preferred"
+        if (config.esLinkActivado() == true){
+            map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()
+        }
+        //si
+        if (config.esTituloActivado()==true){
+            map["title"] = voAnimalMostrar.obtenerNombreAnimal().toString()//si
+        }
+        if (config.esSonidoActivado()==true){
+            /*
+           Una URL a una pista de audio en bucle que se sincroniza con la primera animación
+            incorporada en un archivo glTF. Se debe proporcionar junto con un glTF
+            con una animación que coincida con la longitud. Si está presente, el sonido se repite
+             una vez cargado el modelo.
+        */
+            map["sound"] = voAnimalMostrar.obtenerSonido().toString()//si ver de cargar en la bd
+        }
+
+        if (config.esRenderizadoActivado()==true){
+            map["resizable"] = config.esRenderizadoActivado().toString()// si
+        }
+        /*
+         Cuando se configura en true, los objetos ubicados en la escena
+          siempre aparecen delante de objetos reales de la escena.
+         */
+        map["disable_occlusion"] = true.toString()
+        return map
+    }
+
+    private fun sitioUp(urlValidar:String?): Boolean {
+        var estaUp= false
+        val gfgThread = Thread {
+            try {
+                val connection = URL(urlValidar).openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"
+                val responseCode = connection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    estaUp= true
+                }
+                connection.disconnect()
+            } catch (e: java.lang.Exception) {
+                println("****GET request responseCode $e")
+            }
+        }
+
+        gfgThread.start()
+
+        return estaUp
+    }
+
 }

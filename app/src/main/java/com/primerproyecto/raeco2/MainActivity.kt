@@ -155,7 +155,9 @@ class MainActivity : AppCompatActivity() {
         }.toString()
 
         map["mode"] = "ar_preferred"
-        map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()//si
+
+        map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()
+        //si
         map["title"] = voAnimalMostrar.obtenerNombreAnimal().toString()//si
         map["sound"] = voAnimalMostrar.obtenerSonido().toString()//si ver de cargar en la bd
         /*
