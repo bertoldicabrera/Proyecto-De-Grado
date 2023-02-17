@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="queryObtenerAnimalDadaRegion">select * from animales where region=</string>
+    <string name="queryObtenerAnimalDadaRegion">select * from t_animales where region=</string>
     <string name="queryObtenerLocalizacionxcoordenadas">select * from Localizacion where</string>
 
 

@@ -28,8 +28,8 @@ public class DbHelper (context: Context?) :
                     " TEXT NOT NULL," + KEY_URL+
                     " TEXT NOT NULL," + KEY_OBJ+
                     " TEXT NOT NULL," + KEY_OBJBACKUP+
-                    " TEXT NOT NULL," + KEY_REG+
-                    " INTEGER NOT NULL," + KEY_SONIDO+
+                    " TEXT NOT NULL," + KEY_LOCALIZACION+
+                    " TEXT NOT NULL," + KEY_SONIDO+
                     " TEXT NOT NULL)"
         )
 
@@ -51,18 +51,30 @@ public class DbHelper (context: Context?) :
 
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
-                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_REG, $KEY_SONIDO) VALUES ('Perro', 'Animal doméstico popular'," +
-                " 'https://example.com/perro.jpg', 'https://example.com/gobjetoPerro', 'https://example.com/gobjeto_Perro_backup', 1, 'ladrido')"
+                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_LOCALIZACION, $KEY_SONIDO) VALUES ('Perro', 'Animal doméstico popular'," +
+                " 'https://es.wikipedia.org/wiki/Canis_familiaris', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/perro.gltf', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/perro.gltf', 'montevideo', 'ladrido')"
 
         )
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_REGION, $KEY_LONGITUD,$KEY_LATITUD)"+
-                "VALUES ('América del Sur',1.0,1.0)"
+                "VALUES ('Montevideo',-34.90328,-56.188816)"
         )
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION (id_Animal_Region, id_Animal_Localizacion)"+
-        "VALUES (1, 'América del Sur')"
+        "VALUES (1, 'Montevideo')"
+        )
+//Otro animal
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
+                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_LOCALIZACION, $KEY_SONIDO) VALUES ('Vaca', 'Animal de pastoreo'," +
+                " 'https://es.wikipedia.org/wiki/Bos_taurus', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/vaca.gltf', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/vaca.gltf', 'rocha', 'muuuu')"
+
+        )
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_REGION, $KEY_LONGITUD,$KEY_LATITUD)"+
+                "VALUES ('Rocha',-34.48333,-54.3333)"
         )
 
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION (id_Animal_Region, id_Animal_Localizacion)"+
+                "VALUES (2, 'Rocha')"
+        )
 
         println("Fin Crear tablas")
 
@@ -86,7 +98,7 @@ public class DbHelper (context: Context?) :
         const val KEY_OBJBACKUP= "objetoBackUp"
         const val KEY_OBJ= "objeto"
         const val KEY_SONIDO= "sonido"
-        const val KEY_REG= "registro"
+        const val KEY_LOCALIZACION= "localizacion"
         const val TABLE_LOCALIZACIONES = "t_Localizaciones"
         const val KEY_NOMBRE_REGION= "nombreRegion"
         const val KEY_LATITUD= "latitud"
@@ -125,7 +137,7 @@ var existe=true
         contentValues.put(KEY_URL,url )
         contentValues.put(KEY_OBJBACKUP,objetoBack )
         contentValues.put(KEY_OBJ,objeto3D )
-        contentValues.put(KEY_REG,region )
+        contentValues.put(KEY_LOCALIZACION,region )
         contentValues.put(KEY_SONIDO,sonido )
 
         val success = db.insert(TABLE_ANIMALES, null, contentValues)
@@ -145,15 +157,16 @@ var existe=true
     }
 
 
+
+//Puede devolver un animal nulo, con solo la region seteada.
     fun obtenerAnimalDbHelperxRegion(region: String?): Animal {
         val animal = Animal(null,null,null,null,null, null, null)
         animal.setearRegionAnimal(region)
         val db = writableDatabase
         var index: Int
-        var consulta =R.string.queryObtenerAnimalDadaRegion
+        //var consulta =R.string.queryObtenerAnimalDadaRegion.toString()
 
-        val selectQuery = "$consulta $region ORDER BY random() \n" +
-                "LIMIT 1;"
+        val selectQuery = "select * from $TABLE_ANIMALES where $KEY_LOCALIZACION='$region' order by random() limit 1;"
         val cursor = db.rawQuery(selectQuery, null)
 
         if (cursor != null) {
@@ -162,6 +175,7 @@ var existe=true
 
                 index = cursor.getColumnIndexOrThrow(KEY_NAME)
                 animal.setearNombreAnimal(cursor.getString(index))
+                println(animal.obtenerNombreAnimal().toString()+"********** linea 178")
                 index = cursor.getColumnIndexOrThrow(KEY_DES)
                 animal.setearDescripcionAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_URL)
