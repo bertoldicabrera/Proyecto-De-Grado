@@ -6,7 +6,7 @@ class DaoLocalizaciones{
 
     private val dataBase : DbHelper = DbHelper(context = null)// ver si no es esto
 
-    fun find(latitud:Double?, longitud:Double?): String? {
+    fun find(latitud:Double?, longitud:Double?): Int {
 
         return dataBase.obtenerLocalizacion(latitud, longitud)
     }

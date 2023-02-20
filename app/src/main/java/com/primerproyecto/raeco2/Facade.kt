@@ -34,8 +34,8 @@ class Facade {
     }
     fun buscarAnimal(localizacion: VoLocalizacion): VoAnimal {
 
-     var region= obtenerRegionAnimal(localizacion)
-     var animal = animales.find(region) // ver que pasa si es null
+     var iDLocalizacion= obtenerRegionAnimal(localizacion)
+     var animal = animales.find(iDLocalizacion) // ver que pasa si es null
      var animalSalida = animalParaVoAnimal(animal)
      return animalSalida
     }
@@ -54,41 +54,39 @@ class Facade {
 }
 
 
-private fun obtenerRegionAnimal(localizacion: VoLocalizacion):String?{
+private fun obtenerRegionAnimal(localizacion: VoLocalizacion):Int{
     var latitud = localizacion.obtenerLatitud()
     var longitud =localizacion.obtenerLongitud()
-    var local :String?=null
+    var localizacionID=-1
 
     if(localizaciones.member(latitud,longitud ))
     {
-        local = localizaciones.find(latitud,longitud)
+        localizacionID = localizaciones.find(latitud,longitud)
 
     }
 
-    return local
+    return localizacionID
 }
 
 private fun animalParaVoAnimal(ani:Animal):VoAnimal{
 
-    var voAnimalSalida = VoAnimal(null,null,null,null,null, null, null)
+    var voAnimalSalida = VoAnimal(null,null,null,null,null, null)
     voAnimalSalida.setearNombreAnimal(ani.obtenerNombreAnimal() )
     voAnimalSalida.setearDescripcionAnimal(ani.obtenerDescripcionAnimal())
     voAnimalSalida.setearLinkAnimal(ani.obtenerLinkAnimal())
     voAnimalSalida.setearUrlBackUpAnimal(ani.obtenerObjetoBackUpAnimal())
     voAnimalSalida.setearObjetoAnimal(ani.obtenerObjetoAnimal())
-    voAnimalSalida.setearRegionAnimal(ani.obtenerRegionAnimal())
     voAnimalSalida.setearSonido(ani.obtenerSonido())
     return voAnimalSalida
 }
 private fun voAnimalParaAnimal(voAni:VoAnimal):Animal{
 
-    val animalSalida: Animal= Animal(null, null,null,null,null, null, null)
+    val animalSalida: Animal= Animal(null, null,null,null,null, null)
     animalSalida.setearNombreAnimal(voAni.obtenerNombreAnimal() )
     animalSalida.setearDescripcionAnimal(voAni.obtenerDescripcionAnimal())
     animalSalida.setearLinkAnimal(voAni.obtenerLinkAnimal())
     animalSalida.setearUrlBackUpAnimal(voAni.obtenerObjetoBackUpAnimal())
     animalSalida.setearObjetoAnimal(voAni.obtenerObjetoAnimal())
-    animalSalida.setearRegionAnimal(voAni.obtenerRegionAnimal())
     animalSalida.setearSonido(voAni.obtenerSonido())
     return animalSalida
 }

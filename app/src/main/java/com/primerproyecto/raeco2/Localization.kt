@@ -10,9 +10,9 @@ import android.widget.TextView
 
 public class Localization constructor(
 
-  private var nombreRegion: String? = null,
-  private var latitud: Double? = null,
-  private var longitud: Double? =null
+    private var nombreLocalizacion: String? = null,
+    private var latitud: Double? = null,
+    private var longitud: Double? =null
 ): LocationListener {
 
     var mainActivity: MainActivity? = null
@@ -20,8 +20,8 @@ public class Localization constructor(
 
 
 
-    fun obtenerNombreRegion():String?{
-        return this.nombreRegion
+    fun obtenerNombreLocalizacion():String?{
+        return this.nombreLocalizacion
     }
     fun obtenerLongitud(): Double? {
         return this.longitud
@@ -30,8 +30,8 @@ public class Localization constructor(
         return this.latitud
     }
 
-    fun setearNombreRegion(nombreRegionAnimal:String?){
-        this.nombreRegion =nombreRegionAnimal
+    fun setearNombreLocalizacion(nombreLocalizacionAnimal:String?){
+        this.nombreLocalizacion =nombreLocalizacionAnimal
     }
     fun setearLongitud(longitud:Double?){
         this.longitud =longitud

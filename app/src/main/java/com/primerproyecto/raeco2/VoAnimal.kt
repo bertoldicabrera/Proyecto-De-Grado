@@ -6,7 +6,6 @@ class VoAnimal (
     private var link:String?,
     private var objetoBackUp:String?,
     private var objeto3D:String?,
-    private var region: String?,
     private var sonido: String?
 )
 {
@@ -37,10 +36,6 @@ class VoAnimal (
         return this.objeto3D
     }
 
-    fun obtenerRegionAnimal(): String? {
-
-        return this.region
-    }
 
     fun obtenerSonido(): String? {
 
@@ -74,9 +69,6 @@ class VoAnimal (
         this.objeto3D =obj
     }
 
-    fun setearRegionAnimal(idRegion: String?) {
 
-        this.region =idRegion
-    }
 
 }

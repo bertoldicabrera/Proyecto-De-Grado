@@ -5,9 +5,9 @@ public class DaoAnimales  {
 
     private val dataBase : DbHelper = DbHelper(context = null)// ver si no es esto
 
-    fun find(localiza:String?): Animal {
+    fun find(localiza:Int): Animal {
 
-        return dataBase.obtenerAnimalDbHelperxRegion(localiza)
+        return dataBase.obtenerAnimalTablaRelacionXIdLocalizacion(localiza)
     //Retorna un animal aleatorio en base a region en que vive
 
     }

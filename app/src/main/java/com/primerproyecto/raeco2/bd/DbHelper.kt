@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.primerproyecto.raeco2.Animal
 import com.primerproyecto.raeco2.Localization
-import com.primerproyecto.raeco2.R
 
 public class DbHelper (context: Context?) :
     SQLiteOpenHelper(context,
@@ -21,6 +20,7 @@ public class DbHelper (context: Context?) :
         println("Inicio crear tablas XXXXXXXXXXXX")
 
 
+        //Tabla Animales
        sqLiteDatabase.execSQL(
             "CREATE TABLE IF NOT EXISTS " + TABLE_ANIMALES + "(" + KEY_IDANIMAL+
                     " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME+
@@ -33,20 +33,21 @@ public class DbHelper (context: Context?) :
                     " TEXT NOT NULL)"
         )
 
-
+        //tabla Localizaciones
         sqLiteDatabase.execSQL(
-            "CREATE TABLE IF NOT EXISTS " + TABLE_LOCALIZACIONES + "(" +KEY_NOMBRE_REGION+
-                    " TEXT PRIMARY KEY," + KEY_LONGITUD+
-                    " REAL NOT NULL," + KEY_LATITUD+
-                    " REAL NOT NULL)"
+            "CREATE TABLE IF NOT EXISTS " + TABLE_LOCALIZACIONES+ " ("
+                    +KEY_LOCALIZACION_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    +KEY_NOMBRE_LOCALIZACION+ " TEXT PRIMARY KEY,"
+                    + KEY_LONGITUD+ " REAL NOT NULL,"
+                    + KEY_LATITUD+ " REAL NOT NULL)"
         )
-
+        //Tabla Region (Relacion)
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_REGION " +
                 "($KEY_REGION INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "id_Animal_Region INTEGER, " +
-                "id_Animal_Localizacion TEXT, " +
-                "FOREIGN KEY (id_Animal_Region) REFERENCES $TABLE_ANIMALES($KEY_IDANIMAL), " +
-                "FOREIGN KEY (id_Animal_Localizacion) REFERENCES $TABLE_LOCALIZACIONES($KEY_NOMBRE_REGION))"
+                "$KEY_LOCALIZACION_ID_EN_REGION INTEGER, " +
+                "$KEY_ANIMAL_ID_EN_REGION TEXT, " +
+                "FOREIGN KEY ($KEY_LOCALIZACION_ID_EN_REGION) REFERENCES $TABLE_ANIMALES($KEY_IDANIMAL), " +
+                "FOREIGN KEY ($KEY_ANIMAL_ID_EN_REGION) REFERENCES $TABLE_LOCALIZACIONES($KEY_NOMBRE_LOCALIZACION))"
         )
 
 
@@ -55,7 +56,7 @@ public class DbHelper (context: Context?) :
                 " 'https://es.wikipedia.org/wiki/Canis_familiaris', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/perro.gltf', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/perro.gltf', 'montevideo', 'ladrido')"
 
         )
-        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_REGION, $KEY_LONGITUD,$KEY_LATITUD)"+
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
                 "VALUES ('Montevideo',-34.90328,-56.188816)"
         )
 
@@ -68,7 +69,7 @@ public class DbHelper (context: Context?) :
                 " 'https://es.wikipedia.org/wiki/Bos_taurus', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/vaca.gltf', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/vaca.gltf', 'rocha', 'muuuu')"
 
         )
-        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_REGION, $KEY_LONGITUD,$KEY_LATITUD)"+
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
                 "VALUES ('Rocha',-34.48333,-54.3333)"
         )
 
@@ -92,7 +93,7 @@ public class DbHelper (context: Context?) :
         private const val DATABASE_NOMBRE = "Raeco2.db"
         const val TABLE_ANIMALES = "t_animales"
         const val KEY_IDANIMAL= "id_animal"
-        const val KEY_NAME= "name"
+        const val KEY_NAME= "nombre"
         const val KEY_DES= "descripcion"
         const val KEY_URL= "url"
         const val KEY_OBJBACKUP= "objetoBackUp"
@@ -100,18 +101,22 @@ public class DbHelper (context: Context?) :
         const val KEY_SONIDO= "sonido"
         const val KEY_LOCALIZACION= "localizacion"
         const val TABLE_LOCALIZACIONES = "t_Localizaciones"
-        const val KEY_NOMBRE_REGION= "nombreRegion"
+        const val KEY_LOCALIZACION_ID= "localizacionId"
+        const val KEY_NOMBRE_LOCALIZACION= "nombreLocalizacion"
         const val KEY_LATITUD= "latitud"
         const val KEY_LONGITUD= "longitud"
         const val TABLE_REGION= "t_region"
         const val KEY_REGION= "id_region"
+        const val KEY_LOCALIZACION_ID_EN_REGION= "idLocalizacionRegion"
+        const val KEY_ANIMAL_ID_EN_REGION= "idAnimalRegion"
     }
 
+
     fun existeAnimalDbHelper(nombre: String?): Boolean {
-var existe=true
-        val TABLE_NAME =TABLE_ANIMALES
+        var existe=true
+
         val db = writableDatabase
-        val selectQuery = "Select * from $TABLE_NAME where nombre = '$nombre'"
+        val selectQuery = "Select * from $TABLE_ANIMALES where $KEY_NAME = '$nombre'"
         val cursor: Cursor = db.rawQuery(selectQuery, null)
         if (cursor.getCount() <= 0) {
             existe= false
@@ -120,53 +125,20 @@ var existe=true
         return existe
     }
 
-    private fun insertarAnimalDbHelper(animalNew:Animal):Long{
-
-        val nombre = animalNew.obtenerNombreAnimal()
-        val descripcion= animalNew.obtenerDescripcionAnimal()
-        val url= animalNew.obtenerLinkAnimal()
-        val objetoBack= animalNew.obtenerObjetoBackUpAnimal()
-        val objeto3D= animalNew.obtenerObjetoAnimal()
-        val region=animalNew.obtenerRegionAnimal()
-        val sonido=animalNew.obtenerSonido()
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        //contentValues.put(KEY_ID, emp.userId)
-        contentValues.put(KEY_NAME, nombre)
-        contentValues.put(KEY_DES,descripcion )
-        contentValues.put(KEY_URL,url )
-        contentValues.put(KEY_OBJBACKUP,objetoBack )
-        contentValues.put(KEY_OBJ,objeto3D )
-        contentValues.put(KEY_LOCALIZACION,region )
-        contentValues.put(KEY_SONIDO,sonido )
-
-        val success = db.insert(TABLE_ANIMALES, null, contentValues)
-        //2nd argument is String containing nullColumnHack(ver teorico)
-        db.close() // Closing database connection
-        return success
-    }
-   private fun eliminarAnimalDbHelper(nombre:String):Int{
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        contentValues.put(KEY_NAME, nombre) //  Id
-        // Deleting Row
-        val success = db.delete(TABLE_ANIMALES, "$KEY_NAME=$nombre",null)
-        //2nd argument is String containing nullColumnHack
-        db.close() // Closing database connection
-        return success
-    }
-
 
 
 //Puede devolver un animal nulo, con solo la region seteada.
-    fun obtenerAnimalDbHelperxRegion(region: String?): Animal {
-        val animal = Animal(null,null,null,null,null, null, null)
-        animal.setearRegionAnimal(region)
+    fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int): Animal {
+
+        val animal = Animal(null,null,null,null,null, null)
         val db = writableDatabase
         var index: Int
-        //var consulta =R.string.queryObtenerAnimalDadaRegion.toString()
 
-        val selectQuery = "select * from $TABLE_ANIMALES where $KEY_LOCALIZACION='$region' order by random() limit 1;"
+        val selectQuery="SELECT A.* FROM $TABLE_ANIMALES AS A INNER JOIN $TABLE_REGION AS R "+
+                        "ON R.$KEY_LOCALIZACION_ID_EN_REGION=$idLocalizacion AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL" +
+                        " order by random() limit 1;"
+//Suponiendo que trae un animal
+
         val cursor = db.rawQuery(selectQuery, null)
 
         if (cursor != null) {
@@ -175,7 +147,6 @@ var existe=true
 
                 index = cursor.getColumnIndexOrThrow(KEY_NAME)
                 animal.setearNombreAnimal(cursor.getString(index))
-                println(animal.obtenerNombreAnimal().toString()+"********** linea 178")
                 index = cursor.getColumnIndexOrThrow(KEY_DES)
                 animal.setearDescripcionAnimal(cursor.getString(index))
                 index = cursor.getColumnIndexOrThrow(KEY_URL)
@@ -192,24 +163,25 @@ var existe=true
         return animal
     }
 
-    fun obtenerLocalizacion(latitud:Double?, longitud:Double?): String? {
-        var localizacion =""
+    //Devuelve -1 Si no encuentra la Localizacion
+    fun obtenerLocalizacion(latitud:Double?, longitud:Double?): Int {
+        var IdLocalizacion =-1
         val db = writableDatabase
         var index: Int
         //falta acá
-        val consulta =R.string.queryObtenerLocalizacionxcoordenadas
-        val selectQuery = "$consulta $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
+        val selectQuery ="select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
+
         val cursor = db.rawQuery(selectQuery, null)
         if (cursor != null) {
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
-                index = cursor.getColumnIndexOrThrow(KEY_NOMBRE_REGION)
-                localizacion= cursor.getString(index)
+                index = cursor.getColumnIndexOrThrow(KEY_LOCALIZACION_ID)
+                IdLocalizacion= cursor.getInt(index)
             }
         }
         cursor.close()
 
-        return localizacion
+        return IdLocalizacion
     }
 
     fun existeLocalizacion(latitud: Double?, longitud: Double?): Boolean {
@@ -225,16 +197,19 @@ var existe=true
         return existe
     }
 
+
+    ///Para abajo no se usan....
+
    private fun insertarLocalizacion(localizacion: Localization):Long {
 
-        val nombre = localizacion.obtenerNombreRegion()
+        val nombre = localizacion.obtenerNombreLocalizacion()
         val latitud= localizacion.obtenerLatitud()
         val longitud= localizacion.obtenerLongitud()
 
         val db = this.writableDatabase
         val contentValues = ContentValues()
 
-        contentValues.put(KEY_NOMBRE_REGION, nombre)
+        contentValues.put(KEY_NOMBRE_LOCALIZACION, nombre)
         contentValues.put(KEY_LATITUD,latitud )
         contentValues.put(KEY_LONGITUD,longitud )
 
@@ -261,6 +236,55 @@ var existe=true
          0 en caso contrario. Para eliminar todas las filas y obtener un recuento,
          pase "1" como cláusula where.
          */
+    }
+
+    private fun insertarAnimalDbHelper(animalNew:Animal):Long{
+
+        val nombre = animalNew.obtenerNombreAnimal()
+        val descripcion= animalNew.obtenerDescripcionAnimal()
+        val url= animalNew.obtenerLinkAnimal()
+        val objetoBack= animalNew.obtenerObjetoBackUpAnimal()
+        val objeto3D= animalNew.obtenerObjetoAnimal()
+        val sonido=animalNew.obtenerSonido()
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        //contentValues.put(KEY_ID, emp.userId)
+        contentValues.put(KEY_NAME, nombre)
+        contentValues.put(KEY_DES,descripcion )
+        contentValues.put(KEY_URL,url )
+        contentValues.put(KEY_OBJBACKUP,objetoBack )
+        contentValues.put(KEY_OBJ,objeto3D )
+        contentValues.put(KEY_SONIDO,sonido )
+
+        val success = db.insert(TABLE_ANIMALES, null, contentValues)
+        //2nd argument is String containing nullColumnHack(ver teorico)
+        db.close() // Closing database connection
+        return success
+    }
+    private fun eliminarAnimalDbHelper(nombre:String):Int{
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(KEY_NAME, nombre) //  Id
+        // Deleting Row
+        val success = db.delete(TABLE_ANIMALES, "$KEY_NAME=$nombre",null)
+        //2nd argument is String containing nullColumnHack
+        db.close() // Closing database connection
+        return success
+    }
+
+    private fun insertarRegion(idLocalizacion:Int,idAnimal:Int):Long {
+
+
+
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+
+        contentValues.put(KEY_LOCALIZACION_ID_EN_REGION,idLocalizacion )
+        contentValues.put(KEY_ANIMAL_ID_EN_REGION,idAnimal )
+        val success = db.insert(TABLE_REGION, null, contentValues)
+
+        db.close() // Closing database connection
+        return success //el ID de fila de la fila recién insertada, o -1 si ocurrió un error
     }
 
 

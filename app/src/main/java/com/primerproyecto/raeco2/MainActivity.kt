@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         config = Configuracion(true,false,true,true)
         localizacion = Localization ( "cuba", 1.0, 2.0 )
 
-        message?.text =localizacion!!.obtenerNombreRegion()+" "+localizacion!!.obtenerLatitud()+" "+localizacion!!.obtenerLongitud()
+        message?.text =localizacion!!.obtenerNombreLocalizacion()+" "+localizacion!!.obtenerLatitud()+" "+localizacion!!.obtenerLongitud()
 
         simple_btn = findViewById(R.id.button)
         simple_btn?.setOnClickListener {

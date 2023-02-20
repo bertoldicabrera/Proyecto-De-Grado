@@ -7,7 +7,6 @@ public class Animal(
     private var link:String?,
     private var objetoBackUp:String?,
     private var objeto3D:String?,
-    private var region: String?,
     private var sonido: String?
 )
 {
@@ -38,10 +37,7 @@ public class Animal(
         return this.objeto3D
     }
 
-    fun obtenerRegionAnimal(): String? {
 
-        return this.region
-    }
 
     fun obtenerSonido(): String? {
 
@@ -75,9 +71,6 @@ public class Animal(
         this.objeto3D =obj
     }
 
-    fun setearRegionAnimal(idRegion: String?) {
 
-        this.region =idRegion
-    }
 
 }
