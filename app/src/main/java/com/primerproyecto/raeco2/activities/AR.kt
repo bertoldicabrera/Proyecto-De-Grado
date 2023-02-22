@@ -1,14 +1,23 @@
 package com.primerproyecto.raeco2.activities
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.widget.Button
 import android.widget.Switch
-import com.primerproyecto.raeco2.Configuracion
-import com.primerproyecto.raeco2.R
-import com.primerproyecto.raeco2.VoAnimal
+import androidx.annotation.NonNull
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.primerproyecto.raeco2.*
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -21,9 +30,16 @@ class AR : AppCompatActivity() {
     private var sonido: Boolean? = null
     private var ar_btn : Button? = null;
     private var atras_btn : Button? = null;
+    private val  TAGGPS = "UBICACION GPS"
+
+    private val REQUEST_LOCATION_PERMISSION = 1
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ar)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        solicitarUbicacionGPS(fusedLocationClient,REQUEST_LOCATION_PERMISSION)
 
 
  // Obtener una referencia al objeto Switch desde la vista
@@ -153,4 +169,35 @@ class AR : AppCompatActivity() {
         return estaUp
     }
 
-}
+
+    private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient,REQUEST_LOCATION_PERMISSION:Int){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // Permiso concedido, puedes acceder a la ubicación
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        // Usa la ubicación del usuario
+                        val latitude = location.latitude
+                        val longitude = location.longitude
+                        Log.d(TAGGPS, "Latitud: ${location.latitude}, Longitud: ${location.longitude}")
+
+
+                        // Aca se deberia escupir una region  ...
+                    }
+                }
+        } else {
+            // El permiso no ha sido concedido, solicita permiso al usuario
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION_PERMISSION)
+        }
+
+
+    }
+
+
+
+    }
+
+

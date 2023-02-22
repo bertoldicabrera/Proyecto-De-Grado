@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
         message = findViewById(R.id.menssage)
         message?.text = "xxxxxxxxxxxxxxxx" //Carga este dato en la pantalla
         permisosIniciarLocalizacion()
-        animal= Animal ("Pepito","desc","link","objbk","obj3d","region", "sonido")
-        voAnimal =VoAnimal("Pepito","desc","link","objbk","obj3d","region", "sonido")
+       // animal= Animal ("Pepito","desc","link","objbk","obj3d","region", "sonido")
+       // voAnimal =VoAnimal("Pepito","desc","link","objbk","obj3d","region", "sonido")
         config = Configuracion(true,false,true,true)
         localizacion = Localization ( "cuba", 1.0, 2.0 )
 
