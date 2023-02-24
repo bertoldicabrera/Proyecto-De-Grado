@@ -184,6 +184,7 @@ public class DbHelper (context: Context?) :
         return IdLocalizacion
     }
 
+    //Creo no es necesario
     fun esCercanoALocalizacion(latitud: Double?, longitud: Double?): Boolean {
         var existe= true
         val db = writableDatabase

@@ -9,17 +9,41 @@ class DaoLocalizaciones{
 
     fun find(latitud:Double?, longitud:Double?): Int {
 
-        return dataBase.obtenerLocalizacion(latitud, longitud)
+        val miLista: MutableList<Any> = calcularDistancia(latitud,longitud )
+        var localizacioMasCercana:Location= miLista[0] as Location//TipoLocation
+
+        return dataBase.obtenerLocalizacion(localizacioMasCercana.latitude, localizacioMasCercana.longitude)
     }
 
-    // seguir aca
-    fun calcularDistancia(latitud: Double,longitud: Double ): Float {
+    fun esCercano10KMDeUmPunto (latitud:Double?, longitud:Double?): Boolean{
+
+        val miLista: MutableList<Any> = calcularDistancia(latitud,longitud )
+
+        var distanciaMetros: Float =miLista[1] as Float
+        return distanciaMetros<10000.0f
+    }
+
+
+    private fun findAll(): MutableList<Localization> {
+
+        return dataBase.devolverLocalizacionesBd()
+    }
+
+
+    private fun calcularDistancia(latitud: Double?,longitud: Double? ): MutableList<Any> {
 
         val localizacion1 = Location("Fernando")
-        localizacion1.latitude=latitud
-        localizacion1.longitude=longitud
+        if (latitud != null) {
+            localizacion1.latitude=latitud
+        }
+        if (longitud != null) {
+            localizacion1.longitude=longitud
+        }
         var distanceMinima=Float.MAX_VALUE//10
-        val listaLocalizaciones= findAll()
+        var localizacioDevolver= Location("Salida")
+        val devolverPar: MutableList<Any> = mutableListOf(localizacioDevolver, distanceMinima)
+
+        val listaLocalizaciones= findAll()// Se trae todas las localizaciones
 
         for (elemento in listaLocalizaciones) {
 
@@ -27,41 +51,18 @@ class DaoLocalizaciones{
             localizacion2.latitude= elemento.obtenerLatitud()!!
             localizacion2.longitude= elemento.obtenerLongitud()!!
 
-           var distanceFinal = localizacion1.distanceTo(localizacion2)
-            if(distanceFinal<distanceMinima)//0<10
+            var distanciaElemento = localizacion1.distanceTo(localizacion2)
+
+            if(distanciaElemento<distanceMinima)//0<10
             {
-                distanceMinima<distanceFinal
+                distanceMinima=distanciaElemento
+                localizacioDevolver.latitude=localizacion2.latitude
+                localizacioDevolver.longitude=localizacion2.longitude
+                devolverPar[0]=localizacioDevolver
+                devolverPar[1]=distanciaElemento
             }
         }
-        return distanceMinima
-    }
-
-/*
-        val location1 = Location("Localizacio1 Seba")
-        location1.latitude = latitud // -34.886360 location.latitude //latitud
-        location1.longitude = longitud //-56.147075 location.longitude //longitud
-
-        //asume que viene de la base de datos
-        val location2 = Location("Casa Fernando 2")
-        location2.latitude = -34.902355 //latitud
-        location2.longitude =-56.187859 //longitud
-
-        val distance = location1.distanceTo(location2)
-        println("****Localización 67, Coordena 1 ${location1.longitude} y ${location1.latitude}")
-        println("****Localización 68, Coordena 2 ${location2.longitude} y ${location2.latitude}")
-        println("****$distance en metros dentro de calcularDistancia")
-        //busco en la base de datos y me traigo el mas cercano a la longitud y latitud.
-*/
-
-   private fun findAll(): MutableList<Localization> {
-
-        return dataBase.devolverLocalizacionesBd()
-    }
-
-
-    fun esCercano10KMDeUmPunto (latitud:Double?, longitud:Double?): Boolean{
-
-        return dataBase.esCercanoALocalizacion(latitud,longitud )
+        return devolverPar
     }
     fun insert (localizacion: Localization){
 
