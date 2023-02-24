@@ -170,6 +170,7 @@ class AR : AppCompatActivity() {
     }
 
 
+    //devolver region
     private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient,REQUEST_LOCATION_PERMISSION:Int){
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -178,9 +179,11 @@ class AR : AppCompatActivity() {
                 .addOnSuccessListener { location: Location? ->
                     if (location != null) {
                         // Usa la ubicación del usuario
-                        val latitude = location.latitude
-                        val longitude = location.longitude
+                        var latitude = location.latitude
+                        var longitude = location.longitude
                         Log.d(TAGGPS, "Latitud: ${location.latitude}, Longitud: ${location.longitude}")
+
+                    //calculo de gps
 
 
                         // Aca se deberia escupir una region  ...

@@ -57,11 +57,11 @@ public class DbHelper (context: Context?) :
 
         )
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
-                "VALUES ('Montevideo',-34.90328,-56.188816)"
+                "VALUES ('Fernando',-34.902355,-56.187859)"
         )
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION (id_Animal_Region, id_Animal_Localizacion)"+
-        "VALUES (1, 'Montevideo')"
+        "VALUES (1, 'Fernando')"
         )
 //Otro animal
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
@@ -70,11 +70,11 @@ public class DbHelper (context: Context?) :
 
         )
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
-                "VALUES ('Rocha',-34.48333,-54.3333)"
+                "VALUES ('Sebastian',-34.886360,-56.147075)"
         )
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION (id_Animal_Region, id_Animal_Localizacion)"+
-                "VALUES (2, 'Rocha')"
+                "VALUES (2, 'Sebastian')"
         )
 
         println("Fin Crear tablas")
@@ -184,7 +184,7 @@ public class DbHelper (context: Context?) :
         return IdLocalizacion
     }
 
-    fun existeLocalizacion(latitud: Double?, longitud: Double?): Boolean {
+    fun esCercanoALocalizacion(latitud: Double?, longitud: Double?): Boolean {
         var existe= true
         val db = writableDatabase
         val selectQuery = "Select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
@@ -195,6 +195,33 @@ public class DbHelper (context: Context?) :
         }
         cursor.close()
         return existe
+    }
+
+    fun devolverLocalizacionesBd(): MutableList<Localization> {
+
+
+        val listaLocalizacionesSalida = mutableListOf<Localization>()
+        var index: Int
+        val db = writableDatabase
+        val selectQuery = "Select * from $TABLE_LOCALIZACIONES"
+
+        val cursor = db.rawQuery(selectQuery, null)
+
+        if (cursor != null) {
+            cursor.moveToFirst()
+            while (cursor.moveToNext()) {
+                var localizacionSalida:Localization= Localization()
+                index = cursor.getColumnIndexOrThrow(KEY_NOMBRE_LOCALIZACION)
+                localizacionSalida.setearNombreLocalizacion(cursor.getString(index))
+                index = cursor.getColumnIndexOrThrow(KEY_LATITUD)
+                localizacionSalida.setearLatitud(cursor.getDouble(index))
+                index = cursor.getColumnIndexOrThrow(KEY_LONGITUD)
+                localizacionSalida.setearLongitud(cursor.getDouble(index))
+                listaLocalizacionesSalida.add(localizacionSalida)
+            }
+            cursor.close()
+        }
+        return listaLocalizacionesSalida
     }
 
 

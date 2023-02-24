@@ -59,7 +59,7 @@ private fun obtenerRegionAnimal(localizacion: VoLocalizacion):Int{
     var longitud =localizacion.obtenerLongitud()
     var localizacionID=-1
 
-    if(localizaciones.member(latitud,longitud ))
+    if(localizaciones.esCercano10KMDeUmPunto(latitud,longitud ))
     {
         localizacionID = localizaciones.find(latitud,longitud)
 

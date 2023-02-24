@@ -46,23 +46,24 @@ public class Localization constructor(
         this.menssage = menssage
     }
 
+
+
     override fun onLocationChanged(location: Location) {
         // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
         setearLongitud(location.longitude)
         setearLatitud(location.longitude)
-        println("****Localización 58, Coordena recibida")
 
-        /*
-        val text = """
-        Mi ubicacion actual es:
-              Latitud = ${obtenerLatitud()}
-              Longitud = ${obtenerLongitud()}
-              """.trimIndent()
-        menssage?.text = text
-        println(text)
-         */
+   // var salidaDisyancia=calcularDistancia(location.longitude, location.longitude)
+
+
+
+      //  println("****$salidaDisyancia  metros dentro de OnLocationChanged")
+
 
     }
+
+
+
 
     //Es necesaria esta funcion ?
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
