@@ -31,6 +31,7 @@ class AR : AppCompatActivity() {
     private var ar_btn : Button? = null;
     private var atras_btn : Button? = null;
     private val  TAGGPS = "UBICACION GPS"
+    private val fachada:Facade = Facade()
 
     private val REQUEST_LOCATION_PERMISSION = 1
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -39,7 +40,8 @@ class AR : AppCompatActivity() {
         setContentView(R.layout.activity_ar)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        solicitarUbicacionGPS(fusedLocationClient,REQUEST_LOCATION_PERMISSION)
+        var voAni: VoAnimal= solicitarUbicacionGPS(fusedLocationClient,REQUEST_LOCATION_PERMISSION)
+
 
 
  // Obtener una referencia al objeto Switch desde la vista
@@ -64,7 +66,7 @@ class AR : AppCompatActivity() {
 
         ar_btn = findViewById(R.id.button2)
         ar_btn?.setOnClickListener {
-            crearAnimal3dExplicito(con)
+            crearAnimal3dExplicito(con, voAni)
         }
         atras_btn = findViewById(R.id.button3)
         atras_btn?.setOnClickListener {
@@ -74,26 +76,24 @@ class AR : AppCompatActivity() {
 
         }
 
-    private fun crearAnimal3dExplicito(config:Configuracion)
+    private fun crearAnimal3dExplicito(config:Configuracion, voAni:VoAnimal)
     {
         //https://developers.google.com/ar/develop/scene-viewer
         val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
         //string para el
-        val intentUri = createIntentUriExplicito(config)
+        val intentUri = createIntentUriExplicito(config, voAni)
         sceneViewerIntent.setData(intentUri);
         sceneViewerIntent.setPackage("com.google.ar.core");
         startActivity(sceneViewerIntent);
 
     }
 
-    private fun createIntentUriExplicito(config:Configuracion) : Uri {
+    private fun createIntentUriExplicito(config:Configuracion, voAnimalMostrar:VoAnimal) : Uri {
         val intentUri = Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
 
         //obtener estos datos del usuario
         //SEGUIR ACÁ, ARREGLAR LAS CONSULTAS A LA BASE DE DATOS,
         //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
-        var config:Configuracion= config
-        var voAnimalMostrar:VoAnimal = TODO()
 
         val params = cargarParametrosDelAnimal(config, voAnimalMostrar)
         params.forEach {
@@ -171,7 +171,9 @@ class AR : AppCompatActivity() {
 
 
     //devolver region
-    private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient,REQUEST_LOCATION_PERMISSION:Int){
+    //Devulve un animal en null si no anda bien
+    private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient,REQUEST_LOCATION_PERMISSION:Int): VoAnimal {
+        var voAni: VoAnimal=  VoAnimal(null,null,null,null,null,null)
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // Permiso concedido, puedes acceder a la ubicación
@@ -182,11 +184,11 @@ class AR : AppCompatActivity() {
                         var latitude = location.latitude
                         var longitude = location.longitude
                         Log.d(TAGGPS, "Latitud: ${location.latitude}, Longitud: ${location.longitude}")
+                     //Llugar con fachada   esCercano10KMDeUmPunto()
 
-                    //calculo de gps
+                        var voLoc: VoLocalizacion= VoLocalizacion(latitude,longitude )
+                       voAni= fachada.buscarAnimal(voLoc)
 
-
-                        // Aca se deberia escupir una region  ...
                     }
                 }
         } else {
@@ -196,6 +198,7 @@ class AR : AppCompatActivity() {
                 REQUEST_LOCATION_PERMISSION)
         }
 
+                            return voAni
 
     }
 

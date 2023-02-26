@@ -15,6 +15,7 @@ class DaoLocalizaciones{
         return dataBase.obtenerLocalizacion(localizacioMasCercana.latitude, localizacioMasCercana.longitude)
     }
 
+
     fun esCercano10KMDeUmPunto (latitud:Double?, longitud:Double?): Boolean{
 
         val miLista: MutableList<Any> = calcularDistancia(latitud,longitud )
@@ -39,6 +40,7 @@ class DaoLocalizaciones{
         if (longitud != null) {
             localizacion1.longitude=longitud
         }
+
         var distanceMinima=Float.MAX_VALUE//10
         var localizacioDevolver= Location("Salida")
         val devolverPar: MutableList<Any> = mutableListOf(localizacioDevolver, distanceMinima)

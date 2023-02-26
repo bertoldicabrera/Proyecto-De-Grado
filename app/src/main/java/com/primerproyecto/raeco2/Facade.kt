@@ -54,11 +54,12 @@ class Facade {
 }
 
 
+//si no es cercana a 10km devulve -1
 private fun obtenerRegionAnimal(localizacion: VoLocalizacion):Int{
     var latitud = localizacion.obtenerLatitud()
     var longitud =localizacion.obtenerLongitud()
     var localizacionID=-1
-
+//Devulve tru si es cercano a 10km
     if(localizaciones.esCercano10KMDeUmPunto(latitud,longitud ))
     {
         localizacionID = localizaciones.find(latitud,longitud)
