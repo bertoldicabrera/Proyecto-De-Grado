@@ -28,7 +28,6 @@ public class DbHelper (context: Context?) :
                     " TEXT NOT NULL," + KEY_URL+
                     " TEXT NOT NULL," + KEY_OBJ+
                     " TEXT NOT NULL," + KEY_OBJBACKUP+
-                    " TEXT NOT NULL," + KEY_LOCALIZACION+
                     " TEXT NOT NULL," + KEY_SONIDO+
                     " TEXT NOT NULL)"
         )
@@ -37,7 +36,7 @@ public class DbHelper (context: Context?) :
         sqLiteDatabase.execSQL(
             "CREATE TABLE IF NOT EXISTS " + TABLE_LOCALIZACIONES+ " ("
                     +KEY_LOCALIZACION_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    +KEY_NOMBRE_LOCALIZACION+ " TEXT PRIMARY KEY,"
+                    +KEY_NOMBRE_LOCALIZACION+ " TEXT,"
                     + KEY_LONGITUD+ " REAL NOT NULL,"
                     + KEY_LATITUD+ " REAL NOT NULL)"
         )
@@ -45,36 +44,36 @@ public class DbHelper (context: Context?) :
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_REGION " +
                 "($KEY_REGION INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$KEY_LOCALIZACION_ID_EN_REGION INTEGER, " +
-                "$KEY_ANIMAL_ID_EN_REGION TEXT, " +
-                "FOREIGN KEY ($KEY_LOCALIZACION_ID_EN_REGION) REFERENCES $TABLE_ANIMALES($KEY_IDANIMAL), " +
-                "FOREIGN KEY ($KEY_ANIMAL_ID_EN_REGION) REFERENCES $TABLE_LOCALIZACIONES($KEY_NOMBRE_LOCALIZACION))"
+                "$KEY_ANIMAL_ID_EN_REGION INTEGER, " +
+                "FOREIGN KEY ($KEY_ANIMAL_ID_EN_REGION) REFERENCES $TABLE_ANIMALES($KEY_IDANIMAL), " +
+                "FOREIGN KEY ($KEY_LOCALIZACION_ID_EN_REGION) REFERENCES $TABLE_LOCALIZACIONES($KEY_LOCALIZACION_ID))"
         )
 
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
-                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_LOCALIZACION, $KEY_SONIDO) VALUES ('Perro', 'Animal doméstico popular'," +
-                " 'https://es.wikipedia.org/wiki/Canis_familiaris', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/perro.gltf', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/perro.gltf', 'montevideo', 'ladrido')"
+                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('Perro', 'Animal doméstico popular'," +
+                " 'https://es.wikipedia.org/wiki/Canis_familiaris', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Perro/perro.gltf', 'https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/perro.gltf', 'ladrido')"
 
         )
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
                 "VALUES ('Fernando',-34.902355,-56.187859)"
         )
 
-        sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION (id_Animal_Region, id_Animal_Localizacion)"+
-        "VALUES (1, 'Fernando')"
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION ($KEY_LOCALIZACION_ID_EN_REGION, $KEY_ANIMAL_ID_EN_REGION)"+
+        "VALUES (1, 1)"
         )
 //Otro animal
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
-                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_LOCALIZACION, $KEY_SONIDO) VALUES ('Vaca', 'Animal de pastoreo'," +
-                " 'https://es.wikipedia.org/wiki/Bos_taurus', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/vaca.gltf', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/vaca.gltf', 'rocha', 'muuuu')"
+                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('Vaca', 'Animal de pastoreo'," +
+                " 'https://es.wikipedia.org/wiki/Bos_taurus', 'https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Vaca/vaca.gltf', 'https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/vaca.gltf',  'muuuu')"
 
         )
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
                 "VALUES ('Sebastian',-34.886360,-56.147075)"
         )
 
-        sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION (id_Animal_Region, id_Animal_Localizacion)"+
-                "VALUES (2, 'Sebastian')"
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION ($KEY_LOCALIZACION_ID_EN_REGION, $KEY_ANIMAL_ID_EN_REGION)"+
+                "VALUES (2, 2)"
         )
 
         println("Fin Crear tablas")
