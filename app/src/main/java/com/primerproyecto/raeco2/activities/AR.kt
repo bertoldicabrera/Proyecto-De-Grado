@@ -41,7 +41,7 @@ class AR : AppCompatActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         var voAni: VoAnimal= solicitarUbicacionGPS(fusedLocationClient,REQUEST_LOCATION_PERMISSION)
-
+        Log.d("Creo VO Animal X ubicacion", "${voAni.obtenerNombreAnimal()}")
 
 
  // Obtener una referencia al objeto Switch desde la vista
@@ -187,8 +187,9 @@ class AR : AppCompatActivity() {
                      //Llugar con fachada   esCercano10KMDeUmPunto()
 
                         var voLoc: VoLocalizacion= VoLocalizacion(latitude,longitude )
-                       voAni= fachada.buscarAnimal(voLoc)
-
+                        Log.d("Carga VoLocalizacion", "${voLoc.obtenerLatitud()}")
+                         voAni= fachada.buscarAnimal(voLoc)
+                        Log.d("Carga VoAnimal", "${voAni.obtenerNombreAnimal()}")
                     }
                 }
         } else {
@@ -196,6 +197,7 @@ class AR : AppCompatActivity() {
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_LOCATION_PERMISSION)
+            Log.d("Localizacion Fallo","se le vuelven a pedir permisos al usuario")
         }
 
                             return voAni

@@ -1,6 +1,8 @@
 package com.primerproyecto.raeco2
 
+import android.annotation.SuppressLint
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import com.primerproyecto.raeco2.bd.DaoAnimales
 import com.primerproyecto.raeco2.bd.DaoLocalizaciones
 import com.primerproyecto.raeco2.bd.DbHelper
@@ -32,10 +34,14 @@ class Facade {
         }
 
     }
+    @SuppressLint("SuspiciousIndentation")
     fun buscarAnimal(localizacion: VoLocalizacion): VoAnimal {
+        Log.d("BuscarAnimal-Fachada", "37")
 
-     var iDLocalizacion= obtenerRegionAnimal(localizacion)
+        var iDLocalizacion= obtenerRegionAnimal(localizacion)
+        Log.d("BuscarAnimal-Fachada IdLocalizacion", "${iDLocalizacion}")
      var animal = animales.find(iDLocalizacion) // ver que pasa si es null
+        Log.d("BuscarAnimal-Fachada obtuveAnimal", "${animal.obtenerNombreAnimal()}" )
      var animalSalida = animalParaVoAnimal(animal)
      return animalSalida
     }
@@ -59,9 +65,11 @@ private fun obtenerRegionAnimal(localizacion: VoLocalizacion):Int{
     var latitud = localizacion.obtenerLatitud()
     var longitud =localizacion.obtenerLongitud()
     var localizacionID=-1
+    Log.d("obtenerRegionAnimal","Cargo variables")
 //Devulve tru si es cercano a 10km
     if(localizaciones.esCercano10KMDeUmPunto(latitud,longitud ))
     {
+        Log.d("ObtemerRegionAnimal","EntroesCercano10km")
         localizacionID = localizaciones.find(latitud,longitud)
 
     }

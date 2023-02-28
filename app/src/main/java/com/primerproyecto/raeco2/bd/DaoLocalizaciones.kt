@@ -1,6 +1,7 @@
 package com.primerproyecto.raeco2.bd
 
 import android.location.Location
+import android.util.Log
 import com.primerproyecto.raeco2.Localization
 
 class DaoLocalizaciones{
@@ -18,7 +19,7 @@ class DaoLocalizaciones{
 
     fun esCercano10KMDeUmPunto (latitud:Double?, longitud:Double?): Boolean{
 
-        val miLista: MutableList<Any> = calcularDistancia(latitud,longitud )
+        var miLista: MutableList<Any> = calcularDistancia(latitud,longitud )
 
         var distanciaMetros: Float =miLista[1] as Float
         return distanciaMetros<10000.0f
@@ -43,13 +44,13 @@ class DaoLocalizaciones{
 
         var distanceMinima=Float.MAX_VALUE//10
         var localizacioDevolver= Location("Salida")
-        val devolverPar: MutableList<Any> = mutableListOf(localizacioDevolver, distanceMinima)
-
-        val listaLocalizaciones= findAll()// Se trae todas las localizaciones
-
+        var devolverPar: MutableList<Any> = mutableListOf(localizacioDevolver, distanceMinima)
+         Log.d("calcularDistancia -DaoLocalizaciones","48")
+        var listaLocalizaciones= findAll()// Se trae todas las localizaciones
+        Log.d("calcularDistancia -DaoLocalizaciones -50","${listaLocalizaciones.size}")
         for (elemento in listaLocalizaciones) {
 
-            val localizacion2 = Location("Sebastian")
+            var localizacion2 = Location("Sebastian")
             localizacion2.latitude= elemento.obtenerLatitud()!!
             localizacion2.longitude= elemento.obtenerLongitud()!!
 

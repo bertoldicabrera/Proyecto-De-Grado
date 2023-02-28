@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.primerproyecto.raeco2.Animal
 import com.primerproyecto.raeco2.Localization
 
@@ -16,7 +17,6 @@ public class DbHelper (context: Context?) :
 
 
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
-
         println("Inicio crear tablas XXXXXXXXXXXX")
 
 
@@ -114,7 +114,7 @@ public class DbHelper (context: Context?) :
     fun existeAnimalDbHelper(nombre: String?): Boolean {
         var existe=true
 
-        val db = writableDatabase
+        val db = this.writableDatabase
         val selectQuery = "Select * from $TABLE_ANIMALES where $KEY_NAME = '$nombre'"
         val cursor: Cursor = db.rawQuery(selectQuery, null)
         if (cursor.getCount() <= 0) {
@@ -130,7 +130,7 @@ public class DbHelper (context: Context?) :
     fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int): Animal {
 
         val animal = Animal(null,null,null,null,null, null)
-        val db = writableDatabase
+        val db = this.writableDatabase
         var index: Int
 
         val selectQuery="SELECT A.* FROM $TABLE_ANIMALES AS A INNER JOIN $TABLE_REGION AS R "+
@@ -159,13 +159,14 @@ public class DbHelper (context: Context?) :
             }
         }
         cursor.close()
+         Log.d("DBHelper BuscoAnimal", "${animal.obtenerNombreAnimal()}")
         return animal
     }
 
     //Devuelve -1 Si no encuentra la Localizacion
     fun obtenerLocalizacion(latitud:Double?, longitud:Double?): Int {
         var IdLocalizacion =-1
-        val db = writableDatabase
+        val db = this.writableDatabase
         var index: Int
         //falta acá
         val selectQuery ="select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
@@ -186,7 +187,7 @@ public class DbHelper (context: Context?) :
     //Creo no es necesario
     fun esCercanoALocalizacion(latitud: Double?, longitud: Double?): Boolean {
         var existe= true
-        val db = writableDatabase
+        val db = this.writableDatabase
         val selectQuery = "Select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
 
         val cursor: Cursor = db.rawQuery(selectQuery, null)
@@ -199,14 +200,17 @@ public class DbHelper (context: Context?) :
 
     fun devolverLocalizacionesBd(): MutableList<Localization> {
 
-
+        Log.d("DBHelper-devolverLocalizaiones 204","Entro")
         val listaLocalizacionesSalida = mutableListOf<Localization>()
-        var index: Int
-        val db = writableDatabase
-        val selectQuery = "Select * from $TABLE_LOCALIZACIONES"
-
-        val cursor = db.rawQuery(selectQuery, null)
-
+        Log.d("DBHelper-devolverLocalizaiones 206","${listaLocalizacionesSalida.size}")
+        var index: Int =0;
+        val db = this.writableDatabase
+        Log.d("devolverlocalizaciones -209","$db")
+        var selectQuery = "SELECT * FROM " + "$TABLE_LOCALIZACIONES"
+        Log.d("DBHelper-devolverLocalizaiones 209","$selectQuery")
+        //var cursor = db.rawQuery(selectQuery, null)
+        var cursor = db.rawQuery("SELECT * FROM t_Localizaciones", null)
+         Log.d("DBHelper-devolverLocalizaiones 211","${ cursor.count}")
         if (cursor != null) {
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
@@ -221,6 +225,8 @@ public class DbHelper (context: Context?) :
             }
             cursor.close()
         }
+        Log.d("DBHelper-devolverLocalizaiones 226","${ listaLocalizacionesSalida.size}")
+
         return listaLocalizacionesSalida
     }
 
