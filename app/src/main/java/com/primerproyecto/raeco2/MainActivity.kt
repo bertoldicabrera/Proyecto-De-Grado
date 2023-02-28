@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private var btn_Crear : Button? = null;
     private var simple_btn : Button? = null;
     private var bienvenida : Button? = null;
-    private var facade: Facade =Facade()
+    private var facade: Facade =Facade(this@MainActivity)
     private var animal: Animal? = null
     private var voAnimal: VoAnimal? = null
     private var config: Configuracion? = null
@@ -51,8 +51,8 @@ class MainActivity : AppCompatActivity() {
 
         simple_btn = findViewById(R.id.button)
         simple_btn?.setOnClickListener {
-            crearAnimal3dImplisito()
-            //crearAnimal3DExplisito() //llamar a este cuando terminemos
+           // crearAnimal3dImplisito()
+          //  crearAnimal3dExplisito() //llamar a este cuando terminemos
         }
 
         btn_Crear = findViewById(R.id.btnCrear)

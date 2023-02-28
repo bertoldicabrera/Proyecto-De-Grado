@@ -7,10 +7,13 @@ import com.primerproyecto.raeco2.bd.DaoAnimales
 import com.primerproyecto.raeco2.bd.DaoLocalizaciones
 import com.primerproyecto.raeco2.bd.DbHelper
 
-private val animales : DaoAnimales = DaoAnimales() //Ver si va así
-private val localizaciones : DaoLocalizaciones = DaoLocalizaciones() //Ver si va así
 
-class Facade {
+
+class Facade (context: MainActivity){
+
+    private val animales : DaoAnimales = DaoAnimales(context) //Ver si va así
+     private val localizaciones = DaoLocalizaciones(context) //Ver si va así
+
     fun agregarAnimal(voNuevoAnimal: VoAnimal) {
 
         if(!animales.member(voNuevoAnimal.obtenerNombreAnimal()))
@@ -67,6 +70,7 @@ private fun obtenerRegionAnimal(localizacion: VoLocalizacion):Int{
     var localizacionID=-1
     Log.d("obtenerRegionAnimal","Cargo variables")
 //Devulve tru si es cercano a 10km
+
     if(localizaciones.esCercano10KMDeUmPunto(latitud,longitud ))
     {
         Log.d("ObtemerRegionAnimal","EntroesCercano10km")

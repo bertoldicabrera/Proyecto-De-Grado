@@ -3,10 +3,11 @@ package com.primerproyecto.raeco2.bd
 import android.location.Location
 import android.util.Log
 import com.primerproyecto.raeco2.Localization
+import com.primerproyecto.raeco2.MainActivity
 
-class DaoLocalizaciones{
+public class DaoLocalizaciones(context: MainActivity)  {
 
-    private val dataBase : DbHelper = DbHelper(context = null)// ver si no es esto
+    private val dataBase : DbHelper = DbHelper(context)// ver si no es esto
 
     fun find(latitud:Double?, longitud:Double?): Int {
 

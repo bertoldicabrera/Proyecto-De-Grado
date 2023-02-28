@@ -1,9 +1,11 @@
 package com.primerproyecto.raeco2.bd
+import android.content.Context
 import com.primerproyecto.raeco2.Animal
+import com.primerproyecto.raeco2.MainActivity
 
-public class DaoAnimales  {
+public class DaoAnimales(context: MainActivity)  {
 
-    private val dataBase : DbHelper = DbHelper(context = null)// ver si no es esto
+    private val dataBase : DbHelper = DbHelper(context)// ver si no es esto
 
     fun find(localiza:Int): Animal {
 

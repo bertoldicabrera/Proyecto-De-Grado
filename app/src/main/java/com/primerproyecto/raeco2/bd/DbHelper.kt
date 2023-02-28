@@ -15,7 +15,7 @@ public class DbHelper (context: Context?) :
         null,
         DATABASE_VERSION) {
 
-
+private var context =null
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
         println("Inicio crear tablas XXXXXXXXXXXX")
 
@@ -52,7 +52,7 @@ public class DbHelper (context: Context?) :
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
                 " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('Perro', 'Animal doméstico popular'," +
-                " 'https://es.wikipedia.org/wiki/Canis_familiaris', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Perro/perro.gltf', 'https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/perro.gltf', 'ladrido')"
+                " 'https://es.wikipedia.org/wiki/Canis_familiaris', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Perro/perro.gltf', 'https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/perro.gltf', 'https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Perro/perro.mp3?raw=true')"
 
         )
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
@@ -65,7 +65,7 @@ public class DbHelper (context: Context?) :
 //Otro animal
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
                 " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('Vaca', 'Animal de pastoreo'," +
-                " 'https://es.wikipedia.org/wiki/Bos_taurus', 'https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Vaca/vaca.gltf', 'https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/vaca.gltf',  'muuuu')"
+                " 'https://es.wikipedia.org/wiki/Bos_taurus', 'https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Vaca/vaca.gltf', 'https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/vaca.gltf',  'https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Vaca/vaca.mp3?raw=true')"
 
         )
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
