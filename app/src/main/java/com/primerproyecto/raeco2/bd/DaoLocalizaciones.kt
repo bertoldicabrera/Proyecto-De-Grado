@@ -11,7 +11,7 @@ public class DaoLocalizaciones(context: Context?)  {
     private val dataBase : DbHelper = DbHelper(context)// ver si no es esto
 
     fun find(latitud:Double?, longitud:Double?): Int {
-
+        Log.d("DaoLocalizaciones-find 14","Entro")
         val miLista: MutableList<Any> = calcularDistancia(latitud,longitud )
         var localizacioMasCercana:Location= miLista[0] as Location//TipoLocation
         Log.d("DaoLocalizaciones-find 17","${localizacioMasCercana.latitude}")
@@ -26,9 +26,9 @@ public class DaoLocalizaciones(context: Context?)  {
 
         var distanciaMetros: Float =miLista[1] as Float
         Log.d("DaoLocalizaiones-28 distanciaenmetros","${distanciaMetros}")
-        var bool = distanciaMetros<10000.0f
+        var bool = distanciaMetros<3000000.0f
         Log.d("DaoLocalizaiones-30 distanciaenmetros","${bool}")
-        return distanciaMetros<10000.0f
+        return distanciaMetros<3000000.0f
     }
 
 
@@ -53,6 +53,44 @@ public class DaoLocalizaciones(context: Context?)  {
         var devolverPar: MutableList<Any> = mutableListOf(localizacioDevolver, distanceMinima)
         Log.d("DaoLocalizaciones -devolverPar -48","${devolverPar.size}")
          Log.d("calcularDistancia -DaoLocalizaciones","48")
+        var listaLocalizaciones= findAll()// Se trae todas las localizaciones
+        Log.d("calcularDistancia -DaoLocalizaciones -50","${listaLocalizaciones.size}")
+        for (elemento in listaLocalizaciones) {
+
+            var localizacion2 = Location("Sebastian")
+            localizacion2.latitude= elemento.obtenerLatitud()!!
+            localizacion2.longitude= elemento.obtenerLongitud()!!
+
+            var distanciaElemento = localizacion1.distanceTo(localizacion2)
+
+            if(distanciaElemento<distanceMinima)//0<10
+            {
+                distanceMinima=distanciaElemento
+                localizacioDevolver.latitude=localizacion2.latitude
+                localizacioDevolver.longitude=localizacion2.longitude
+                devolverPar[0]=localizacioDevolver
+                devolverPar[1]=distanciaElemento
+            }
+        }
+        return devolverPar
+    }
+
+    ////Dividir funcion
+    private fun localizacionxdistancia(latitud: Double?,longitud: Double? ): MutableList<Any> {
+
+        val localizacion1 = Location("Fernando")
+        if (latitud != null) {
+            localizacion1.latitude=latitud
+        }
+        if (longitud != null) {
+            localizacion1.longitude=longitud
+        }
+
+        var distanceMinima=Float.MAX_VALUE//10
+        var localizacioDevolver= Location("Salida")
+        var devolverPar: MutableList<Any> = mutableListOf(localizacioDevolver, distanceMinima)
+        Log.d("DaoLocalizaciones -devolverPar -48","${devolverPar.size}")
+        Log.d("calcularDistancia -DaoLocalizaciones","48")
         var listaLocalizaciones= findAll()// Se trae todas las localizaciones
         Log.d("calcularDistancia -DaoLocalizaciones -50","${listaLocalizaciones.size}")
         for (elemento in listaLocalizaciones) {

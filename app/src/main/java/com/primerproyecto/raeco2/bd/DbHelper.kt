@@ -15,7 +15,7 @@ public class DbHelper (context: Context?) :
         null,
         DATABASE_VERSION) {
 
-private var context =null
+
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
         println("Inicio crear tablas XXXXXXXXXXXX")
 
@@ -137,10 +137,11 @@ private var context =null
                         "ON R.$KEY_LOCALIZACION_ID_EN_REGION=$idLocalizacion AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL" +
                         " order by random() limit 1;"
 //Suponiendo que trae un animal
-
+        Log.d("DBHelper BuscoAnimal 140", "${selectQuery}")
         val cursor = db.rawQuery(selectQuery, null)
+        Log.d("DBHelper BuscoAnimal 142", "${cursor.count}")
 
-        if (cursor != null) {
+    if (cursor != null) {
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
 
@@ -159,7 +160,7 @@ private var context =null
             }
         }
         cursor.close()
-         Log.d("DBHelper BuscoAnimal", "${animal.obtenerNombreAnimal()}")
+         Log.d("DBHelper BuscoAnimal 162", "${animal.obtenerNombreAnimal()}")
         return animal
     }
 
@@ -170,13 +171,15 @@ private var context =null
         var index: Int
         //falta acá
         val selectQuery ="select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
-
+        Log.d("DBHelper obtenerlocalizacion-176","$selectQuery")
         val cursor = db.rawQuery(selectQuery, null)
+        Log.d("DBHelper obtenerlocalizacion-176","${cursor.count}")
         if (cursor != null) {
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
                 index = cursor.getColumnIndexOrThrow(KEY_LOCALIZACION_ID)
                 IdLocalizacion= cursor.getInt(index)
+                Log.d("DBHelper obtenerlocalizacion-181","$IdLocalizacion")
             }
         }
         cursor.close()
