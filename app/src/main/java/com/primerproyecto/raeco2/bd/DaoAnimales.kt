@@ -3,7 +3,7 @@ import android.content.Context
 import com.primerproyecto.raeco2.Animal
 import com.primerproyecto.raeco2.MainActivity
 
-public class DaoAnimales(context: MainActivity)  {
+public class DaoAnimales(context: Context?)  {
 
     private val dataBase : DbHelper = DbHelper(context)// ver si no es esto
 

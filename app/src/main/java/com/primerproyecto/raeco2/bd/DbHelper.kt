@@ -225,7 +225,10 @@ private var context =null
             }
             cursor.close()
         }
-        Log.d("DBHelper-devolverLocalizaiones 226","${ listaLocalizacionesSalida.size}")
+        Log.d("DBHelper-devolverLocalizaciones 228","${ listaLocalizacionesSalida[0].obtenerNombreLocalizacion()}")
+        Log.d("DBHelper-devolverLocalizaciones 228","${ listaLocalizacionesSalida[0].obtenerLongitud()}")
+        Log.d("DBHelper-devolverLocalizaciones 228","${ listaLocalizacionesSalida[0].obtenerLatitud()}")
+        Log.d("DBHelper-devolverLocalizaciones 228","${ listaLocalizacionesSalida.size}")
 
         return listaLocalizacionesSalida
     }

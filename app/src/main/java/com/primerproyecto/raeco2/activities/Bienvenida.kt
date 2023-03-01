@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.primerproyecto.raeco2.R
 
 
+
 class Bienvenida : AppCompatActivity() {
 
     private var ir_btn : Button? = null;

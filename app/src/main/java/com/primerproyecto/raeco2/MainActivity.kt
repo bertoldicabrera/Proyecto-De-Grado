@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private var btn_Crear : Button? = null;
     private var simple_btn : Button? = null;
     private var bienvenida : Button? = null;
-    private var facade: Facade =Facade(this@MainActivity)
+    private var facade: Facade = Facade(this@MainActivity)
     private var animal: Animal? = null
     private var voAnimal: VoAnimal? = null
     private var config: Configuracion? = null
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun crearAnimal3dImplisito()
+     fun crearAnimal3dImplisito()
     {
         //https://developers.google.com/ar/develop/scene-viewer
         val sceneViewerIntent = Intent(Intent.ACTION_VIEW)

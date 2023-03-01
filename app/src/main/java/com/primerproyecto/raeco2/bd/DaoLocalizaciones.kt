@@ -1,11 +1,12 @@
 package com.primerproyecto.raeco2.bd
 
+import android.content.Context
 import android.location.Location
 import android.util.Log
 import com.primerproyecto.raeco2.Localization
 import com.primerproyecto.raeco2.MainActivity
 
-public class DaoLocalizaciones(context: MainActivity)  {
+public class DaoLocalizaciones(context: Context?)  {
 
     private val dataBase : DbHelper = DbHelper(context)// ver si no es esto
 
@@ -13,22 +14,26 @@ public class DaoLocalizaciones(context: MainActivity)  {
 
         val miLista: MutableList<Any> = calcularDistancia(latitud,longitud )
         var localizacioMasCercana:Location= miLista[0] as Location//TipoLocation
-
+        Log.d("DaoLocalizaciones-find 17","${localizacioMasCercana.latitude}")
+        Log.d("DaoLocalizaciones-find 17","${localizacioMasCercana.longitude}")
         return dataBase.obtenerLocalizacion(localizacioMasCercana.latitude, localizacioMasCercana.longitude)
     }
 
 
     fun esCercano10KMDeUmPunto (latitud:Double?, longitud:Double?): Boolean{
-
+        Log.d("DaoLocalizaiones-23","esCercano10KMDeUmPunto")
         var miLista: MutableList<Any> = calcularDistancia(latitud,longitud )
 
         var distanciaMetros: Float =miLista[1] as Float
+        Log.d("DaoLocalizaiones-28 distanciaenmetros","${distanciaMetros}")
+        var bool = distanciaMetros<10000.0f
+        Log.d("DaoLocalizaiones-30 distanciaenmetros","${bool}")
         return distanciaMetros<10000.0f
     }
 
 
     private fun findAll(): MutableList<Localization> {
-
+         Log.d("DaoLocalizaciones-32","Entro")
         return dataBase.devolverLocalizacionesBd()
     }
 
@@ -46,6 +51,7 @@ public class DaoLocalizaciones(context: MainActivity)  {
         var distanceMinima=Float.MAX_VALUE//10
         var localizacioDevolver= Location("Salida")
         var devolverPar: MutableList<Any> = mutableListOf(localizacioDevolver, distanceMinima)
+        Log.d("DaoLocalizaciones -devolverPar -48","${devolverPar.size}")
          Log.d("calcularDistancia -DaoLocalizaciones","48")
         var listaLocalizaciones= findAll()// Se trae todas las localizaciones
         Log.d("calcularDistancia -DaoLocalizaciones -50","${listaLocalizaciones.size}")

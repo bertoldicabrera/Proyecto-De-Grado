@@ -30,10 +30,10 @@ class AR : AppCompatActivity() {
     private var sonido: Boolean? = null
     private var ar_btn : Button? = null;
     private var atras_btn : Button? = null;
-    private val  TAGGPS = "UBICACION GPS"
-    private val fachada:Facade = Facade()
+    private val  TAGGPS = "UBICACION GPS-AR "
+    private val fachada:Facade = Facade(this)
 
-    private val REQUEST_LOCATION_PERMISSION = 1
+    private val REQUEST_LOCATION_PERMISSION : Int = 1
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +66,8 @@ class AR : AppCompatActivity() {
 
         ar_btn = findViewById(R.id.button2)
         ar_btn?.setOnClickListener {
-            crearAnimal3dExplicito(con, voAni)
+        crearAnimal3dExplicito(con, voAni)
+
         }
         atras_btn = findViewById(R.id.button3)
         atras_btn?.setOnClickListener {

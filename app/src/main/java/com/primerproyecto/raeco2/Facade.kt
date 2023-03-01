@@ -1,6 +1,7 @@
 package com.primerproyecto.raeco2
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.primerproyecto.raeco2.bd.DaoAnimales
@@ -9,10 +10,10 @@ import com.primerproyecto.raeco2.bd.DbHelper
 
 
 
-class Facade (context: MainActivity){
+class Facade (context: Context?){
 
     private val animales : DaoAnimales = DaoAnimales(context) //Ver si va así
-     private val localizaciones = DaoLocalizaciones(context) //Ver si va así
+     private var localizaciones :  DaoLocalizaciones = DaoLocalizaciones(context) //Ver si va así
 
     fun agregarAnimal(voNuevoAnimal: VoAnimal) {
 
@@ -42,9 +43,9 @@ class Facade (context: MainActivity){
         Log.d("BuscarAnimal-Fachada", "37")
 
         var iDLocalizacion= obtenerRegionAnimal(localizacion)
-        Log.d("BuscarAnimal-Fachada IdLocalizacion", "${iDLocalizacion}")
+        Log.d("BuscarAnimal-Fachada 46 IdLocalizacion", "${iDLocalizacion}")
      var animal = animales.find(iDLocalizacion) // ver que pasa si es null
-        Log.d("BuscarAnimal-Fachada obtuveAnimal", "${animal.obtenerNombreAnimal()}" )
+        Log.d("BuscarAnimal-Fachada 48 obtuveAnimal", "${animal.obtenerNombreAnimal()}" )
      var animalSalida = animalParaVoAnimal(animal)
      return animalSalida
     }
@@ -59,47 +60,51 @@ class Facade (context: MainActivity){
             mensaje= "ERROR AL CREAR BASE DE DATOS"
         }
         return mensaje
+
+    }
+
+    private fun obtenerRegionAnimal(localizacion: VoLocalizacion):Int{
+        var latitud = localizacion.obtenerLatitud()
+        var longitud =localizacion.obtenerLongitud()
+        var localizacionID=-1
+        Log.d("obtenerRegionAnimal-Fachada 70","Cargo variables")
+//Devulve tru si es cercano a 10km
+
+        if(localizaciones.esCercano10KMDeUmPunto(latitud,longitud ))
+        {
+            Log.d("ObtemerRegionAnimal","EntroesCercano10km")
+            localizacionID = localizaciones.find(latitud,longitud)
+
+        }
+
+        return localizacionID
+    }
+
+    private fun animalParaVoAnimal(ani:Animal):VoAnimal{
+
+        var voAnimalSalida = VoAnimal(null,null,null,null,null, null)
+        voAnimalSalida.setearNombreAnimal(ani.obtenerNombreAnimal() )
+        voAnimalSalida.setearDescripcionAnimal(ani.obtenerDescripcionAnimal())
+        voAnimalSalida.setearLinkAnimal(ani.obtenerLinkAnimal())
+        voAnimalSalida.setearUrlBackUpAnimal(ani.obtenerObjetoBackUpAnimal())
+        voAnimalSalida.setearObjetoAnimal(ani.obtenerObjetoAnimal())
+        voAnimalSalida.setearSonido(ani.obtenerSonido())
+        return voAnimalSalida
+    }
+    private fun voAnimalParaAnimal(voAni:VoAnimal):Animal{
+
+        val animalSalida: Animal= Animal(null, null,null,null,null, null)
+        animalSalida.setearNombreAnimal(voAni.obtenerNombreAnimal() )
+        animalSalida.setearDescripcionAnimal(voAni.obtenerDescripcionAnimal())
+        animalSalida.setearLinkAnimal(voAni.obtenerLinkAnimal())
+        animalSalida.setearUrlBackUpAnimal(voAni.obtenerObjetoBackUpAnimal())
+        animalSalida.setearObjetoAnimal(voAni.obtenerObjetoAnimal())
+        animalSalida.setearSonido(voAni.obtenerSonido())
+        return animalSalida
     }
 }
 
 
 //si no es cercana a 10km devulve -1
-private fun obtenerRegionAnimal(localizacion: VoLocalizacion):Int{
-    var latitud = localizacion.obtenerLatitud()
-    var longitud =localizacion.obtenerLongitud()
-    var localizacionID=-1
-    Log.d("obtenerRegionAnimal","Cargo variables")
-//Devulve tru si es cercano a 10km
 
-    if(localizaciones.esCercano10KMDeUmPunto(latitud,longitud ))
-    {
-        Log.d("ObtemerRegionAnimal","EntroesCercano10km")
-        localizacionID = localizaciones.find(latitud,longitud)
 
-    }
-
-    return localizacionID
-}
-
-private fun animalParaVoAnimal(ani:Animal):VoAnimal{
-
-    var voAnimalSalida = VoAnimal(null,null,null,null,null, null)
-    voAnimalSalida.setearNombreAnimal(ani.obtenerNombreAnimal() )
-    voAnimalSalida.setearDescripcionAnimal(ani.obtenerDescripcionAnimal())
-    voAnimalSalida.setearLinkAnimal(ani.obtenerLinkAnimal())
-    voAnimalSalida.setearUrlBackUpAnimal(ani.obtenerObjetoBackUpAnimal())
-    voAnimalSalida.setearObjetoAnimal(ani.obtenerObjetoAnimal())
-    voAnimalSalida.setearSonido(ani.obtenerSonido())
-    return voAnimalSalida
-}
-private fun voAnimalParaAnimal(voAni:VoAnimal):Animal{
-
-    val animalSalida: Animal= Animal(null, null,null,null,null, null)
-    animalSalida.setearNombreAnimal(voAni.obtenerNombreAnimal() )
-    animalSalida.setearDescripcionAnimal(voAni.obtenerDescripcionAnimal())
-    animalSalida.setearLinkAnimal(voAni.obtenerLinkAnimal())
-    animalSalida.setearUrlBackUpAnimal(voAni.obtenerObjetoBackUpAnimal())
-    animalSalida.setearObjetoAnimal(voAni.obtenerObjetoAnimal())
-    animalSalida.setearSonido(voAni.obtenerSonido())
-    return animalSalida
-}
