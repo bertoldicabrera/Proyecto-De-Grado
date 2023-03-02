@@ -142,7 +142,7 @@ public class DbHelper (context: Context?) :
         Log.d("DBHelper BuscoAnimal 142", "${cursor.count}")
 
     if (cursor != null) {
-            cursor.moveToFirst()
+          //  cursor.moveToFirst()
             while (cursor.moveToNext()) {
 
                 index = cursor.getColumnIndexOrThrow(KEY_NAME)
@@ -175,7 +175,7 @@ public class DbHelper (context: Context?) :
         val cursor = db.rawQuery(selectQuery, null)
         Log.d("DBHelper obtenerlocalizacion-176","${cursor.count}")
         if (cursor != null) {
-            cursor.moveToFirst()
+          //  cursor.moveToFirst()
             while (cursor.moveToNext()) {
                 index = cursor.getColumnIndexOrThrow(KEY_LOCALIZACION_ID)
                 IdLocalizacion= cursor.getInt(index)
@@ -204,9 +204,9 @@ public class DbHelper (context: Context?) :
     fun devolverLocalizacionesBd(): MutableList<Localization> {
 
         Log.d("DBHelper-devolverLocalizaiones 204","Entro")
-        val listaLocalizacionesSalida = mutableListOf<Localization>()
+        var listaLocalizacionesSalida = mutableListOf<Localization>()
         Log.d("DBHelper-devolverLocalizaiones 206","${listaLocalizacionesSalida.size}")
-        var index: Int =0;
+
         val db = this.writableDatabase
         Log.d("devolverlocalizaciones -209","$db")
         var selectQuery = "SELECT * FROM " + "$TABLE_LOCALIZACIONES"
@@ -215,23 +215,26 @@ public class DbHelper (context: Context?) :
         var cursor = db.rawQuery("SELECT * FROM t_Localizaciones", null)
          Log.d("DBHelper-devolverLocalizaiones 211","${ cursor.count}")
         if (cursor != null) {
-            cursor.moveToFirst()
+          //  cursor.moveToFirst()
             while (cursor.moveToNext()) {
                 var localizacionSalida:Localization= Localization()
-                index = cursor.getColumnIndexOrThrow(KEY_NOMBRE_LOCALIZACION)
+                var index = cursor.getColumnIndexOrThrow(KEY_NOMBRE_LOCALIZACION)
                 localizacionSalida.setearNombreLocalizacion(cursor.getString(index))
+                Log.d("DBHelper-devolverLocalizaciones 223","${ localizacionSalida.obtenerNombreLocalizacion()} index${index}")
                 index = cursor.getColumnIndexOrThrow(KEY_LATITUD)
                 localizacionSalida.setearLatitud(cursor.getDouble(index))
                 index = cursor.getColumnIndexOrThrow(KEY_LONGITUD)
                 localizacionSalida.setearLongitud(cursor.getDouble(index))
+
                 listaLocalizacionesSalida.add(localizacionSalida)
+                Log.d("DBHelper-devolverLocalizaciones 229","${ listaLocalizacionesSalida.size}")
             }
             cursor.close()
         }
-        Log.d("DBHelper-devolverLocalizaciones 228","${ listaLocalizacionesSalida[0].obtenerNombreLocalizacion()}")
-        Log.d("DBHelper-devolverLocalizaciones 228","${ listaLocalizacionesSalida[0].obtenerLongitud()}")
-        Log.d("DBHelper-devolverLocalizaciones 228","${ listaLocalizacionesSalida[0].obtenerLatitud()}")
-        Log.d("DBHelper-devolverLocalizaciones 228","${ listaLocalizacionesSalida.size}")
+        Log.d("DBHelper-devolverLocalizaciones 233","${ listaLocalizacionesSalida[0].obtenerNombreLocalizacion()}")
+        Log.d("DBHelper-devolverLocalizaciones 234","${ listaLocalizacionesSalida[0].obtenerLongitud()}")
+        Log.d("DBHelper-devolverLocalizaciones 235","${ listaLocalizacionesSalida[0].obtenerLatitud()}")
+        Log.d("DBHelper-devolverLocalizaciones 236","${ listaLocalizacionesSalida.size}")
 
         return listaLocalizacionesSalida
     }

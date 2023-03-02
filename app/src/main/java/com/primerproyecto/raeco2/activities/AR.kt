@@ -23,7 +23,6 @@ import java.net.URL
 
 class AR : AppCompatActivity() {
 
-
     private var titulo: Boolean? = null
     private var link: Boolean? = null
     private var renderizado: Boolean? = null
@@ -184,7 +183,7 @@ class AR : AppCompatActivity() {
                         // Usa la ubicación del usuario
                         var latitude = location.latitude
                         var longitude = location.longitude
-                        Log.d(TAGGPS, "Latitud: ${location.latitude}, Longitud: ${location.longitude}")
+                        Log.d(TAGGPS, "Latitud AR 186: ${location.latitude}, Longitud: ${location.longitude}")
                      //Llugar con fachada   esCercano10KMDeUmPunto()
 
                         var voLoc: VoLocalizacion= VoLocalizacion(latitude,longitude )

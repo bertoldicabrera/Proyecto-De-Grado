@@ -43,6 +43,7 @@ class Facade (context: Context?){
         Log.d("BuscarAnimal-Fachada", "37")
 
         var iDLocalizacion= obtenerRegionAnimal(localizacion)
+
         Log.d("BuscarAnimal-Fachada 46 IdLocalizacion", "${iDLocalizacion}")
      var animal = animales.find(iDLocalizacion) // ver que pasa si es null
         Log.d("BuscarAnimal-Fachada 48 obtuveAnimal", "${animal.obtenerNombreAnimal()}" )
