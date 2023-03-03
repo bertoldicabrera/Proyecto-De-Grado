@@ -40,7 +40,7 @@ class AR : AppCompatActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         var voAni: VoAnimal= solicitarUbicacionGPS(fusedLocationClient,REQUEST_LOCATION_PERMISSION)
-        Log.d("Creo VO Animal X ubicacion", "${voAni.obtenerNombreAnimal()}")
+        Log.d("AR 43 Creo VO Animal X ubicacion", "${voAni.obtenerNombreAnimal()}")
 
 
  // Obtener una referencia al objeto Switch desde la vista
@@ -80,6 +80,8 @@ class AR : AppCompatActivity() {
     {
         //https://developers.google.com/ar/develop/scene-viewer
         val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+        println("83 AR ${voAni.obtenerNombreAnimal()}")
+        println("84 AR ${voAni.obtenerObjetoAnimal()}")
         //string para el
         val intentUri = createIntentUriExplicito(config, voAni)
         sceneViewerIntent.setData(intentUri);
@@ -105,8 +107,9 @@ class AR : AppCompatActivity() {
     private fun cargarParametrosDelAnimal(config:Configuracion, voAnimalMostrar: VoAnimal) : HashMap<String, String> {
 
         var url1= voAnimalMostrar.obtenerObjetoAnimal()
+        println("108 AR ${url1}")
         var sitioOK=sitioUp(url1)
-
+        println("110 AR ${sitioOK}")
         //https://developers.google.com/ar/develop/scene-viewer
         val map = HashMap<String, String> ()
         map["file"] = {
@@ -189,9 +192,11 @@ class AR : AppCompatActivity() {
                         var voLoc: VoLocalizacion= VoLocalizacion(latitude,longitude )
                         Log.d("Carga VoLocalizacion", "${voLoc.obtenerLatitud()}")
                          voAni= fachada.buscarAnimal(voLoc)
-                        Log.d("Carga VoAnimal", "${voAni.obtenerNombreAnimal()}")
+                        Log.d(" 195 Carga VoAnimal", "${voAni.obtenerNombreAnimal()}")
+
                     }
                 }
+            println(" ACA ESTA EL ERROR 199 DENTRO DE solicitarUbicacionGPS -------------------------")
         } else {
             // El permiso no ha sido concedido, solicita permiso al usuario
             ActivityCompat.requestPermissions(this,
@@ -199,7 +204,7 @@ class AR : AppCompatActivity() {
                 REQUEST_LOCATION_PERMISSION)
             Log.d("Localizacion Fallo","se le vuelven a pedir permisos al usuario")
         }
-
+        println("AR solicitarUbicacionGPS voAni ${voAni.obtenerNombreAnimal()} ANTES solicitarUbicacionGPS")
                             return voAni
 
     }
