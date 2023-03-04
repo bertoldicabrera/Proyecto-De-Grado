@@ -206,9 +206,11 @@ class AR : AppCompatActivity() {
                          voAni= fachada.buscarAnimal(voLoc) //va a buscar el animal y vuelve null
                         Log.d(" 206 solicitarUbicacionGPS Carga VoAnimal", "${voAni.obtenerNombreAnimal()}")
 
+                    }else{
+                        println("solicitarUbicacionGPS 210 Entro al else la location esta en null llama a la location  esta en null  -------------------------")
                     }
                 }
-            println("solicitarUbicacionGPS 199 La primera no entra al if, la location es null  -------------------------")
+            println("solicitarUbicacionGPS 213 La primera no entra al if, fusedLocationClient.lastLocation esta en null  -------------------------")
         } else {
             // El permiso no ha sido concedido, solicita permiso al usuario
             ActivityCompat.requestPermissions(this,
