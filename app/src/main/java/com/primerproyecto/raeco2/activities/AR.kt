@@ -41,9 +41,7 @@ class AR : AppCompatActivity() {
 
 
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        var voAni: VoAnimal= solicitarUbicacionGPS(fusedLocationClient,REQUEST_LOCATION_PERMISSION)
-        Log.d("AR 43 Creo VO Animal X ubicacion", "${voAni.obtenerNombreAnimal()}")
+
 
 
  // Obtener una referencia al objeto Switch desde la vista
@@ -69,6 +67,10 @@ class AR : AppCompatActivity() {
 
         ar_btn = findViewById(R.id.button2)
         ar_btn?.setOnClickListener {
+
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            var voAni: VoAnimal= solicitarUbicacionGPS(fusedLocationClient,REQUEST_LOCATION_PERMISSION)
+            Log.d("AR 43 Creo VO Animal X ubicacion", "${voAni.obtenerNombreAnimal()}")
             if(voAni.obtenerObjetoAnimal()!=null){
                 crearAnimal3dExplicito(con, voAni)
             }else{
