@@ -40,15 +40,28 @@ class Facade (context: Context?){
     }
     @SuppressLint("SuspiciousIndentation")
     fun buscarAnimal(localizacion: VoLocalizacion): VoAnimal {
-        Log.d("BuscarAnimal-Fachada", "37")
-
+        Log.d("BuscarAnimal-Fachada", "37 Lat ${localizacion.obtenerLatitud()} Long ${localizacion.obtenerLongitud()}  ")
+        var animalSalida=animalPorDefecto() //Si es -1 le carga un animall por defecto
         var iDLocalizacion= obtenerRegionAnimal(localizacion)
+if(iDLocalizacion!=-1)
+{
+    Log.d("BuscarAnimal-Fachada 46 IdLocalizacion", "${iDLocalizacion}")
+    var animal = animales.find(iDLocalizacion) // ver que pasa si es null
+    Log.d("BuscarAnimal-Fachada 50 obtuveAnimal", "${animal.obtenerNombreAnimal()}" )
+    animalSalida = animalParaVoAnimal(animal)
 
-        Log.d("BuscarAnimal-Fachada 46 IdLocalizacion", "${iDLocalizacion}")
-     var animal = animales.find(iDLocalizacion) // ver que pasa si es null
-        Log.d("BuscarAnimal-Fachada 48 obtuveAnimal", "${animal.obtenerNombreAnimal()}" )
-     var animalSalida = animalParaVoAnimal(animal)
+}else{
+    Log.d("BuscarAnimal-Fachada 54 es null y devuelve por defecto uno", "${animalSalida.obtenerNombreAnimal()}" )
+}
+
+
      return animalSalida
+    }
+
+    private fun animalPorDefecto():VoAnimal{
+       var voAnimalSaldia = VoAnimal("PorDefecto", "PorDefecto", null, null, "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Macaco/macacogitlab.gltf", null)
+
+        return voAnimalSaldia
     }
 
     fun crearBd(context: MainActivity): String? {

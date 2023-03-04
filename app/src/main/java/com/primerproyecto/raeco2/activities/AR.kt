@@ -12,6 +12,7 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.Switch
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -38,6 +39,8 @@ class AR : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ar)
 
+
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         var voAni: VoAnimal= solicitarUbicacionGPS(fusedLocationClient,REQUEST_LOCATION_PERMISSION)
         Log.d("AR 43 Creo VO Animal X ubicacion", "${voAni.obtenerNombreAnimal()}")
@@ -61,11 +64,19 @@ class AR : AppCompatActivity() {
             sonido = isChecked
         }
        // var Configuracion : Configuracion = Configuracion(titulo, link, renderizado, sonido)
-         var con = Configuracion.apply(titulo, link, renderizado, sonido)
+
+        var con = Configuracion.apply(titulo, link, renderizado, sonido)
 
         ar_btn = findViewById(R.id.button2)
         ar_btn?.setOnClickListener {
-        crearAnimal3dExplicito(con, voAni)
+            if(voAni.obtenerObjetoAnimal()!=null){
+                crearAnimal3dExplicito(con, voAni)
+            }else{
+                println("El animal es null POR ALGUNA RARON NO CARGA EL POR DEFECTO")
+                Toast.makeText(this, "Error 76 al cargar animal AR", Toast.LENGTH_LONG)
+                    .show()
+            }
+
 
         }
         atras_btn = findViewById(R.id.button3)
@@ -80,8 +91,8 @@ class AR : AppCompatActivity() {
     {
         //https://developers.google.com/ar/develop/scene-viewer
         val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-        println("83 AR ${voAni.obtenerNombreAnimal()}")
-        println("84 AR ${voAni.obtenerObjetoAnimal()}")
+        println("83 AR crearAnimal3dExplicito  ${voAni.obtenerNombreAnimal()}")
+        println("84 AR crearAnimal3dExplicito ${voAni.obtenerObjetoAnimal()}")
         //string para el
         val intentUri = createIntentUriExplicito(config, voAni)
         sceneViewerIntent.setData(intentUri);
@@ -186,17 +197,18 @@ class AR : AppCompatActivity() {
                         // Usa la ubicación del usuario
                         var latitude = location.latitude
                         var longitude = location.longitude
-                        Log.d(TAGGPS, "Latitud AR 186: ${location.latitude}, Longitud: ${location.longitude}")
+                        Log.d(TAGGPS, "186 solicitarUbicacionGPS La segunda si entra aca y devuelve Latitud AR 186: ${location.latitude}, Longitud: ${location.longitude}")
                      //Llugar con fachada   esCercano10KMDeUmPunto()
 
                         var voLoc: VoLocalizacion= VoLocalizacion(latitude,longitude )
                         Log.d("Carga VoLocalizacion", "${voLoc.obtenerLatitud()}")
-                         voAni= fachada.buscarAnimal(voLoc)
-                        Log.d(" 195 Carga VoAnimal", "${voAni.obtenerNombreAnimal()}")
+                        Log.d("Carga VoLocalizacion", "${voLoc.obtenerLongitud()}")
+                         voAni= fachada.buscarAnimal(voLoc) //va a buscar el animal y vuelve null
+                        Log.d(" 206 solicitarUbicacionGPS Carga VoAnimal", "${voAni.obtenerNombreAnimal()}")
 
                     }
                 }
-            println(" ACA ESTA EL ERROR 199 DENTRO DE solicitarUbicacionGPS -------------------------")
+            println("solicitarUbicacionGPS 199 La primera no entra al if, la location es null  -------------------------")
         } else {
             // El permiso no ha sido concedido, solicita permiso al usuario
             ActivityCompat.requestPermissions(this,
@@ -204,7 +216,7 @@ class AR : AppCompatActivity() {
                 REQUEST_LOCATION_PERMISSION)
             Log.d("Localizacion Fallo","se le vuelven a pedir permisos al usuario")
         }
-        println("AR solicitarUbicacionGPS voAni ${voAni.obtenerNombreAnimal()} ANTES solicitarUbicacionGPS")
+        println("207  solicitarUbicacionGPS voAni ${voAni.obtenerNombreAnimal()} ANTES solicitarUbicacionGPS")
                             return voAni
 
     }
