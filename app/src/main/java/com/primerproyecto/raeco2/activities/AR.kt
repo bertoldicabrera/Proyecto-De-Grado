@@ -2,12 +2,16 @@ package com.primerproyecto.raeco2.activities
 
 import android.Manifest
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.widget.Button
@@ -16,9 +20,11 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 import com.primerproyecto.raeco2.*
+import com.primerproyecto.raeco2.R
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -64,15 +70,25 @@ class AR : AppCompatActivity() {
        // var Configuracion : Configuracion = Configuracion(titulo, link, renderizado, sonido)
 
         var con = Configuracion.apply(titulo, link, renderizado, sonido)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        var locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 10000 // intervalo de actualización en milisegundos
+            fastestInterval = 5000 // el intervalo más rápido en milisegundos
+
+        }
+        var voLoc  = solicitarUbicacionGPS(fusedLocationClient, locationRequest, REQUEST_LOCATION_PERMISSION)
 
         ar_btn = findViewById(R.id.button2)
         ar_btn?.setOnClickListener {
 
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            var voAni: VoAnimal= solicitarUbicacionGPS(fusedLocationClient,REQUEST_LOCATION_PERMISSION)
-            Log.d("AR 43 Creo VO Animal X ubicacion", "${voAni.obtenerNombreAnimal()}")
-            if(voAni.obtenerObjetoAnimal()!=null){
-                crearAnimal3dExplicito(con, voAni)
+
+            Log.d("AR 85 Creo voLoc", "${voLoc.obtenerLongitud()}")
+            if(voLoc.obtenerLatitud()!=null){
+               var voAni= fachada.buscarAnimal(voLoc) //va a buscar el animal y vuelve null
+                Log.d("AR 89 Creo voLoc", "${voAni.obtenerObjetoAnimal()}")
+                crearAnimal3dImplisito(voAni.obtenerObjetoAnimal())
+                //crearAnimal3dExplicito(con, voAni)
             }else{
                 println("El animal es null POR ALGUNA RARON NO CARGA EL POR DEFECTO")
                 Toast.makeText(this, "Error 76 al cargar animal AR", Toast.LENGTH_LONG)
@@ -102,7 +118,16 @@ class AR : AppCompatActivity() {
         startActivity(sceneViewerIntent);
 
     }
-
+    fun crearAnimal3dImplisito(url :String?)
+    {
+        //https://developers.google.com/ar/develop/scene-viewer
+        val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+        var url2 = "https://arvr.google.com/scene-viewer/1.0?file=$url"
+        Log.d("AR 126 Creo voLoc", "$url2")
+        sceneViewerIntent.data = Uri.parse(url2)
+        sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
+        startActivity(sceneViewerIntent)
+    }
     private fun createIntentUriExplicito(config:Configuracion, voAnimalMostrar:VoAnimal) : Uri {
         val intentUri = Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
 
@@ -114,6 +139,7 @@ class AR : AppCompatActivity() {
         params.forEach {
                 (key, value) -> intentUri.appendQueryParameter(key, value)
         }
+        Log.d("Parametros para Realidad aumentada 131 AR intentUri.build()","${intentUri.toString()}")
         return intentUri.build()
     }
 
@@ -188,40 +214,30 @@ class AR : AppCompatActivity() {
 
     //devolver region
     //Devulve un animal en null si no anda bien
-    private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient,REQUEST_LOCATION_PERMISSION:Int): VoAnimal {
-        var voAni: VoAnimal=  VoAnimal(null,null,null,null,null,null)
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            // Permiso concedido, puedes acceder a la ubicación
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        // Usa la ubicación del usuario
-                        var latitude = location.latitude
-                        var longitude = location.longitude
-                        Log.d(TAGGPS, "186 solicitarUbicacionGPS La segunda si entra aca y devuelve Latitud AR 186: ${location.latitude}, Longitud: ${location.longitude}")
-                     //Llugar con fachada   esCercano10KMDeUmPunto()
+    private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient, locationRequest :LocationRequest,REQUEST_LOCATION_PERMISSION:Int): VoLocalizacion {
+        var voLoc: VoLocalizacion= VoLocalizacion(null,null )
 
-                        var voLoc: VoLocalizacion= VoLocalizacion(latitude,longitude )
-                        Log.d("Carga VoLocalizacion", "${voLoc.obtenerLatitud()}")
-                        Log.d("Carga VoLocalizacion", "${voLoc.obtenerLongitud()}")
-                         voAni= fachada.buscarAnimal(voLoc) //va a buscar el animal y vuelve null
-                        Log.d(" 206 solicitarUbicacionGPS Carga VoAnimal", "${voAni.obtenerNombreAnimal()}")
+        var handlerThread = HandlerThread("LocationThread")
+        handlerThread.start()
 
-                    }else{
-                        println("solicitarUbicacionGPS 210 Entro al else la location esta en null llama a la location  esta en null  -------------------------")
+        var handler = Handler(handlerThread.looper)
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                fusedLocationClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult) {
+                        val location = locationResult.lastLocation
+                        val latitud = location.latitude
+                        val longitud = location.longitude
+                        Log.d("solicitarUbicacionGPS 214", "$latitud , $longitud")
+                        voLoc.setearLongitud(longitud)
+                        voLoc.setearLatitud(latitud)
+                        Log.d(" 206 solicitarUbicacionGPS Carga VoLocalizacion", "${voLoc.obtenerLatitud()}")
                     }
-                }
-            println("solicitarUbicacionGPS 213 La primera no entra al if, fusedLocationClient.lastLocation esta en null  -------------------------")
-        } else {
-            // El permiso no ha sido concedido, solicita permiso al usuario
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_LOCATION_PERMISSION)
-            Log.d("Localizacion Fallo","se le vuelven a pedir permisos al usuario")
-        }
-        println("207  solicitarUbicacionGPS voAni ${voAni.obtenerNombreAnimal()} ANTES solicitarUbicacionGPS")
-                            return voAni
+                }, handler.looper)
+
+            }
+           return voLoc
 
     }
 
