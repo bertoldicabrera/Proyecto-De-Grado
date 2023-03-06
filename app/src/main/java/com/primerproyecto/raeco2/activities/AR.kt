@@ -1,6 +1,7 @@
 package com.primerproyecto.raeco2.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -214,7 +215,8 @@ class AR : AppCompatActivity() {
 
     //devolver region
     //Devulve un animal en null si no anda bien
-    private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient, locationRequest :LocationRequest,REQUEST_LOCATION_PERMISSION:Int): VoLocalizacion {
+    @SuppressLint("SuspiciousIndentation")
+    private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient, locationRequest :LocationRequest, REQUEST_LOCATION_PERMISSION:Int): VoLocalizacion {
         var voLoc: VoLocalizacion= VoLocalizacion(null,null )
 
         var handlerThread = HandlerThread("LocationThread")

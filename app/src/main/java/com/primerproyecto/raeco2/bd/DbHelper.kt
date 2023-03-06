@@ -51,8 +51,8 @@ public class DbHelper (context: Context?) :
 
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
-                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('Perro', 'Animal doméstico popular'," +
-                " 'https://es.wikipedia.org/wiki/Canis_familiaris', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Perro/perro.gltf', 'https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/perro.gltf', 'https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Perro/perro.mp3?raw=true')"
+                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('Carpincho', 'Animal  popular'," +
+                " 'https://es.wikipedia.org/wiki/Canis_familiaris', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf', 'https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Perro/perro.mp3?raw=true')"
 
         )
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
