@@ -1,6 +1,7 @@
 package com.primerproyecto.raeco2.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -87,8 +88,8 @@ class AR : AppCompatActivity() {
             if(voLoc.obtenerLatitud()!=null){
                var voAni= fachada.buscarAnimal(voLoc) //va a buscar el animal y vuelve null
                 Log.d("AR 89 Creo voLoc", "${voAni.obtenerObjetoAnimal()}")
-                crearAnimal3dImplisito(voAni.obtenerObjetoAnimal())
-                //crearAnimal3dExplicito(con, voAni)
+               // crearAnimal3dImplisito(voAni.obtenerObjetoAnimal())
+                crearAnimal3dExplicito(con, voAni)
             }else{
                 println("El animal es null POR ALGUNA RARON NO CARGA EL POR DEFECTO")
                 Toast.makeText(this, "Error 76 al cargar animal AR", Toast.LENGTH_LONG)
@@ -124,6 +125,7 @@ class AR : AppCompatActivity() {
         val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
         var url2 = "https://arvr.google.com/scene-viewer/1.0?file=$url"
         Log.d("AR 126 Creo voLoc", "$url2")
+       // sceneViewerIntent.data = Uri.parse(url2)
         sceneViewerIntent.data = Uri.parse(url2)
         sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox")
         startActivity(sceneViewerIntent)
@@ -135,9 +137,18 @@ class AR : AppCompatActivity() {
         //SEGUIR ACÁ, ARREGLAR LAS CONSULTAS A LA BASE DE DATOS,
         //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
 
-        val params = cargarParametrosDelAnimal(config, voAnimalMostrar)
+        /*
+        var params = cargarParametrosDelAnimal(config, voAnimalMostrar)
         params.forEach {
+               printl("for each $key,$value")
                 (key, value) -> intentUri.appendQueryParameter(key, value)
+        }
+
+         */
+        var params = cargarParametrosDelAnimal(config, voAnimalMostrar)
+        for ((key, value) in params) {
+            intentUri.appendQueryParameter(key, value)
+            println(" 149 La clave es $key y el valor es $value")
         }
         Log.d("Parametros para Realidad aumentada 131 AR intentUri.build()","${intentUri.toString()}")
         return intentUri.build()
@@ -145,6 +156,48 @@ class AR : AppCompatActivity() {
 
     private fun cargarParametrosDelAnimal(config:Configuracion, voAnimalMostrar: VoAnimal) : HashMap<String, String> {
 
+
+        var url1 = voAnimalMostrar.obtenerObjetoAnimal()
+        println("108 AR $url1")
+        var sitioOK = sitioUp(url1)
+        println("110 AR $sitioOK")
+
+        val map = HashMap<String, String>()
+
+        map["mode"] = "ar_preferred"
+
+        if (config.esLinkActivado() == true) {
+            map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()
+        }
+
+        if (config.esTituloActivado() == true) {
+            map["title"] = voAnimalMostrar.obtenerNombreAnimal().toString()
+        }
+
+        if (config.esSonidoActivado()== true) {
+            map["sound"] = voAnimalMostrar.obtenerSonido().toString()
+        }
+
+        if (config.esRenderizadoActivado()== true) {
+            map["resizable"] = config.esRenderizadoActivado().toString()
+        }
+
+        map["disable_occlusion"] = true.toString()
+
+        if (!sitioOK) {
+            println("186 file AR ${url1.toString()}")
+            map["file"] = url1.toString()
+            println("187 file AR ${map["file"]}")
+        } else {
+            println("189 file AR ${voAnimalMostrar.obtenerObjetoBackUpAnimal().toString()}")
+            map["file"] = voAnimalMostrar.obtenerObjetoBackUpAnimal().toString()
+            println("190 file AR ${map["file"]}")
+        }
+
+        return map
+    }
+
+        /*
         var url1= voAnimalMostrar.obtenerObjetoAnimal()
         println("108 AR ${url1}")
         var sitioOK=sitioUp(url1)
@@ -152,12 +205,12 @@ class AR : AppCompatActivity() {
         //https://developers.google.com/ar/develop/scene-viewer
         val map = HashMap<String, String> ()
         map["file"] = {
-            if(sitioOK)
+            if(!sitioOK)
             {
-                url1
+                url1.toString()
             }else
             {
-                voAnimalMostrar.obtenerObjetoBackUpAnimal()
+                voAnimalMostrar.obtenerObjetoBackUpAnimal().toString()
             }
         }.toString()
 
@@ -189,7 +242,7 @@ class AR : AppCompatActivity() {
         map["disable_occlusion"] = true.toString()
         return map
     }
-
+ */
     private fun sitioUp(urlValidar:String?): Boolean {
         var estaUp= false
         val gfgThread = Thread {
@@ -209,12 +262,17 @@ class AR : AppCompatActivity() {
         gfgThread.start()
 
         return estaUp
+
+
+
+
     }
 
 
     //devolver region
     //Devulve un animal en null si no anda bien
-    private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient, locationRequest :LocationRequest,REQUEST_LOCATION_PERMISSION:Int): VoLocalizacion {
+    @SuppressLint("SuspiciousIndentation")
+    private fun solicitarUbicacionGPS(fusedLocationClient : FusedLocationProviderClient, locationRequest :LocationRequest, REQUEST_LOCATION_PERMISSION:Int): VoLocalizacion {
         var voLoc: VoLocalizacion= VoLocalizacion(null,null )
 
         var handlerThread = HandlerThread("LocationThread")
