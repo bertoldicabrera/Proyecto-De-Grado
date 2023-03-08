@@ -23,9 +23,9 @@ public class DaoLocalizaciones(context: Context?)  {
         Log.d("DaoLocalizaiones-23","esCercano10KMDeUmPunto")
         var distanciaMetros =calcularDistancia(latitud,longitud )
         Log.d("DaoLocalizaiones-28 distanciaenmetros","${distanciaMetros}")
-        var bool = distanciaMetros<3000000.0f
-        Log.d("DaoLocalizaiones-30 distanciaenmetros","${bool}")
-        return distanciaMetros<3000000.0f // cambiar por menor
+        var bool = distanciaMetros<100000.0f
+        Log.d("DaoLocalizaiones-30  esCercano10KMDeUmPunto","${bool}")
+        return distanciaMetros<10000.0f // cambiar por menor
     }
 
 
@@ -35,39 +35,40 @@ public class DaoLocalizaciones(context: Context?)  {
     }
 
 
+    private fun retornarLocalizacionPropria(latitud: Double,longitud: Double ):Location{
+        val localizacion1 = Location("A")
+        localizacion1.latitude = latitud
+        localizacion1.longitude = longitud
+        return localizacion1
+    }
     private fun calcularDistancia(latitud: Double?,longitud: Double? ): Float {
-
-        val localizacion1 = Location("Fernando")
-        if (latitud != null) {
-            localizacion1.latitude=latitud
-        }
-        if (longitud != null) {
-            localizacion1.longitude=longitud
-        }
-
         var distanceMinima=Float.MAX_VALUE//10
-        var localizacioDevolver= Location("Salida")
-        //var devolverPar: MutableList<Any> = mutableListOf(localizacioDevolver, distanceMinima)
-      //  Log.d("DaoLocalizaciones -devolverPar -48","${devolverPar.size}")
-         Log.d("calcularDistancia -DaoLocalizaciones","48")
-        var listaLocalizaciones= findAll()// Se trae todas las localizaciones
-        Log.d("calcularDistancia -DaoLocalizaciones -50","${listaLocalizaciones.size}")
-        for (elemento in listaLocalizaciones) {
+        Log.d("calcularDistancia -DaoLocalizaciones 47","Esta es la maxima${distanceMinima}")
 
-            var localizacion2 = Location("Sebastian")
-            localizacion2.latitude= elemento.obtenerLatitud()!!
-            localizacion2.longitude= elemento.obtenerLongitud()!!
+        if (latitud != null && longitud != null) {
+            val localizacionUsuario = retornarLocalizacionPropria(latitud, longitud)
+            var listaLocalizaciones= findAll()// Se trae todas las localizaciones
+            Log.d("calcularDistancia -DaoLocalizaciones 50","${listaLocalizaciones.size}")
+            for (elemento in listaLocalizaciones) {
 
-            var distanciaElemento = localizacion1.distanceTo(localizacion2)
+                var localizacion2 = Location("B")
+                localizacion2.latitude= elemento.obtenerLatitud()!!
+                localizacion2.longitude= elemento.obtenerLongitud()!!
 
-            if(distanciaElemento<distanceMinima)//0<10
-            {
-                distanceMinima=distanciaElemento
-                localizacioDevolver.latitude=localizacion2.latitude
-                localizacioDevolver.longitude=localizacion2.longitude
-
+                var distanciaElemento = localizacionUsuario.distanceTo(localizacion2)
+                Log.d("calcularDistancia -DaoLocalizaciones 60","La distancia al elemento es: ${distanciaElemento}")
+                if(distanciaElemento<distanceMinima)//0<10
+                {
+                    Log.d("calcularDistancia -DaoLocalizaciones 63","${distanciaElemento}<${distanceMinima}")
+                    distanceMinima=distanciaElemento
+                    Log.d("calcularDistancia -DaoLocalizaciones 65","Ahora la minima a devolver vale ${distanceMinima}")
+                }
             }
+
         }
+
+
+
         return distanceMinima
     }
 
@@ -75,11 +76,9 @@ public class DaoLocalizaciones(context: Context?)  {
     private fun localizacionxdistancia(latitud: Double?,longitud: Double? ): Location {
 
         val localizacionEntrada = Location("Entrada")
-        if (latitud != null) {
+        if (latitud != null && longitud != null) {
             localizacionEntrada.latitude=latitud
-        }
-        if (longitud != null) {
-            localizacionEntrada.longitude=longitud
+             localizacionEntrada.longitude=longitud
         }
         var distanceMinima=Float.MAX_VALUE//10
         var localizacioDevolver= Location("Salida")
