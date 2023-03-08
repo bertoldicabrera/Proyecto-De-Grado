@@ -22,27 +22,27 @@ public class DbHelper (context: Context?) :
 
         CrearTablas(sqLiteDatabase)
 
+        //Localizaciones
+
+        insertarLocalizacion (sqLiteDatabase, "Fernando",-34.902355,-56.187859)
+        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075)
+        insertarLocalizacion (sqLiteDatabase, "Ramiro",-34.886366,-56.147075)
 //Carpincho
         insertarAnimalDbHelper(sqLiteDatabase,"Carpincho", "Carpincho o Capivara","https://es.wikipedia.org/wiki/Hydrochoerus_hydrochaeris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/Carpincho/scene.gltf","https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Carpincho/carpincho.mp3?raw=true")
-        insertarLocalizacion (sqLiteDatabase, "Fernando",-34.902355,-56.187859)
-        insertarRegion(sqLiteDatabase, 1, 1)
+       insertarRegion(sqLiteDatabase, 1, 1)
 
 //Pinguino
         insertarAnimalDbHelper(sqLiteDatabase,"Pinguino", "Pinguino", "https://es.wikipedia.org/wiki/Spheniscidae", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Pinguino/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/Pinguino/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Pinguino/pinguino.mp3?raw=true")
-        insertarLocalizacion (sqLiteDatabase, "Fernando",-34.902355,-56.187859)
-        insertarRegion(sqLiteDatabase, 1, 1)
+        insertarRegion(sqLiteDatabase, 2, 2)
 //Aveztruz
         insertarAnimalDbHelper(sqLiteDatabase,"Avestruz", "Avestruz", "https://es.wikipedia.org/wiki/Struthio_camelus", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/avestruz/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/avestruz/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/avestruz/avestruz.mp3?raw=true")
-        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075)
-        insertarRegion(sqLiteDatabase, 2, 2)
+        insertarRegion(sqLiteDatabase, 3, 3)
 //Danta
         insertarAnimalDbHelper(sqLiteDatabase,"Danta", "Danta", "https://es.wikipedia.org/wiki/Tapirus_terrestris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/danta/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/danta/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/danta/danta.mp3?raw=true")
-        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075)
-        insertarRegion(sqLiteDatabase, 2, 2)
+        insertarRegion(sqLiteDatabase, 1, 4)
 //Lion
         insertarAnimalDbHelper(sqLiteDatabase,"Leon", "Leon", "https://es.wikipedia.org/wiki/Panthera_leo", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/lion/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/lion/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/lion/lion.mp3?raw=true")
-        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075)
-        insertarRegion(sqLiteDatabase, 2, 2)
+        insertarRegion(sqLiteDatabase, 3, 5)
 
         println("Fin Crear tablas")
 
@@ -98,9 +98,9 @@ public class DbHelper (context: Context?) :
     }
 
 
-    private fun insertarRegion(sqLiteDatabase: SQLiteDatabase, idloc:Int, idReg:Int){
+    private fun insertarRegion(sqLiteDatabase: SQLiteDatabase, idloc:Int, idAnimalReg:Int){
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION ($KEY_LOCALIZACION_ID_EN_REGION, $KEY_ANIMAL_ID_EN_REGION)"+
-                " VALUES ('${idloc.toInt()}', '${idReg.toInt()}')")
+                " VALUES ('${idloc.toInt()}', '${idAnimalReg.toInt()}')")
 
     }
 
