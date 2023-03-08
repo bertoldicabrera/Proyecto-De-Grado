@@ -20,8 +20,37 @@ public class DbHelper (context: Context?) :
         println("Inicio crear tablas XXXXXXXXXXXX")
 
 
+        CrearTablas(sqLiteDatabase)
+
+//Carpincho
+        insertarAnimalDbHelper(sqLiteDatabase,"Carpincho", "Carpincho o Capivara","https://es.wikipedia.org/wiki/Hydrochoerus_hydrochaeris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/Carpincho/scene.gltf","https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Carpincho/carpincho.mp3?raw=true")
+        insertarLocalizacion (sqLiteDatabase, "Fernando",-34.902355,-56.187859)
+        insertarRegion(sqLiteDatabase, 1, 1)
+
+//Pinguino
+        insertarAnimalDbHelper(sqLiteDatabase,"Pinguino", "Pinguino", "https://es.wikipedia.org/wiki/Spheniscidae", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Pinguino/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/Pinguino/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Pinguino/pinguino.mp3?raw=true")
+        insertarLocalizacion (sqLiteDatabase, "Fernando",-34.902355,-56.187859)
+        insertarRegion(sqLiteDatabase, 1, 1)
+//Aveztruz
+        insertarAnimalDbHelper(sqLiteDatabase,"Avestruz", "Avestruz", "https://es.wikipedia.org/wiki/Struthio_camelus", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/avestruz/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/avestruz/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/avestruz/avestruz.mp3?raw=true")
+        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075)
+        insertarRegion(sqLiteDatabase, 2, 2)
+//Danta
+        insertarAnimalDbHelper(sqLiteDatabase,"Danta", "Danta", "https://es.wikipedia.org/wiki/Tapirus_terrestris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/danta/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/danta/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/danta/danta.mp3?raw=true")
+        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075)
+        insertarRegion(sqLiteDatabase, 2, 2)
+//Lion
+        insertarAnimalDbHelper(sqLiteDatabase,"Leon", "Leon", "https://es.wikipedia.org/wiki/Panthera_leo", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/lion/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/lion/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/lion/lion.mp3?raw=true")
+        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075)
+        insertarRegion(sqLiteDatabase, 2, 2)
+
+        println("Fin Crear tablas")
+
+    }
+
+    private fun CrearTablas(sqLiteDatabase: SQLiteDatabase){
         //Tabla Animales
-       sqLiteDatabase.execSQL(
+        sqLiteDatabase.execSQL(
             "CREATE TABLE IF NOT EXISTS " + TABLE_ANIMALES + "(" + KEY_IDANIMAL+
                     " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME+
                     " TEXT NOT NULL," + KEY_DES+
@@ -48,35 +77,30 @@ public class DbHelper (context: Context?) :
                 "FOREIGN KEY ($KEY_ANIMAL_ID_EN_REGION) REFERENCES $TABLE_ANIMALES($KEY_IDANIMAL), " +
                 "FOREIGN KEY ($KEY_LOCALIZACION_ID_EN_REGION) REFERENCES $TABLE_LOCALIZACIONES($KEY_LOCALIZACION_ID))"
         )
+    }
 
+
+    private fun insertarLocalizacion(sqLiteDatabase: SQLiteDatabase, nombreLocal:String, latitud:Double, longitud:Double) {
+
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
+                "VALUES ('${nombreLocal.toString()}',${latitud.toDouble()},${longitud.toDouble()})"
+        )
+    }
+
+
+    private fun insertarAnimalDbHelper(sqLiteDatabase: SQLiteDatabase,nombreAni: String,descrip: String, linkDescr: String, obj3D:String, obj3DbackUp: String, sonido: String ){
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
-                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('Carpincho', 'Animal  popular'," +
-                " 'https://es.wikipedia.org/wiki/Canis_familiaris', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf', 'https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Perro/perro.mp3?raw=true')"
+                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('${nombreAni.toString()}', '${descrip.toString()}'," +
+                " '${linkDescr.toString()}', '${obj3D.toString()}', '${obj3DbackUp.toString()}', '${sonido.toString()}')"
 
         )
-        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
-                "VALUES ('Fernando',-34.902355,-56.187859)"
-        )
+    }
 
+
+    private fun insertarRegion(sqLiteDatabase: SQLiteDatabase, idloc:Int, idReg:Int){
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION ($KEY_LOCALIZACION_ID_EN_REGION, $KEY_ANIMAL_ID_EN_REGION)"+
-        "VALUES (1, 1)"
-        )
-//Otro animal
-        sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
-                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('Vaca', 'Animal de pastoreo'," +
-                " 'https://es.wikipedia.org/wiki/Bos_taurus', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf', 'https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf',  'https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Vaca/vaca.mp3?raw=true')"
-
-        )
-        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LONGITUD,$KEY_LATITUD)"+
-                "VALUES ('Sebastian',-34.886360,-56.147075)"
-        )
-
-        sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION ($KEY_LOCALIZACION_ID_EN_REGION, $KEY_ANIMAL_ID_EN_REGION)"+
-                "VALUES (2, 2)"
-        )
-
-        println("Fin Crear tablas")
+                " VALUES ('${idloc.toInt()}', '${idReg.toInt()}')")
 
     }
 
@@ -240,94 +264,7 @@ public class DbHelper (context: Context?) :
     }
 
 
-    ///Para abajo no se usan....
 
-   private fun insertarLocalizacion(localizacion: Localization):Long {
-
-        val nombre = localizacion.obtenerNombreLocalizacion()
-        val latitud= localizacion.obtenerLatitud()
-        val longitud= localizacion.obtenerLongitud()
-
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-
-        contentValues.put(KEY_NOMBRE_LOCALIZACION, nombre)
-        contentValues.put(KEY_LATITUD,latitud )
-        contentValues.put(KEY_LONGITUD,longitud )
-
-        // Inserting Row
-        //https://www.javatpoint.com/kotlin-android-sqlite-tutorial
-        val success = db.insert(TABLE_LOCALIZACIONES, null, contentValues)
-        //2nd argument is String containing nullColumnHack(ver teorico)
-        db.close() // Closing database connection
-        return success //el ID de fila de la fila recién insertada, o -1 si ocurrió un error
-    }
-
-    private fun eliminarLocalizacion(latitud: Double?, longitud: Double?):Int {
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        contentValues.put(KEY_LATITUD, latitud) //  Id
-        contentValues.put(KEY_LONGITUD, longitud)
-        // Deleting Row
-        val success = db.delete(TABLE_LOCALIZACIONES,KEY_LATITUD+"="+latitud+"AND"+ KEY_LONGITUD+"="+longitud,null)
-        //2nd argument is String containing nullColumnHack
-        db.close() // Closing database connection
-        return success
-        /*
-        el número de filas afectadas si se pasa una cláusula where,
-         0 en caso contrario. Para eliminar todas las filas y obtener un recuento,
-         pase "1" como cláusula where.
-         */
-    }
-
-    private fun insertarAnimalDbHelper(animalNew:Animal):Long{
-
-        val nombre = animalNew.obtenerNombreAnimal()
-        val descripcion= animalNew.obtenerDescripcionAnimal()
-        val url= animalNew.obtenerLinkAnimal()
-        val objetoBack= animalNew.obtenerObjetoBackUpAnimal()
-        val objeto3D= animalNew.obtenerObjetoAnimal()
-        val sonido=animalNew.obtenerSonido()
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        //contentValues.put(KEY_ID, emp.userId)
-        contentValues.put(KEY_NAME, nombre)
-        contentValues.put(KEY_DES,descripcion )
-        contentValues.put(KEY_URL,url )
-        contentValues.put(KEY_OBJBACKUP,objetoBack )
-        contentValues.put(KEY_OBJ,objeto3D )
-        contentValues.put(KEY_SONIDO,sonido )
-
-        val success = db.insert(TABLE_ANIMALES, null, contentValues)
-        //2nd argument is String containing nullColumnHack(ver teorico)
-        db.close() // Closing database connection
-        return success
-    }
-    private fun eliminarAnimalDbHelper(nombre:String):Int{
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        contentValues.put(KEY_NAME, nombre) //  Id
-        // Deleting Row
-        val success = db.delete(TABLE_ANIMALES, "$KEY_NAME=$nombre",null)
-        //2nd argument is String containing nullColumnHack
-        db.close() // Closing database connection
-        return success
-    }
-
-    private fun insertarRegion(idLocalizacion:Int,idAnimal:Int):Long {
-
-
-
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-
-        contentValues.put(KEY_LOCALIZACION_ID_EN_REGION,idLocalizacion )
-        contentValues.put(KEY_ANIMAL_ID_EN_REGION,idAnimal )
-        val success = db.insert(TABLE_REGION, null, contentValues)
-
-        db.close() // Closing database connection
-        return success //el ID de fila de la fila recién insertada, o -1 si ocurrió un error
-    }
 
 
 }

@@ -59,7 +59,7 @@ if(iDLocalizacion!=-1)
     }
 
     private fun animalPorDefecto():VoAnimal{
-       var voAnimalSaldia = VoAnimal("PorDefecto", "PorDefecto", null, null, "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Macaco/macacogitlab.gltf", null)
+       var voAnimalSaldia = VoAnimal("Mapache", "Mapache", "https://es.wikipedia.org/wiki/Procyon", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/mapache/scene.gltf", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/mapache/scene.gltf", "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/mapache/mapache.mp3?raw=true")
 
         return voAnimalSaldia
     }
