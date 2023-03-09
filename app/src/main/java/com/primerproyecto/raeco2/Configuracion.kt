@@ -1,12 +1,13 @@
 package com.primerproyecto.raeco2
 
 public class Configuracion(
-    private var titulo: Boolean?,
-    private var link: Boolean?,
-    private var renderizado: Boolean?,
-    private var sonido: Boolean?
+    private var titulo: Boolean,
+    private var link: Boolean,
+    private var renderizado: Boolean,
+    private var sonido: Boolean
 
 ) {
+    /*
     companion object {
         fun apply(
             titulo: Boolean? = null,
@@ -17,36 +18,36 @@ public class Configuracion(
             return Configuracion(titulo, link, renderizado, sonido)
         }
     }
+*/
 
-
-    fun seterTitulo(varTitulo: Boolean?){
+    fun seterTitulo(varTitulo: Boolean){
         this.titulo =varTitulo
 
     }
-    fun seterLink(varLink: Boolean?){
+    fun seterLink(varLink: Boolean){
         this.link = varLink
 
     }
-    fun seterRenderizado(varTamano: Boolean?){
+    fun seterRenderizado(varTamano: Boolean){
         this.renderizado = varTamano
     }
 
-    fun seterSonido(varSonido: Boolean?){
+    fun seterSonido(varSonido: Boolean){
         this.sonido = varSonido
     }
-    fun esTituloActivado(): Boolean? {
+    fun esTituloActivado(): Boolean {
         return this.titulo
 
     }
-    fun esLinkActivado(): Boolean? {
+    fun esLinkActivado(): Boolean {
         return this.link
 
     }
-    fun esRenderizadoActivado(): Boolean? {
+    fun esRenderizadoActivado(): Boolean {
         return this.renderizado
     }
 
-    fun esSonidoActivado(): Boolean? {
+    fun esSonidoActivado(): Boolean {
         return this.sonido
     }
 

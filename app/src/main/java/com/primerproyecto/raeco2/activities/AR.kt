@@ -3,27 +3,18 @@ package com.primerproyecto.raeco2.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Looper
-import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.Switch
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.tasks.Task
 import com.primerproyecto.raeco2.*
 import com.primerproyecto.raeco2.R
 import java.net.HttpURLConnection
@@ -31,14 +22,15 @@ import java.net.URL
 
 class AR : AppCompatActivity() {
 
-    private var titulo: Boolean? = null
-    private var link: Boolean? = null
-    private var renderizado: Boolean? = null
-    private var sonido: Boolean? = null
+    private var titulo: Boolean=false
+    private var link: Boolean=false
+    private var renderizado: Boolean=false
+    private var sonido: Boolean=false
     private var ar_btn : Button? = null;
     private var atras_btn : Button? = null;
     private val  TAGGPS = "UBICACION GPS-AR "
     private val fachada:Facade = Facade(this)
+   private var configu = Configuracion(titulo, link, renderizado, sonido)
 
     private val REQUEST_LOCATION_PERMISSION : Int = 1
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -54,23 +46,27 @@ class AR : AppCompatActivity() {
         val SwitchSonido = findViewById<Switch>(R.id.switch4)
         SwitchTitulo.setOnCheckedChangeListener { buttonView, isChecked ->
             titulo = isChecked
-            Log.d("AR 57 Titulo ", "${titulo}")
+            configu.seterTitulo(titulo)
+            Log.d("AR 57 Titulo ", "${titulo} y config ${configu.esTituloActivado()}")
         }
         SwitchLink.setOnCheckedChangeListener { buttonView, isChecked ->
             link = isChecked
+            configu.seterLink(link)
             Log.d("AR 61 link ", "${link}")
         }
         SwitchRenderizado.setOnCheckedChangeListener { buttonView, isChecked ->
             renderizado = isChecked
+            configu.seterRenderizado(renderizado)
             Log.d("AR 65 renderizado ", "${renderizado}")
         }
         SwitchSonido.setOnCheckedChangeListener { buttonView, isChecked ->
             sonido = isChecked
+            configu.seterSonido(sonido)
             Log.d("AR 69 sonido ", "${sonido}")
         }
-       // var Configuracion : Configuracion = Configuracion(titulo, link, renderizado, sonido)
 
-        var con = Configuracion.apply(titulo, link, renderizado, sonido)
+
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         var locationRequest = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -88,8 +84,10 @@ class AR : AppCompatActivity() {
             if(voLoc.obtenerLatitud()!=null){
                var voAni= fachada.buscarAnimal(voLoc) //va a buscar el animal y vuelve null
                 Log.d("AR 89 Creo voLoc", "${voAni.obtenerObjetoAnimal()}")
-               // crearAnimal3dImplisito(voAni.obtenerObjetoAnimal())
-                crearAnimal3dExplicito(con, voAni)
+
+                Log.d("AR 88 La config tiene ", "  ${configu.esTituloActivado()}, ${configu.esLinkActivado()} ,${configu.esRenderizadoActivado()} ,${configu.esSonidoActivado()}")
+
+                crearAnimal3dExplicito(configu, voAni)
             }else{
                 println("El animal es null POR ALGUNA RARON NO CARGA EL POR DEFECTO")
                 Toast.makeText(this, "Error 76 al cargar animal AR", Toast.LENGTH_LONG)
@@ -114,8 +112,11 @@ class AR : AppCompatActivity() {
         println("84 AR crearAnimal3dExplicito ${voAni.obtenerObjetoAnimal()}")
         //string para el
         val intentUri = createIntentUriExplicito(config, voAni)
+        println("115 AR pronto para desplegar animal 3D  ${intentUri}")
         sceneViewerIntent.setData(intentUri);
+        println("117 despues del Set data del sceneViwer")
         sceneViewerIntent.setPackage("com.google.ar.core");
+        println("119 despues de setear el package de google ar core")
         startActivity(sceneViewerIntent);
 
     }
@@ -133,19 +134,9 @@ class AR : AppCompatActivity() {
     private fun createIntentUriExplicito(config:Configuracion, voAnimalMostrar:VoAnimal) : Uri {
         val intentUri = Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
 
-        //obtener estos datos del usuario
-        //SEGUIR ACÁ, ARREGLAR LAS CONSULTAS A LA BASE DE DATOS,
-        //DADO QUE CAMBIAMOS EL NOMBRE DE GETS Y SETS DE ANIMAL
 
-        /*
         var params = cargarParametrosDelAnimal(config, voAnimalMostrar)
-        params.forEach {
-               printl("for each $key,$value")
-                (key, value) -> intentUri.appendQueryParameter(key, value)
-        }
-
-         */
-        var params = cargarParametrosDelAnimal(config, voAnimalMostrar)
+        Log.d("136 Parametros para Realidad aumentada  AR intentUri.build()","${intentUri.toString()}")
         for ((key, value) in params) {
             intentUri.appendQueryParameter(key, value)
             println(" 149 La clave es $key y el valor es $value")
@@ -161,17 +152,22 @@ class AR : AppCompatActivity() {
         println("110 AR $sitioOK")
         val map = HashMap<String, String>()
         map["mode"] = "ar_preferred"
+        Log.d("165 Link esta en ","${config.esLinkActivado()}") // aca llega en NULL
         if (config.esLinkActivado() == true) {
             map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()
+            Log.d("166 Link","${map["link"]}")
         }
         if (config.esTituloActivado() == true) {
             map["title"] = voAnimalMostrar.obtenerNombreAnimal().toString()
+            Log.d("170 title","${map["title"]}")
         }
         if (config.esSonidoActivado()== true) {
             map["sound"] = voAnimalMostrar.obtenerSonido().toString()
+            Log.d("174 sound","${map["sound"]}")
         }
         if (config.esRenderizadoActivado()== true) {
             map["resizable"] = config.esRenderizadoActivado().toString()
+            Log.d("178 resizable","${map["resizable"]}")
         }
         map["disable_occlusion"] = true.toString()
         if (!sitioOK) {
