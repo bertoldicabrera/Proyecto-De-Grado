@@ -19,7 +19,6 @@ public class DbHelper (context: Context?) :
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
         println("Inicio crear tablas XXXXXXXXXXXX")
 
-
         CrearTablas(sqLiteDatabase)
 
         //Localizaciones
