@@ -47,10 +47,6 @@ class AR : AppCompatActivity() {
         setContentView(R.layout.activity_ar)
 
 
-
-
-
-
  // Obtener una referencia al objeto Switch desde la vista
         val SwitchTitulo = findViewById<Switch>(R.id.switch1)
         val SwitchLink = findViewById<Switch>(R.id.switch2)
@@ -58,15 +54,19 @@ class AR : AppCompatActivity() {
         val SwitchSonido = findViewById<Switch>(R.id.switch4)
         SwitchTitulo.setOnCheckedChangeListener { buttonView, isChecked ->
             titulo = isChecked
+            Log.d("AR 57 Titulo ", "${titulo}")
         }
         SwitchLink.setOnCheckedChangeListener { buttonView, isChecked ->
             link = isChecked
+            Log.d("AR 61 link ", "${link}")
         }
         SwitchRenderizado.setOnCheckedChangeListener { buttonView, isChecked ->
             renderizado = isChecked
+            Log.d("AR 65 renderizado ", "${renderizado}")
         }
         SwitchSonido.setOnCheckedChangeListener { buttonView, isChecked ->
             sonido = isChecked
+            Log.d("AR 69 sonido ", "${sonido}")
         }
        // var Configuracion : Configuracion = Configuracion(titulo, link, renderizado, sonido)
 
@@ -155,35 +155,25 @@ class AR : AppCompatActivity() {
     }
 
     private fun cargarParametrosDelAnimal(config:Configuracion, voAnimalMostrar: VoAnimal) : HashMap<String, String> {
-
-
         var url1 = voAnimalMostrar.obtenerObjetoAnimal()
         println("108 AR $url1")
         var sitioOK = sitioUp(url1)
         println("110 AR $sitioOK")
-
         val map = HashMap<String, String>()
-
         map["mode"] = "ar_preferred"
-
         if (config.esLinkActivado() == true) {
             map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()
         }
-
         if (config.esTituloActivado() == true) {
             map["title"] = voAnimalMostrar.obtenerNombreAnimal().toString()
         }
-
         if (config.esSonidoActivado()== true) {
             map["sound"] = voAnimalMostrar.obtenerSonido().toString()
         }
-
         if (config.esRenderizadoActivado()== true) {
             map["resizable"] = config.esRenderizadoActivado().toString()
         }
-
         map["disable_occlusion"] = true.toString()
-
         if (!sitioOK) {
             println("186 file AR ${url1.toString()}")
             map["file"] = url1.toString()
@@ -193,56 +183,10 @@ class AR : AppCompatActivity() {
             map["file"] = voAnimalMostrar.obtenerObjetoBackUpAnimal().toString()
             println("190 file AR ${map["file"]}")
         }
-
         return map
     }
 
-        /*
-        var url1= voAnimalMostrar.obtenerObjetoAnimal()
-        println("108 AR ${url1}")
-        var sitioOK=sitioUp(url1)
-        println("110 AR ${sitioOK}")
-        //https://developers.google.com/ar/develop/scene-viewer
-        val map = HashMap<String, String> ()
-        map["file"] = {
-            if(!sitioOK)
-            {
-                url1.toString()
-            }else
-            {
-                voAnimalMostrar.obtenerObjetoBackUpAnimal().toString()
-            }
-        }.toString()
 
-        map["mode"] = "ar_preferred"
-        if (config.esLinkActivado() == true){
-            map["link"] = voAnimalMostrar.obtenerLinkAnimal().toString()
-        }
-        //si
-        if (config.esTituloActivado()==true){
-            map["title"] = voAnimalMostrar.obtenerNombreAnimal().toString()//si
-        }
-        if (config.esSonidoActivado()==true){
-            /*
-           Una URL a una pista de audio en bucle que se sincroniza con la primera animación
-            incorporada en un archivo glTF. Se debe proporcionar junto con un glTF
-            con una animación que coincida con la longitud. Si está presente, el sonido se repite
-             una vez cargado el modelo.
-        */
-            map["sound"] = voAnimalMostrar.obtenerSonido().toString()//si ver de cargar en la bd
-        }
-
-        if (config.esRenderizadoActivado()==true){
-            map["resizable"] = config.esRenderizadoActivado().toString()// si
-        }
-        /*
-         Cuando se configura en true, los objetos ubicados en la escena
-          siempre aparecen delante de objetos reales de la escena.
-         */
-        map["disable_occlusion"] = true.toString()
-        return map
-    }
- */
     private fun sitioUp(urlValidar:String?): Boolean {
         var estaUp= false
         val gfgThread = Thread {
@@ -262,9 +206,6 @@ class AR : AppCompatActivity() {
         gfgThread.start()
 
         return estaUp
-
-
-
 
     }
 

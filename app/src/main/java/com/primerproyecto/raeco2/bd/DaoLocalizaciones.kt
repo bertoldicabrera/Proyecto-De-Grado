@@ -67,8 +67,6 @@ public class DaoLocalizaciones(context: Context?)  {
 
         }
 
-
-
         return distanceMinima
     }
 
