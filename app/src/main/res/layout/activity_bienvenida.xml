@@ -8,19 +8,41 @@
 
     <Button
         android:id="@+id/ir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="80dp"
         android:text="ir"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
         android:id="@+id/atras"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="283dp"
+        android:layout_width="120dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="80dp"
         android:text="atras"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="251dp"
+        android:layout_height="211dp"
+        android:layout_marginTop="120dp"
+        android:text="Bienvenidos a nuestra aplicación de realidad aumentada para ecoturismo. Con esta aplicación, podrás explorar la naturaleza de una manera completamente nueva y emocionante. Utilizando la tecnología de GPS de tu teléfono móvil, nuestra aplicación mostrará animales en 3D superpuestos en tu entorno real!"
+        android:textAlignment="center"
+        android:textColor="#100F0F"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ir"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.502" />
 </androidx.constraintlayout.widget.ConstraintLayout>

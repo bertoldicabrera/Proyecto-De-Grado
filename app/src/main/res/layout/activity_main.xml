@@ -6,44 +6,65 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ude"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.065"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/menssage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:layout_marginEnd="8dp"
-        android:text="Hello World!"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        android:layout_width="144dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="20dp"
+        android:text="Versión!"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bienvenida" />
 
     <Button
         android:id="@+id/btnCrear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_width="144dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
         android:text="CrearBD"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menssage" />
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="248dp"
+        android:layout_width="144dp"
+        android:layout_height="48dp"
         android:text="Ver macaco"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
 
     <Button
         android:id="@+id/bienvenida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="76dp"
+        android:layout_width="173dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="Bienvenida"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnCrear" />
+        app:icon="@android:drawable/btn_star_big_on"
+        app:iconTint="#FFEB3B"
+        app:layout_constraintBottom_toTopOf="@+id/menssage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
