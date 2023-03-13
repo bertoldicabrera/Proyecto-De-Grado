@@ -72,6 +72,8 @@ class AR : AppCompatActivity() {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             interval = 10000 // intervalo de actualización en milisegundos
             fastestInterval = 5000 // el intervalo más rápido en milisegundos
+            smallestDisplacement = 100f
+
 
         }
         var voLoc  = solicitarUbicacionGPS(fusedLocationClient, locationRequest, REQUEST_LOCATION_PERMISSION)
