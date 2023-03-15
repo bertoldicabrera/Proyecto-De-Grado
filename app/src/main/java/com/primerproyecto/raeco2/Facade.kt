@@ -15,29 +15,13 @@ class Facade (context: Context?){
     private val animales : DaoAnimales = DaoAnimales(context) //Ver si va así
      private var localizaciones :  DaoLocalizaciones = DaoLocalizaciones(context) //Ver si va así
 
-    fun agregarAnimal(voNuevoAnimal: VoAnimal) {
+    fun buscarAnimaleExtinto():VoAnimal{
 
-        if(!animales.member(voNuevoAnimal.obtenerNombreAnimal()))
-        {
-            val animal=  voAnimalParaAnimal(voNuevoAnimal)
-            animales.insert(animal)
-        }else
-        {
-            println("El animal ya existe * ver fachada")
-        }
+        var animalExtinto = animales.findAnimalPreHistorico()
+
+        return  animalParaVoAnimal(animalExtinto)
     }
-    fun eliminarAnimal(nombre: String) {
 
-
-        if(animales.member(nombre))
-        {
-            animales.delete(nombre)
-        }else
-        {
-            println("El animal no existe * ver fachada")
-        }
-
-    }
     @SuppressLint("SuspiciousIndentation")
     fun buscarAnimal(localizacion: VoLocalizacion): VoAnimal {
         Log.d("BuscarAnimal-Fachada", "37 Lat ${localizacion.obtenerLatitud()} Long ${localizacion.obtenerLongitud()}  ")
@@ -119,6 +103,5 @@ if(iDLocalizacion!=-1)
 }
 
 
-//si no es cercana a 10km devulve -1
 
 
