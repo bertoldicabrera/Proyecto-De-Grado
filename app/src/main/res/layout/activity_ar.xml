@@ -60,6 +60,7 @@
         android:layout_height="49dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="80dp"
+        android:backgroundTint="@color/colorBotones"
         android:text="AR"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -84,6 +85,7 @@
         android:layout_height="49dp"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="80dp"
+        android:backgroundTint="@color/colorBotones"
         android:text="Atras"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
