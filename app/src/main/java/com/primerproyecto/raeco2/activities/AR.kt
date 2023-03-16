@@ -26,7 +26,8 @@ class AR : AppCompatActivity() {
     private var link: Boolean=false
     private var renderizado: Boolean=false
     private var sonido: Boolean=false
-    private var ar_btn : Button? = null;
+    private var arEcoturismo_btn : Button? = null;
+    private var arPreHistoria_btn : Button? = null;
     private var atras_btn : Button? = null;
     private val  TAGGPS = "UBICACION GPS-AR "
     private val fachada:Facade = Facade(this)
@@ -78,8 +79,8 @@ class AR : AppCompatActivity() {
         }
         var voLoc  = solicitarUbicacionGPS(fusedLocationClient, locationRequest, REQUEST_LOCATION_PERMISSION)
 
-        ar_btn = findViewById(R.id.button2)
-        ar_btn?.setOnClickListener {
+        arEcoturismo_btn = findViewById(R.id.buttonEcoturismo)
+        arEcoturismo_btn?.setOnClickListener {
 
 
             Log.d("AR 85 Creo voLoc", "${voLoc.obtenerLongitud()}")
@@ -98,7 +99,13 @@ class AR : AppCompatActivity() {
 
 
         }
-        atras_btn = findViewById(R.id.button3)
+        arPreHistoria_btn=  findViewById(R.id.buttonPreHistoria)
+        arPreHistoria_btn?.setOnClickListener {
+            onBackPressed()
+        }
+
+
+        atras_btn = findViewById(R.id.buttonAtras)
         atras_btn?.setOnClickListener {
             onBackPressed()
         }

@@ -13,9 +13,7 @@ public class DaoAnimales(context: Context?)  {
     //Retorna un animal aleatorio en base a region en que vive
 
     }
-    fun findAnimalPreHistorico(): Animal{
-        return dataBase.obtenerAnimalPreHistoricoAleatorio()
-    }
+
     fun member (nombre:String?): Boolean{
         //llamar a existeAnimalDbHelper(nombre)
         return dataBase.existeAnimalDbHelper(nombre)

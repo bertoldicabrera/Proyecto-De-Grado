@@ -47,7 +47,7 @@
         android:layout_marginBottom="50dp"
         android:text="Sonido"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/buttonEcoturismo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,13 +55,13 @@
         app:layout_constraintVertical_bias="0.036" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="120dp"
+        android:id="@+id/buttonEcoturismo"
+        android:layout_width="140dp"
         android:layout_height="49dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="80dp"
         android:backgroundTint="@color/colorBotones"
-        android:text="AR"
+        android:text="Ecoturismo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -80,14 +80,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="120dp"
+        android:id="@+id/buttonPreHistoria"
+        android:layout_width="140dp"
         android:layout_height="49dp"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="80dp"
         android:backgroundTint="@color/colorBotones"
-        android:text="Atras"
+        android:text="Prehistoria"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonAtras"
+        android:layout_width="140dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/colorBotones"
+        android:text="Atras"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

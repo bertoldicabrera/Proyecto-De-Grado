@@ -36,19 +36,9 @@ class MainActivity : AppCompatActivity() {
         message = findViewById(R.id.menssage)
         permisosIniciarLocalizacion()
         message?.text ="Versión 1.0"
-        extra_btn = findViewById(R.id.button)
-        extra_btn?.setOnClickListener {
-          //llamar a obtener aniamales extintos
 
-        }
 
-        btn_Crear = findViewById(R.id.btnCrear)
 
-        btn_Crear?.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-
-            }
-        })
 
         bienvenida = findViewById(R.id.bienvenida)
         bienvenida?.setOnClickListener {

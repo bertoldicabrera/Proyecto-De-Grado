@@ -146,42 +146,6 @@ public class DbHelper (context: Context?) :
         return existe
     }
 
-    fun obtenerAnimalPreHistoricoAleatorio():Animal{
-        val animal = Animal(null,null,null,null,null, null)
-        val db = this.writableDatabase
-        var index: Int
-
-        val selectQuery="SELECT A.* FROM $TABLE_ANIMALES AS A INNER JOIN $TABLE_REGION AS R "+
-                "ON R.$KEY_LOCALIZACION_ID_EN_REGION=1 AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL" +
-                " order by random() limit 1;"
-//Suponiendo que trae un animal
-        Log.d("DBHelper BuscoAnimal 140", "${selectQuery}")
-        val cursor = db.rawQuery(selectQuery, null)
-        Log.d("DBHelper BuscoAnimal 142", "${cursor.count}")
-
-        if (cursor != null) {
-            //  cursor.moveToFirst()
-            while (cursor.moveToNext()) {
-
-                index = cursor.getColumnIndexOrThrow(KEY_NAME)
-                animal.setearNombreAnimal(cursor.getString(index))
-                index = cursor.getColumnIndexOrThrow(KEY_DES)
-                animal.setearDescripcionAnimal(cursor.getString(index))
-                index = cursor.getColumnIndexOrThrow(KEY_URL)
-                animal.setearLinkAnimal(cursor.getString(index))
-                index = cursor.getColumnIndexOrThrow(KEY_OBJBACKUP)
-                animal.setearUrlBackUpAnimal(cursor.getString(index))
-                index = cursor.getColumnIndexOrThrow(KEY_OBJ)
-                animal.setearObjetoAnimal(cursor.getString(index))
-                index = cursor.getColumnIndexOrThrow(KEY_SONIDO)
-                animal.setearSonido(cursor.getString(index))
-            }
-        }
-        cursor.close()
-        Log.d("DBHelper BuscoAnimal 162", "${animal.obtenerNombreAnimal()}")
-        return animal
-    }
-
 
 //Puede devolver un animal nulo, con solo la region seteada.
     fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int): Animal {

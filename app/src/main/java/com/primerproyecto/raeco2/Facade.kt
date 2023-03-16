@@ -15,12 +15,7 @@ class Facade (context: Context?){
     private val animales : DaoAnimales = DaoAnimales(context) //Ver si va así
      private var localizaciones :  DaoLocalizaciones = DaoLocalizaciones(context) //Ver si va así
 
-    fun buscarAnimaleExtinto():VoAnimal{
 
-        var animalExtinto = animales.findAnimalPreHistorico()
-
-        return  animalParaVoAnimal(animalExtinto)
-    }
 
     @SuppressLint("SuspiciousIndentation")
     fun buscarAnimal(localizacion: VoLocalizacion): VoAnimal {
