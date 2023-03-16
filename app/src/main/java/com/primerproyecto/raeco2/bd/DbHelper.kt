@@ -130,6 +130,7 @@ public class DbHelper (context: Context?) :
         const val KEY_REGION= "id_region"
         const val KEY_LOCALIZACION_ID_EN_REGION= "idLocalizacionRegion"
         const val KEY_ANIMAL_ID_EN_REGION= "idAnimalRegion"
+        const val KEY_ESPREHIS="esprehis"
     }
 
 
@@ -148,14 +149,14 @@ public class DbHelper (context: Context?) :
 
 
 //Puede devolver un animal nulo, con solo la region seteada.
-    fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int): Animal {
+    fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int,esPrehistorico:Boolean): Animal {
 
         val animal = Animal(null,null,null,null,null, null)
         val db = this.writableDatabase
         var index: Int
 
         val selectQuery="SELECT A.* FROM $TABLE_ANIMALES AS A INNER JOIN $TABLE_REGION AS R "+
-                        "ON R.$KEY_LOCALIZACION_ID_EN_REGION=$idLocalizacion AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL" +
+                        "ON R.$KEY_LOCALIZACION_ID_EN_REGION=$idLocalizacion AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL AND $KEY_ESPREHIS=$esPrehistorico"
                         " order by random() limit 1;"
 //Suponiendo que trae un animal
         Log.d("DBHelper BuscoAnimal 140", "${selectQuery}")
@@ -186,12 +187,12 @@ public class DbHelper (context: Context?) :
     }
 
     //Devuelve -1 Si no encuentra la Localizacion
-    fun obtenerLocalizacion(latitud:Double?, longitud:Double?): Int {
+    fun obtenerLocalizacion(latitud:Double?, longitud:Double?, esPrehistorico:Boolean): Int {
         var IdLocalizacion =-1
         val db = this.writableDatabase
         var index: Int
         //falta acá
-        val selectQuery ="select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
+        val selectQuery ="select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud AND $KEY_ESPREHIS=$esPrehistorico"
         Log.d("DBHelper obtenerlocalizacion-176","$selectQuery")
         val cursor = db.rawQuery(selectQuery, null)
         Log.d("DBHelper obtenerlocalizacion-176","${cursor.count}")

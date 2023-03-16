@@ -18,14 +18,14 @@ class Facade (context: Context?){
 
 
     @SuppressLint("SuspiciousIndentation")
-    fun buscarAnimal(localizacion: VoLocalizacion): VoAnimal {
+    fun buscarAnimal(localizacion: VoLocalizacion, esPrehistorico:Boolean): VoAnimal {
         Log.d("BuscarAnimal-Fachada", "37 Lat ${localizacion.obtenerLatitud()} Long ${localizacion.obtenerLongitud()}  ")
         var animalSalida=animalPorDefecto() //Si es -1 le carga un animall por defecto
-        var iDLocalizacion= obtenerRegionAnimal(localizacion)
+        var iDLocalizacion= obtenerRegionAnimal(localizacion,esPrehistorico)
 if(iDLocalizacion!=-1)
 {
     Log.d("BuscarAnimal-Fachada 46 IdLocalizacion", "${iDLocalizacion}")
-    var animal = animales.find(iDLocalizacion) // ver que pasa si es null
+    var animal = animales.find(iDLocalizacion,esPrehistorico) // ver que pasa si es null
     Log.d("BuscarAnimal-Fachada 50 obtuveAnimal", "${animal.obtenerNombreAnimal()}" )
     animalSalida = animalParaVoAnimal(animal)
 
@@ -56,7 +56,7 @@ if(iDLocalizacion!=-1)
 
     }
 
-    private fun obtenerRegionAnimal(localizacion: VoLocalizacion):Int{
+    private fun obtenerRegionAnimal(localizacion: VoLocalizacion, esPrehistorico: Boolean):Int{
         var latitud = localizacion.obtenerLatitud()
         var longitud =localizacion.obtenerLongitud()
         var localizacionID=-1
@@ -66,7 +66,7 @@ if(iDLocalizacion!=-1)
         if(localizaciones.esCercano10KMDeUmPunto(latitud,longitud ))
         {
             Log.d("ObtemerRegionAnimal","EntroesCercano10km")
-            localizacionID = localizaciones.find(latitud,longitud)
+            localizacionID = localizaciones.find(latitud,longitud,esPrehistorico)
 
         }
 

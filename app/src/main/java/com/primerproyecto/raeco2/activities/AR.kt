@@ -29,7 +29,8 @@ class AR : AppCompatActivity() {
     private var arEcoturismo_btn : Button? = null;
     private var arPreHistoria_btn : Button? = null;
     private var atras_btn : Button? = null;
-    private val  TAGGPS = "UBICACION GPS-AR "
+    private val TAGGPS = "UBICACION GPS-AR "
+    private var esPrehistorico: Boolean=false
     private val fachada:Facade = Facade(this)
    private var configu = Configuracion(titulo, link, renderizado, sonido)
 
@@ -82,12 +83,12 @@ class AR : AppCompatActivity() {
         arEcoturismo_btn = findViewById(R.id.buttonEcoturismo)
         arEcoturismo_btn?.setOnClickListener {
 
-
+            esPrehistorico = false;
             Log.d("AR 85 Creo voLoc", "${voLoc.obtenerLongitud()}")
             if(voLoc.obtenerLatitud()!=null){
-               var voAni= fachada.buscarAnimal(voLoc) //va a buscar el animal y vuelve null
-                Log.d("AR 89 Creo voLoc", "${voAni.obtenerObjetoAnimal()}")
 
+               var voAni= fachada.buscarAnimal(voLoc,esPrehistorico) //va a buscar el animal y vuelve null
+                Log.d("AR 89 Creo voLoc", "${voAni.obtenerObjetoAnimal()}")
                 Log.d("AR 88 La config tiene ", "  ${configu.esTituloActivado()}, ${configu.esLinkActivado()} ,${configu.esRenderizadoActivado()} ,${configu.esSonidoActivado()}")
 
                 crearAnimal3dExplicito(configu, voAni)
@@ -101,7 +102,22 @@ class AR : AppCompatActivity() {
         }
         arPreHistoria_btn=  findViewById(R.id.buttonPreHistoria)
         arPreHistoria_btn?.setOnClickListener {
-            onBackPressed()
+            esPrehistorico = true;
+            Log.d("AR 108 Creo voLoc", "${voLoc.obtenerLongitud()}")
+            if(voLoc.obtenerLatitud()!=null){
+                var voAni= fachada.buscarAnimal(voLoc, esPrehistorico)  //va a buscar el animal y vuelve null
+                Log.d("AR 111 Creo voLoc", "${voAni.obtenerObjetoAnimal()}")
+
+                Log.d("AR 113 La config tiene ", "  ${configu.esTituloActivado()}, ${configu.esLinkActivado()} ,${configu.esRenderizadoActivado()} ,${configu.esSonidoActivado()}")
+
+                crearAnimal3dExplicito(configu, voAni)
+            }else{
+                println("El animal es null POR ALGUNA RARON NO CARGA EL POR DEFECTO")
+                Toast.makeText(this, "Error 76 al cargar animal AR", Toast.LENGTH_LONG)
+                    .show()
+            }
+
+
         }
 
 

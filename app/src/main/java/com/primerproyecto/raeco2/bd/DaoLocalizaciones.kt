@@ -9,13 +9,13 @@ public class DaoLocalizaciones(context: Context?)  {
 
     private val dataBase : DbHelper = DbHelper(context)// ver si no es esto
 
-    fun find(latitud:Double?, longitud:Double?): Int {
+    fun find(latitud:Double?, longitud:Double?,esPrehistorico:Boolean): Int {
         Log.d("DaoLocalizaciones-find 14","Entro")
 
         var localizacioMasCercana:Location= localizacionxdistancia(latitud, longitud)
         Log.d("DaoLocalizaciones-find 17","${localizacioMasCercana.latitude}")
         Log.d("DaoLocalizaciones-find 17","${localizacioMasCercana.longitude}")
-        return dataBase.obtenerLocalizacion(localizacioMasCercana.latitude, localizacioMasCercana.longitude)
+        return dataBase.obtenerLocalizacion(localizacioMasCercana.latitude, localizacioMasCercana.longitude,esPrehistorico)
     }
 
 
