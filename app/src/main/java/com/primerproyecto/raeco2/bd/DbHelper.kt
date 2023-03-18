@@ -42,6 +42,7 @@ public class DbHelper (context: Context?) :
 //Lion
         insertarAnimalDbHelper(sqLiteDatabase,"Leon", "Leon", "https://es.wikipedia.org/wiki/Panthera_leo", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/lion/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/lion/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/lion/lion.mp3?raw=true", false)
         insertarRegion(sqLiteDatabase, 3, 5)
+
         insertarAnimalDbHelper(sqLiteDatabase,"Ankylosaurus magniventris", "Ankylosaurus magniventris","https://es.wikipedia.org/wiki/Ankylosaurus_magniventris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/ankylosaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/ankylosaurus/scene.gltf","", true)
         insertarRegion(sqLiteDatabase, 1, 1)
 
@@ -60,8 +61,6 @@ public class DbHelper (context: Context?) :
         insertarAnimalDbHelper(sqLiteDatabase,"Velociraptor", "Velociraptor","https://es.wikipedia.org/wiki/Velociraptor","https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/velociraptor/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/velociraptor/scene.gltf","", true)
         insertarRegion(sqLiteDatabase, 1, 1)
 
-
-
         println("Fin Crear tablas")
          }
 
@@ -75,7 +74,8 @@ public class DbHelper (context: Context?) :
                     " TEXT NOT NULL," + KEY_OBJ+
                     " TEXT NOT NULL," + KEY_OBJBACKUP+
                     " TEXT NOT NULL," + KEY_SONIDO+
-                    " TEXT NOT NULL)"
+                    " TEXT NOT NULL," + KEY_ESPREHIS+
+                    " BOOLEAN NOT NULL)"
         )
 
         //tabla Localizaciones
@@ -107,10 +107,13 @@ public class DbHelper (context: Context?) :
 
     //Falta armar bien la sentencia sql y las tablas.
     private fun insertarAnimalDbHelper(sqLiteDatabase: SQLiteDatabase,nombreAni: String,descrip: String, linkDescr: String, obj3D:String, obj3DbackUp: String, sonido: String, esPrehistorico: Boolean ){
+       var esPrehistoricoInt= 0
+        if(esPrehistorico) // no me quiere tomar el esPrehistorico.toInt()
+            esPrehistoricoInt=1
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
-                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO) VALUES ('${nombreAni.toString()}', '${descrip.toString()}'," +
-                " '${linkDescr.toString()}', '${obj3D.toString()}', '${obj3DbackUp.toString()}', '${sonido.toString()}')"
+                " $KEY_OBJ, $KEY_OBJBACKUP, $KEY_SONIDO, $KEY_ESPREHIS) VALUES ('${nombreAni.toString()}', '${descrip.toString()}'," +
+                " '${linkDescr.toString()}', '${obj3D.toString()}', '${obj3DbackUp.toString()}', '${sonido.toString()}', '${esPrehistoricoInt.toInt()}')"
 
         )
     }
@@ -140,6 +143,7 @@ public class DbHelper (context: Context?) :
         const val KEY_OBJBACKUP= "objetoBackUp"
         const val KEY_OBJ= "objeto"
         const val KEY_SONIDO= "sonido"
+        const val KEY_ESPREHIS="esprehis"
         const val KEY_LOCALIZACION= "localizacion"
         const val TABLE_LOCALIZACIONES = "t_Localizaciones"
         const val KEY_LOCALIZACION_ID= "localizacionId"
@@ -150,7 +154,7 @@ public class DbHelper (context: Context?) :
         const val KEY_REGION= "id_region"
         const val KEY_LOCALIZACION_ID_EN_REGION= "idLocalizacionRegion"
         const val KEY_ANIMAL_ID_EN_REGION= "idAnimalRegion"
-        const val KEY_ESPREHIS="esprehis"
+
     }
 
 
@@ -174,9 +178,12 @@ public class DbHelper (context: Context?) :
         val animal = Animal(null,null,null,null,null, null)
         val db = this.writableDatabase
         var index: Int
+        var esPrehistoricoInt=0
+    if(esPrehistorico)
+        esPrehistoricoInt=1
 
         val selectQuery="SELECT A.* FROM $TABLE_ANIMALES AS A INNER JOIN $TABLE_REGION AS R "+
-                        "ON R.$KEY_LOCALIZACION_ID_EN_REGION=$idLocalizacion AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL AND $KEY_ESPREHIS=$esPrehistorico"
+                        "ON R.$KEY_LOCALIZACION_ID_EN_REGION=$idLocalizacion AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL AND A.$KEY_ESPREHIS=$esPrehistoricoInt"
                         " order by random() limit 1;"
 //Suponiendo que trae un animal
         Log.d("DBHelper BuscoAnimal 140", "${selectQuery}")
@@ -211,8 +218,11 @@ public class DbHelper (context: Context?) :
         var IdLocalizacion =-1
         val db = this.writableDatabase
         var index: Int
+        var esPrehistoricoInt=0
+        if(esPrehistorico)
+            esPrehistoricoInt=1
         //falta acá
-        val selectQuery ="select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud AND $KEY_ESPREHIS=$esPrehistorico"
+        val selectQuery ="select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud AND $KEY_ESPREHIS=$esPrehistoricoInt"
         Log.d("DBHelper obtenerlocalizacion-176","$selectQuery")
         val cursor = db.rawQuery(selectQuery, null)
         Log.d("DBHelper obtenerlocalizacion-176","${cursor.count}")
