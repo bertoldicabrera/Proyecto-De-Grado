@@ -22,10 +22,10 @@ public class DbHelper (context: Context?) :
         CrearTablas(sqLiteDatabase)
 
         //Localizaciones
-        insertarLocalizacion (sqLiteDatabase, "Fernando",37.4219983,-122.084000)
+        insertarLocalizacion (sqLiteDatabase, "Fernando",37.4219983,-122.084000,false)
         //insertarLocalizacion (sqLiteDatabase, "Fernando",-34.902355,-56.187859)
-        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075)
-        insertarLocalizacion (sqLiteDatabase, "Ramiro",-34.886366,-56.147075)
+        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075, false)
+        insertarLocalizacion (sqLiteDatabase, "Ramiro",-34.886366,-56.147075, true)
 //Carpincho
         insertarAnimalDbHelper(sqLiteDatabase,"Carpincho", "Carpincho o Capivara","https://es.wikipedia.org/wiki/Hydrochoerus_hydrochaeris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/Carpincho/scene.gltf","https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Carpincho/carpincho.mp3?raw=true", false)
        insertarRegion(sqLiteDatabase, 1, 1)
@@ -44,22 +44,22 @@ public class DbHelper (context: Context?) :
         insertarRegion(sqLiteDatabase, 3, 5)
 
         insertarAnimalDbHelper(sqLiteDatabase,"Ankylosaurus magniventris", "Ankylosaurus magniventris","https://es.wikipedia.org/wiki/Ankylosaurus_magniventris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/ankylosaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/ankylosaurus/scene.gltf","", true)
-        insertarRegion(sqLiteDatabase, 1, 1)
+        insertarRegion(sqLiteDatabase, 3, 6)
 
         insertarAnimalDbHelper(sqLiteDatabase,"Brachiosaurus altithorax", "Brachiosaurus altithorax","https://es.wikipedia.org/wiki/Brachiosaurus_altithorax", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/brachiosaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/brachiosaurus/scene.gltf","", true)
-        insertarRegion(sqLiteDatabase, 1, 1)
+        insertarRegion(sqLiteDatabase, 3, 7)
 
         insertarAnimalDbHelper(sqLiteDatabase,"Mammoth", "Mammoth","https://en.wikipedia.org/wiki/Mammoth", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/mammoth/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/mammoth/scene.gltf","", true)
-        insertarRegion(sqLiteDatabase, 1, 1)
+        insertarRegion(sqLiteDatabase, 3, 8)
 
         insertarAnimalDbHelper(sqLiteDatabase,"Pachycephalosaurus wyomingensis", "Pachycephalosaurus wyomingensis","https://es.wikipedia.org/wiki/Pachycephalosaurus_wyomingensis","https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/pachycephalasaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/pachycephalasaurus/scene.gltf","", true)
-        insertarRegion(sqLiteDatabase, 1, 1)
+        insertarRegion(sqLiteDatabase, 3, 9)
 
         insertarAnimalDbHelper(sqLiteDatabase,"Parasaurolophus", "Parasaurolophus","https://es.wikipedia.org/wiki/Parasaurolophus","https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/parasaurolophus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/parasaurolophus/scene.gltf", "",true)
-        insertarRegion(sqLiteDatabase, 1, 1)
+        insertarRegion(sqLiteDatabase, 3, 10)
 
         insertarAnimalDbHelper(sqLiteDatabase,"Velociraptor", "Velociraptor","https://es.wikipedia.org/wiki/Velociraptor","https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/velociraptor/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/velociraptor/scene.gltf","", true)
-        insertarRegion(sqLiteDatabase, 1, 1)
+        insertarRegion(sqLiteDatabase, 3, 11)
 
         println("Fin Crear tablas")
          }
@@ -84,7 +84,8 @@ public class DbHelper (context: Context?) :
                     +KEY_LOCALIZACION_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     +KEY_NOMBRE_LOCALIZACION+ " TEXT,"
                     + KEY_LONGITUD+ " REAL NOT NULL,"
-                    + KEY_LATITUD+ " REAL NOT NULL)"
+                    + KEY_LATITUD+ " REAL NOT NULL,"
+                    + KEY_ESPREHIS+" BOOLEAN NOT NULL)"
         )
         //Tabla Region (Relacion)
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_REGION " +
@@ -97,10 +98,12 @@ public class DbHelper (context: Context?) :
     }
 
 
-    private fun insertarLocalizacion(sqLiteDatabase: SQLiteDatabase, nombreLocal:String, latitud:Double, longitud:Double) {
-
-        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LATITUD, $KEY_LONGITUD)"+
-                "VALUES ('${nombreLocal.toString()}', '${latitud.toDouble()}', '${longitud.toDouble()}')"
+    private fun insertarLocalizacion(sqLiteDatabase: SQLiteDatabase, nombreLocal:String, latitud:Double, longitud:Double, esPrehistorico: Boolean) {
+        var esPrehistoricoInt= 0
+        if(esPrehistorico) // no me quiere tomar el esPrehistorico.toInt()
+            esPrehistoricoInt=1
+        sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LATITUD, $KEY_LONGITUD, $KEY_ESPREHIS)"+
+                "VALUES ('${nombreLocal.toString()}', '${latitud.toDouble()}', '${longitud.toDouble()}','${esPrehistoricoInt.toInt()}')"
         )
     }
 
@@ -120,6 +123,7 @@ public class DbHelper (context: Context?) :
 
 
     private fun insertarRegion(sqLiteDatabase: SQLiteDatabase, idloc:Int, idAnimalReg:Int){
+
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_REGION ($KEY_LOCALIZACION_ID_EN_REGION, $KEY_ANIMAL_ID_EN_REGION)"+
                 " VALUES ('${idloc.toInt()}', '${idAnimalReg.toInt()}')")
 
@@ -183,7 +187,7 @@ public class DbHelper (context: Context?) :
         esPrehistoricoInt=1
 
         val selectQuery="SELECT A.* FROM $TABLE_ANIMALES AS A INNER JOIN $TABLE_REGION AS R "+
-                        "ON R.$KEY_LOCALIZACION_ID_EN_REGION=$idLocalizacion AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL AND A.$KEY_ESPREHIS=$esPrehistoricoInt"
+                        "ON R.$KEY_LOCALIZACION_ID_EN_REGION=$idLocalizacion AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL AND A.$KEY_ESPREHIS=$esPrehistoricoInt"+
                         " order by random() limit 1;"
 //Suponiendo que trae un animal
         Log.d("DBHelper BuscoAnimal 140", "${selectQuery}")
