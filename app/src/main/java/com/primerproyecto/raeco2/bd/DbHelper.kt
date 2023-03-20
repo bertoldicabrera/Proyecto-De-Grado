@@ -52,14 +52,11 @@ public class DbHelper (context: Context?) :
         insertarAnimalDbHelper(sqLiteDatabase,"Mammoth", "Mammoth","https://en.wikipedia.org/wiki/Mammoth", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/mammoth/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/mammoth/scene.gltf","", true)
         insertarRegion(sqLiteDatabase, 3, 8)
 
-        insertarAnimalDbHelper(sqLiteDatabase,"Pachycephalosaurus wyomingensis", "Pachycephalosaurus wyomingensis","https://es.wikipedia.org/wiki/Pachycephalosaurus_wyomingensis","https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/pachycephalasaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/pachycephalasaurus/scene.gltf","", true)
+        insertarAnimalDbHelper(sqLiteDatabase,"Parasaurolophus", "Parasaurolophus","https://es.wikipedia.org/wiki/Parasaurolophus","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/parasaurolophus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/parasaurolophus/scene.gltf", "",true)
         insertarRegion(sqLiteDatabase, 3, 9)
 
-        insertarAnimalDbHelper(sqLiteDatabase,"Parasaurolophus", "Parasaurolophus","https://es.wikipedia.org/wiki/Parasaurolophus","https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/parasaurolophus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/parasaurolophus/scene.gltf", "",true)
+        insertarAnimalDbHelper(sqLiteDatabase,"Velociraptor", "Velociraptor","https://es.wikipedia.org/wiki/Velociraptor","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/velociraptor/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/velociraptor/scene.gltf","", true)
         insertarRegion(sqLiteDatabase, 3, 10)
-
-        insertarAnimalDbHelper(sqLiteDatabase,"Velociraptor", "Velociraptor","https://es.wikipedia.org/wiki/Velociraptor","https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/velociraptor/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/velociraptor/scene.gltf","", true)
-        insertarRegion(sqLiteDatabase, 3, 11)
 
         println("Fin Crear tablas")
          }
