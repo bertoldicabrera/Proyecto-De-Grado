@@ -1,5 +1,6 @@
 package com.primerproyecto.raeco2.bd
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -174,7 +175,8 @@ public class DbHelper (context: Context?) :
 
 
 //Puede devolver un animal nulo, con solo la region seteada.
-    fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int,esPrehistorico:Boolean): Animal {
+@SuppressLint("SuspiciousIndentation")
+fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int, esPrehistorico:Boolean): Animal {
 
         val animal = Animal(null,null,null,null,null, null)
         val db = this.writableDatabase
