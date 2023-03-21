@@ -26,6 +26,7 @@ public class DbHelper (context: Context?) :
         insertarLocalizacion (sqLiteDatabase, "Fernando",37.4219983,-122.084000,false)
         //insertarLocalizacion (sqLiteDatabase, "Fernando",-34.902355,-56.187859)
         insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075, false)
+        insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075, true)
         insertarLocalizacion (sqLiteDatabase, "Ramiro",-34.886366,-56.147075, true)
 //Carpincho
         insertarAnimalDbHelper(sqLiteDatabase,"Carpincho", "Carpincho o Capivara","https://es.wikipedia.org/wiki/Hydrochoerus_hydrochaeris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/Carpincho/scene.gltf","https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Carpincho/carpincho.mp3?raw=true", false)
@@ -39,10 +40,10 @@ public class DbHelper (context: Context?) :
         insertarRegion(sqLiteDatabase, 2, 3)
 //Danta
         insertarAnimalDbHelper(sqLiteDatabase,"Danta", "Danta", "https://es.wikipedia.org/wiki/Tapirus_terrestris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/danta/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/danta/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/danta/danta.mp3?raw=true", false)
-        insertarRegion(sqLiteDatabase, 3, 4)
+        insertarRegion(sqLiteDatabase, 2, 4)
 //Lion
         insertarAnimalDbHelper(sqLiteDatabase,"Leon", "Leon", "https://es.wikipedia.org/wiki/Panthera_leo", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/lion/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/lion/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/lion/lion.mp3?raw=true", false)
-        insertarRegion(sqLiteDatabase, 3, 5)
+        insertarRegion(sqLiteDatabase, 1, 5)
 
         insertarAnimalDbHelper(sqLiteDatabase,"Ankylosaurus magniventris", "Ankylosaurus magniventris","https://es.wikipedia.org/wiki/Ankylosaurus_magniventris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/ankylosaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/ankylosaurus/scene.gltf","", true)
         insertarRegion(sqLiteDatabase, 3, 6)
