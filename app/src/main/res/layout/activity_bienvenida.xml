@@ -25,7 +25,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/colorBotones"
-        android:text="atras"
+        app:icon="?attr/homeAsUpIndicator"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

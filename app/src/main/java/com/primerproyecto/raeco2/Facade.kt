@@ -20,7 +20,7 @@ class Facade (context: Context?){
     @SuppressLint("SuspiciousIndentation")
     fun buscarAnimal(localizacion: VoLocalizacion, esPrehistorico:Boolean): VoAnimal {
         Log.d("BuscarAnimal-Fachada", "37 Lat ${localizacion.obtenerLatitud()} Long ${localizacion.obtenerLongitud()}  ")
-        var animalSalida=animalPorDefecto() //Si es -1 le carga un animall por defecto
+        var animalSalida=animalPorDefecto(esPrehistorico) //Si es -1 le carga un animall por defecto
         var iDLocalizacion= obtenerRegionAnimal(localizacion,esPrehistorico)
 if(iDLocalizacion!=-1)
 {
@@ -37,8 +37,17 @@ if(iDLocalizacion!=-1)
      return animalSalida
     }
 
-    private fun animalPorDefecto():VoAnimal{
-       var voAnimalSaldia = VoAnimal("Mapache", "Mapache", "https://es.wikipedia.org/wiki/Procyon", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/mapache/scene.gltf", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/mapache/scene.gltf", "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/mapache/mapache.mp3?raw=true")
+    private fun animalPorDefecto(esprehistorico:Boolean):VoAnimal{
+        var voAnimalSaldia =VoAnimal(null, null, null,null,null,null)
+        if(esprehistorico)
+        {
+            voAnimalSaldia = VoAnimal("Ankylosaurus magniventris", "Ankylosaurus magniventris","https://es.wikipedia.org/wiki/Ankylosaurus_magniventris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/ankylosaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/ankylosaurus/scene.gltf","")
+
+        }
+        else{
+            voAnimalSaldia = VoAnimal("Mapache", "Mapache", "https://es.wikipedia.org/wiki/Procyon", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/mapache/scene.gltf", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/mapache/scene.gltf", "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/mapache/mapache.mp3?raw=true")
+
+        }
 
         return voAnimalSaldia
     }
