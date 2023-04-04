@@ -10,8 +10,6 @@ public class DaoAnimales(context: Context?)  {
     fun find(localiza:Int,esPrehistorico:Boolean): Animal {
 
         return dataBase.obtenerAnimalTablaRelacionXIdLocalizacion(localiza,esPrehistorico)
-    //Retorna un animal aleatorio en base a region en que vive
-
     }
 
     fun member (nombre:String?): Boolean{

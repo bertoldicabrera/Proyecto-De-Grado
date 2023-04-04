@@ -7,18 +7,6 @@ public class Configuracion(
     private var sonido: Boolean
 
 ) {
-    /*
-    companion object {
-        fun apply(
-            titulo: Boolean? = null,
-            link: Boolean? = null,
-            renderizado: Boolean? = null,
-            sonido: Boolean? = null
-        ): Configuracion {
-            return Configuracion(titulo, link, renderizado, sonido)
-        }
-    }
-*/
 
     fun seterTitulo(varTitulo: Boolean){
         this.titulo =varTitulo

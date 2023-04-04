@@ -16,8 +16,6 @@ class VoLocalizacion constructor(
     var mainActivity: MainActivity? = null
     var menssage: TextView? = null
 
-
-
     fun obtenerLongitud(): Double? {
         return this.longitud
     }
@@ -39,10 +37,8 @@ class VoLocalizacion constructor(
     }
 
     override fun onLocationChanged(location: Location) {
-        // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
         setearLongitud(location.longitude)
         setearLatitud(location.longitude)
-        println("****Localización 58, Coordena recibida")
 
     }
 

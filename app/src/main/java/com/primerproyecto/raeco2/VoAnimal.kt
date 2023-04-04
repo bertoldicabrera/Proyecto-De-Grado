@@ -9,20 +9,11 @@ class VoAnimal (
     private var sonido: String?
 )
 {
-
-    fun obtenerAnimal(): VoAnimal {
-
-        return this
-    }
-
     fun obtenerNombreAnimal(): String? {
 
         return this.nombre
     }
-    fun obtenerDescripcionAnimal(): String? {
 
-        return this.descripcion
-    }
     fun obtenerLinkAnimal(): String? {
 
         return this.link
@@ -36,7 +27,6 @@ class VoAnimal (
         return this.objeto3D
     }
 
-
     fun obtenerSonido(): String? {
 
         return this.sonido
@@ -46,7 +36,6 @@ class VoAnimal (
 
         this.sonido= son
     }
-
 
     fun setearNombreAnimal(name :String?) {
 

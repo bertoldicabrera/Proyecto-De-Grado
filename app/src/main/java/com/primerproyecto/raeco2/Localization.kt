@@ -18,11 +18,6 @@ public class Localization constructor(
     var mainActivity: MainActivity? = null
     var menssage: TextView? = null
 
-
-
-    fun obtenerNombreLocalizacion():String?{
-        return this.nombreLocalizacion
-    }
     fun obtenerLongitud(): Double? {
         return this.longitud
     }
@@ -40,7 +35,6 @@ public class Localization constructor(
         this.latitud =latitud
     }
 
-
     fun setMainActivity(mainActivity: MainActivity?, menssage: TextView?) {
         this.mainActivity = mainActivity
         this.menssage = menssage
@@ -49,23 +43,12 @@ public class Localization constructor(
 
 
     override fun onLocationChanged(location: Location) {
-        // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
         setearLongitud(location.longitude)
         setearLatitud(location.longitude)
-
-   // var salidaDisyancia=calcularDistancia(location.longitude, location.longitude)
-
-
-
-      //  println("****$salidaDisyancia  metros dentro de OnLocationChanged")
-
 
     }
 
 
-
-
-    //Es necesaria esta funcion ?
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
         when (status) {
 

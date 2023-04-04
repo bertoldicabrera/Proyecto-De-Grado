@@ -1,12 +1,10 @@
 package com.primerproyecto.raeco2.bd
 
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 import com.primerproyecto.raeco2.Animal
 import com.primerproyecto.raeco2.Localization
 
@@ -16,15 +14,12 @@ public class DbHelper (context: Context?) :
         null,
         DATABASE_VERSION) {
 
-
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
-        println("Inicio crear tablas XXXXXXXXXXXX")
 
         CrearTablas(sqLiteDatabase)
 
         //Localizaciones
         insertarLocalizacion (sqLiteDatabase, "Fernando",37.4219983,-122.084000,false)
-        //insertarLocalizacion (sqLiteDatabase, "Fernando",-34.902355,-56.187859)
         insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075, false)
         insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075, true)
         insertarLocalizacion (sqLiteDatabase, "Ramiro",-34.886366,-56.147075, true)
@@ -60,11 +55,9 @@ public class DbHelper (context: Context?) :
         insertarAnimalDbHelper(sqLiteDatabase,"Velociraptor", "Velociraptor","https://es.wikipedia.org/wiki/Velociraptor","https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/velociraptor/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/velociraptor/scene.gltf","", true)
         insertarRegion(sqLiteDatabase, 3, 10)
 
-        println("Fin Crear tablas")
          }
 
     private fun CrearTablas(sqLiteDatabase: SQLiteDatabase){
-        //Tabla Animales
         sqLiteDatabase.execSQL(
             "CREATE TABLE IF NOT EXISTS " + TABLE_ANIMALES + "(" + KEY_IDANIMAL+
                     " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME+
@@ -77,7 +70,6 @@ public class DbHelper (context: Context?) :
                     " BOOLEAN NOT NULL)"
         )
 
-        //tabla Localizaciones
         sqLiteDatabase.execSQL(
             "CREATE TABLE IF NOT EXISTS " + TABLE_LOCALIZACIONES+ " ("
                     +KEY_LOCALIZACION_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -86,7 +78,7 @@ public class DbHelper (context: Context?) :
                     + KEY_LATITUD+ " REAL NOT NULL,"
                     + KEY_ESPREHIS+" BOOLEAN NOT NULL)"
         )
-        //Tabla Region (Relacion)
+
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_REGION " +
                 "($KEY_REGION INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$KEY_LOCALIZACION_ID_EN_REGION INTEGER, " +
@@ -99,7 +91,7 @@ public class DbHelper (context: Context?) :
 
     private fun insertarLocalizacion(sqLiteDatabase: SQLiteDatabase, nombreLocal:String, latitud:Double, longitud:Double, esPrehistorico: Boolean) {
         var esPrehistoricoInt= 0
-        if(esPrehistorico) // no me quiere tomar el esPrehistorico.toInt()
+        if(esPrehistorico)
             esPrehistoricoInt=1
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_LOCALIZACIONES ($KEY_NOMBRE_LOCALIZACION, $KEY_LATITUD, $KEY_LONGITUD, $KEY_ESPREHIS)"+
                 "VALUES ('${nombreLocal.toString()}', '${latitud.toDouble()}', '${longitud.toDouble()}','${esPrehistoricoInt.toInt()}')"
@@ -107,10 +99,10 @@ public class DbHelper (context: Context?) :
     }
 
 
-    //Falta armar bien la sentencia sql y las tablas.
+
     private fun insertarAnimalDbHelper(sqLiteDatabase: SQLiteDatabase,nombreAni: String,descrip: String, linkDescr: String, obj3D:String, obj3DbackUp: String, sonido: String, esPrehistorico: Boolean ){
        var esPrehistoricoInt= 0
-        if(esPrehistorico) // no me quiere tomar el esPrehistorico.toInt()
+        if(esPrehistorico)
             esPrehistoricoInt=1
 
         sqLiteDatabase.execSQL("INSERT INTO $TABLE_ANIMALES ($KEY_NAME, $KEY_DES, $KEY_URL,"+
@@ -175,7 +167,6 @@ public class DbHelper (context: Context?) :
     }
 
 
-//Puede devolver un animal nulo, con solo la region seteada.
 @SuppressLint("SuspiciousIndentation")
 fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int, esPrehistorico:Boolean): Animal {
 
@@ -189,13 +180,9 @@ fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int, esPrehistoric
         val selectQuery="SELECT A.* FROM $TABLE_ANIMALES AS A INNER JOIN $TABLE_REGION AS R "+
                         "ON R.$KEY_LOCALIZACION_ID_EN_REGION=$idLocalizacion AND R.$KEY_ANIMAL_ID_EN_REGION=A.$KEY_IDANIMAL AND A.$KEY_ESPREHIS=$esPrehistoricoInt"+
                         " order by random() limit 1;"
-//Suponiendo que trae un animal
-        Log.d("DBHelper BuscoAnimal 140", "${selectQuery}")
         val cursor = db.rawQuery(selectQuery, null)
-        Log.d("DBHelper BuscoAnimal 142", "${cursor.count}")
 
     if (cursor != null) {
-          //  cursor.moveToFirst()
             while (cursor.moveToNext()) {
 
                 index = cursor.getColumnIndexOrThrow(KEY_NAME)
@@ -213,11 +200,9 @@ fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int, esPrehistoric
             }
         }
         cursor.close()
-         Log.d("DBHelper BuscoAnimal 162", "${animal.obtenerNombreAnimal()}")
         return animal
     }
 
-    //Devuelve -1 Si no encuentra la Localizacion
     fun obtenerLocalizacion(latitud:Double?, longitud:Double?, esPrehistorico:Boolean): Int {
         var IdLocalizacion =-1
         val db = this.writableDatabase
@@ -225,17 +210,14 @@ fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int, esPrehistoric
         var esPrehistoricoInt=0
         if(esPrehistorico)
             esPrehistoricoInt=1
-        //falta acá
+
         val selectQuery ="select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud AND $KEY_ESPREHIS=$esPrehistoricoInt"
-        Log.d("DBHelper obtenerlocalizacion-176","$selectQuery")
         val cursor = db.rawQuery(selectQuery, null)
-        Log.d("DBHelper obtenerlocalizacion-176","${cursor.count}")
         if (cursor != null) {
-          //  cursor.moveToFirst()
+
             while (cursor.moveToNext()) {
                 index = cursor.getColumnIndexOrThrow(KEY_LOCALIZACION_ID)
                 IdLocalizacion= cursor.getInt(index)
-                Log.d("DBHelper obtenerlocalizacion-181","$IdLocalizacion")
             }
         }
         cursor.close()
@@ -243,60 +225,27 @@ fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int, esPrehistoric
         return IdLocalizacion
     }
 
-    //Creo no es necesario
-    fun esCercanoALocalizacion(latitud: Double?, longitud: Double?): Boolean {
-        var existe= true
-        val db = this.writableDatabase
-        val selectQuery = "Select * from $TABLE_LOCALIZACIONES where $KEY_LATITUD=$latitud AND $KEY_LONGITUD=$longitud"
-
-        val cursor: Cursor = db.rawQuery(selectQuery, null)
-        if (cursor.getCount() <= 0) {
-            existe= false
-        }
-        cursor.close()
-        return existe
-    }
-
     fun devolverLocalizacionesBd(): MutableList<Localization> {
 
-        Log.d("DBHelper-devolverLocalizaiones 204","Entro")
         var listaLocalizacionesSalida = mutableListOf<Localization>()
-        Log.d("DBHelper-devolverLocalizaiones 206","${listaLocalizacionesSalida.size}")
-
         val db = this.writableDatabase
-        Log.d("devolverlocalizaciones -209","$db")
-        var selectQuery = "SELECT * FROM " + "$TABLE_LOCALIZACIONES"
-        Log.d("DBHelper-devolverLocalizaiones 209","$selectQuery")
-        //var cursor = db.rawQuery(selectQuery, null)
         var cursor = db.rawQuery("SELECT * FROM t_Localizaciones", null)
-         Log.d("DBHelper-devolverLocalizaiones 211","${ cursor.count}")
         if (cursor != null) {
-          //  cursor.moveToFirst()
+
             while (cursor.moveToNext()) {
                 var localizacionSalida:Localization= Localization()
                 var index = cursor.getColumnIndexOrThrow(KEY_NOMBRE_LOCALIZACION)
                 localizacionSalida.setearNombreLocalizacion(cursor.getString(index))
-                Log.d("DBHelper-devolverLocalizaciones 223","${ localizacionSalida.obtenerNombreLocalizacion()} index${index}")
                 index = cursor.getColumnIndexOrThrow(KEY_LATITUD)
                 localizacionSalida.setearLatitud(cursor.getDouble(index))
                 index = cursor.getColumnIndexOrThrow(KEY_LONGITUD)
                 localizacionSalida.setearLongitud(cursor.getDouble(index))
-
                 listaLocalizacionesSalida.add(localizacionSalida)
-                Log.d("DBHelper-devolverLocalizaciones 229","${ listaLocalizacionesSalida.size}")
             }
             cursor.close()
         }
-        Log.d("DBHelper-devolverLocalizaciones 233","${ listaLocalizacionesSalida[0].obtenerNombreLocalizacion()}")
-        Log.d("DBHelper-devolverLocalizaciones 234","${ listaLocalizacionesSalida[0].obtenerLongitud()}")
-        Log.d("DBHelper-devolverLocalizaciones 235","${ listaLocalizacionesSalida[0].obtenerLatitud()}")
-        Log.d("DBHelper-devolverLocalizaciones 236","${ listaLocalizacionesSalida.size}")
 
         return listaLocalizacionesSalida
     }
-
-
-
-
 
 }

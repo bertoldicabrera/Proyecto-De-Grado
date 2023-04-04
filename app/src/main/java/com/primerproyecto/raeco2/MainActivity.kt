@@ -6,9 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-
 import android.provider.Settings
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -26,20 +24,14 @@ class MainActivity : AppCompatActivity() {
     private var facade: Facade = Facade(this@MainActivity)
 
 
-
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         crearBdLocal()
-
         message = findViewById(R.id.menssage)
         permisosIniciarLocalizacion()
         message?.text ="Versión 1.0"
-
-
-
-
         bienvenida = findViewById(R.id.bienvenida)
         bienvenida?.setOnClickListener {
             val intent = Intent(this, Bienvenida::class.java )
@@ -47,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    //lamado por el boton
     private fun crearBdLocal(){
         var mensaje: String? = facade.crearBd(this@MainActivity)
 
@@ -57,7 +48,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    //llamado al inciar requiere los permisos e inicia la localizacion
     private fun permisosIniciarLocalizacion()
     {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -74,7 +64,6 @@ class MainActivity : AppCompatActivity() {
             iniciarLocalizacion()
         }
     }
-
 
 
     private fun iniciarLocalizacion() {

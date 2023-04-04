@@ -11,10 +11,6 @@ public class Animal(
 )
 {
 
-    fun obtenerAnimal(): Animal {
-
-        return this
-    }
 
     fun obtenerNombreAnimal(): String? {
 
@@ -36,8 +32,6 @@ public class Animal(
 
         return this.objeto3D
     }
-
-
 
     fun obtenerSonido(): String? {
 
