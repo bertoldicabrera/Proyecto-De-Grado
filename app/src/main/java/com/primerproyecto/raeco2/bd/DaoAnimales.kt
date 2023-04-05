@@ -12,10 +12,7 @@ public class DaoAnimales(context: Context?)  {
         return dataBase.obtenerAnimalTablaRelacionXIdLocalizacion(localiza,esPrehistorico)
     }
 
-    fun member (nombre:String?): Boolean{
-        //llamar a existeAnimalDbHelper(nombre)
-        return dataBase.existeAnimalDbHelper(nombre)
-    }
+
 
 
 }

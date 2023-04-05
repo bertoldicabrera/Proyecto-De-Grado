@@ -106,7 +106,6 @@ class AR : AppCompatActivity() {
 
     private fun crearAnimal3dExplicito(config:Configuracion, voAni:VoAnimal)
     {
-        //https://developers.google.com/ar/develop/scene-viewer
         val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
         val intentUri = createIntentUriExplicito(config, voAni)
         sceneViewerIntent.setData(intentUri);

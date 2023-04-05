@@ -85,16 +85,6 @@ public class DaoLocalizaciones(context: Context?)  {
         }
         return localizacioDevolver
     }
-    fun insert (localizacion: Localization){
-
-    //    dataBase.insertarLocalizacion(localizacion) // se cambio en dataBase
-    }
-
-    fun delete (latitud:Double?, longitud:Double?){
-
-     //  val ok= dataBase.eliminarLocalizacion(latitud, longitud)
-
-    }
 
 
 }

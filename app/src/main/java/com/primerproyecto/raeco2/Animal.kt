@@ -11,7 +11,6 @@ public class Animal(
 )
 {
 
-
     fun obtenerNombreAnimal(): String? {
 
         return this.nombre
