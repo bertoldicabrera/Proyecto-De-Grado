@@ -204,7 +204,7 @@ fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int, esPrehistoric
     }
 
     fun obtenerLocalizacion(latitud:Double?, longitud:Double?, esPrehistorico:Boolean): Int {
-        var IdLocalizacion =-1
+        var idLocalizacion =-1
         val db = this.writableDatabase
         var index: Int
         var esPrehistoricoInt=0
@@ -217,12 +217,12 @@ fun obtenerAnimalTablaRelacionXIdLocalizacion(idLocalizacion: Int, esPrehistoric
 
             while (cursor.moveToNext()) {
                 index = cursor.getColumnIndexOrThrow(KEY_LOCALIZACION_ID)
-                IdLocalizacion= cursor.getInt(index)
+                idLocalizacion= cursor.getInt(index)
             }
         }
         cursor.close()
 
-        return IdLocalizacion
+        return idLocalizacion
     }
 
     fun devolverLocalizacionesBd(): MutableList<Localization> {

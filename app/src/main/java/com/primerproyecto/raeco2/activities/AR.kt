@@ -37,23 +37,23 @@ class AR : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ar)
 
-        val SwitchTitulo = findViewById<Switch>(R.id.switch1)
-        val SwitchLink = findViewById<Switch>(R.id.switch2)
-        val SwitchRenderizado = findViewById<Switch>(R.id.switch3)
-        val SwitchSonido = findViewById<Switch>(R.id.switch4)
-        SwitchTitulo.setOnCheckedChangeListener { buttonView, isChecked ->
+        val switchTitulo = findViewById<Switch>(R.id.switch1)
+        val switchLink = findViewById<Switch>(R.id.switch2)
+        val switchRenderizado = findViewById<Switch>(R.id.switch3)
+        val switchSonido = findViewById<Switch>(R.id.switch4)
+        switchTitulo.setOnCheckedChangeListener { buttonView, isChecked ->
             titulo = isChecked
             configu.seterTitulo(titulo)
         }
-        SwitchLink.setOnCheckedChangeListener { buttonView, isChecked ->
+        switchLink.setOnCheckedChangeListener { buttonView, isChecked ->
             link = isChecked
             configu.seterLink(link)
          }
-        SwitchRenderizado.setOnCheckedChangeListener { buttonView, isChecked ->
+        switchRenderizado.setOnCheckedChangeListener { buttonView, isChecked ->
             renderizado = isChecked
             configu.seterRenderizado(renderizado)
         }
-        SwitchSonido.setOnCheckedChangeListener { buttonView, isChecked ->
+        switchSonido.setOnCheckedChangeListener { buttonView, isChecked ->
             sonido = isChecked
             configu.seterSonido(sonido)
          }

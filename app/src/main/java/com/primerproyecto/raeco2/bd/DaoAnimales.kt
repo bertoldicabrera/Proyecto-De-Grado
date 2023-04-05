@@ -16,14 +16,6 @@ public class DaoAnimales(context: Context?)  {
         //llamar a existeAnimalDbHelper(nombre)
         return dataBase.existeAnimalDbHelper(nombre)
     }
-    fun insert (animal: Animal){
-        //llamar a insertarAnimalDbHelper(nombre)
-       // dataBase.insertarAnimalDbHelper(animal) // se cambio en dataBase
-    }
 
-    fun delete (nombre:String){
-       // dataBase.eliminarAnimalDbHelper(nombre)
-        //llamar a eliminarAnimalDbHelper(nombre)
-    }
 
 }

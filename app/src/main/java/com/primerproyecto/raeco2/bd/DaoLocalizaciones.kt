@@ -1,8 +1,8 @@
 package com.primerproyecto.raeco2.bd
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import android.util.Log
 import com.primerproyecto.raeco2.Localization
 
 public class DaoLocalizaciones(context: Context?)  {
@@ -15,6 +15,7 @@ public class DaoLocalizaciones(context: Context?)  {
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     fun esCercano10KMDeUmPunto (latitud:Double?, longitud:Double?): Boolean{
         var distanciaMetros =calcularDistancia(latitud,longitud )
           return distanciaMetros<10000f
