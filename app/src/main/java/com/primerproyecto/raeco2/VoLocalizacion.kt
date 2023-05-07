@@ -13,8 +13,7 @@ class VoLocalizacion constructor(
     private var longitud: Double? =null
 ): LocationListener {
 
-    var mainActivity: MainActivity? = null
-    var menssage: TextView? = null
+
 
     fun obtenerLongitud(): Double? {
         return this.longitud
@@ -31,10 +30,6 @@ class VoLocalizacion constructor(
     }
 
 
-    fun setMainActivity(mainActivity: MainActivity?, menssage: TextView?) {
-        this.mainActivity = mainActivity
-        this.menssage = menssage
-    }
 
     override fun onLocationChanged(location: Location) {
         setearLongitud(location.longitude)
@@ -42,28 +37,7 @@ class VoLocalizacion constructor(
 
     }
 
-    //Es necesaria esta funcion ?
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        when (status) {
 
-            LocationProvider.AVAILABLE -> Log.d("debug", "LocationProvider.AVAILABLE")
-            LocationProvider.OUT_OF_SERVICE -> Log.d("debug", "LocationProvider.OUT_OF_SERVICE")
-            LocationProvider.TEMPORARILY_UNAVAILABLE -> Log.d(
-                "debug",
-                "LocationProvider.TEMPORARILY_UNAVAILABLE"
-            )
-        }
-    }
-
-
-
-    override fun onProviderEnabled(provider: String) {
-        menssage?.text = "GPS activado"
-    }
-
-    override fun onProviderDisabled(provider: String) {
-        menssage?.text ="GPS desactivado"
-    }
 
 
 }

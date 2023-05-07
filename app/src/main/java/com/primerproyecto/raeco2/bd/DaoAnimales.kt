@@ -1,7 +1,6 @@
 package com.primerproyecto.raeco2.bd
 import android.content.Context
 import com.primerproyecto.raeco2.Animal
-import com.primerproyecto.raeco2.MainActivity
 
 public class DaoAnimales(context: Context?)  {
 

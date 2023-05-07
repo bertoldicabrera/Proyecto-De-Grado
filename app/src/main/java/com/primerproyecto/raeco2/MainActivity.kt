@@ -18,8 +18,6 @@ import com.primerproyecto.raeco2.activities.Bienvenida
 class MainActivity : AppCompatActivity() {
 
     private var message: TextView? = null
-    private var btn_Crear : Button? = null;
-    private var extra_btn : Button? = null;
     private var bienvenida : Button? = null;
     private var facade: Facade = Facade(this@MainActivity)
 

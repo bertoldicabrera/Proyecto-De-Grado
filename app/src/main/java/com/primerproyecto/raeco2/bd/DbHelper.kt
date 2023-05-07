@@ -2,7 +2,6 @@ package com.primerproyecto.raeco2.bd
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.primerproyecto.raeco2.Animal
@@ -16,7 +15,7 @@ public class DbHelper (context: Context?) :
 
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
 
-        CrearTablas(sqLiteDatabase)
+        crearTablas(sqLiteDatabase)
         crearLocalizacionesBD(sqLiteDatabase)
         crearAnimalesBD(sqLiteDatabase)
          }
@@ -24,7 +23,7 @@ public class DbHelper (context: Context?) :
     private  fun crearAnimalesBD(sqLiteDatabase : SQLiteDatabase){
 
         insertarAnimalDbHelper(sqLiteDatabase,"Carpincho", "Carpincho o Capivara","https://es.wikipedia.org/wiki/Hydrochoerus_hydrochaeris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Carpincho/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/Carpincho/scene.gltf","https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Carpincho/carpincho.mp3?raw=true", false)
-        insertarRegion(sqLiteDatabase, 1, 1)
+        insertarRegion(sqLiteDatabase, 2, 1)
         insertarAnimalDbHelper(sqLiteDatabase,"Pinguino", "Pinguino", "https://es.wikipedia.org/wiki/Spheniscidae", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/Pinguino/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/Pinguino/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/Pinguino/pinguino.mp3?raw=true", false)
         insertarRegion(sqLiteDatabase, 2, 2)
         insertarAnimalDbHelper(sqLiteDatabase,"Avestruz", "Avestruz", "https://es.wikipedia.org/wiki/Struthio_camelus", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/avestruz/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/avestruz/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/avestruz/avestruz.mp3?raw=true", false)
@@ -32,7 +31,7 @@ public class DbHelper (context: Context?) :
         insertarAnimalDbHelper(sqLiteDatabase,"Danta", "Danta", "https://es.wikipedia.org/wiki/Tapirus_terrestris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/danta/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/danta/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/danta/danta.mp3?raw=true", false)
         insertarRegion(sqLiteDatabase, 2, 4)
         insertarAnimalDbHelper(sqLiteDatabase,"Leon", "Leon", "https://es.wikipedia.org/wiki/Panthera_leo", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/lion/scene.gltf", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/lion/scene.gltf",  "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/lion/lion.mp3?raw=true", false)
-        insertarRegion(sqLiteDatabase, 1, 5)
+        insertarRegion(sqLiteDatabase, 2, 5)
         insertarAnimalDbHelper(sqLiteDatabase,"Ankylosaurus magniventris", "Ankylosaurus magniventris","https://es.wikipedia.org/wiki/Ankylosaurus_magniventris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/ankylosaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/ankylosaurus/scene.gltf","", true)
         insertarRegion(sqLiteDatabase, 3, 6)
         insertarAnimalDbHelper(sqLiteDatabase,"Brachiosaurus altithorax", "Brachiosaurus altithorax","https://es.wikipedia.org/wiki/Brachiosaurus_altithorax", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/brachiosaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/brachiosaurus/scene.gltf","", true)
@@ -46,12 +45,13 @@ public class DbHelper (context: Context?) :
     }
 private fun crearLocalizacionesBD(sqLiteDatabase : SQLiteDatabase ){
 
-    insertarLocalizacion (sqLiteDatabase, "Fernando",37.4219983,-122.084000,false)
-    insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075, false)
-    insertarLocalizacion (sqLiteDatabase, "Sebastian",-34.886360,-56.147075, true)
-    insertarLocalizacion (sqLiteDatabase, "Ramiro",-34.886366,-56.147075, true)
+    insertarLocalizacion (sqLiteDatabase, "EUA",37.4219983,-122.084000,false)
+    insertarLocalizacion (sqLiteDatabase, "UDE",-34.917102,-56.157625, false)
+    insertarLocalizacion (sqLiteDatabase, "UDE",-34.917102,-56.157625, true)
+    insertarLocalizacion (sqLiteDatabase, "Montevideo",-34.886366,-56.147075, true)
+    //-34.91710244097031, -56.15762572665559
 }
-    private fun CrearTablas(sqLiteDatabase: SQLiteDatabase){
+    private fun crearTablas(sqLiteDatabase: SQLiteDatabase){
         sqLiteDatabase.execSQL(
             "CREATE TABLE IF NOT EXISTS " + TABLE_ANIMALES + "(" + KEY_IDANIMAL+
                     " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME+

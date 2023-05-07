@@ -41,35 +41,10 @@ public class Localization constructor(
     }
 
 
-
     override fun onLocationChanged(location: Location) {
         setearLongitud(location.longitude)
         setearLatitud(location.longitude)
 
     }
-
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        when (status) {
-
-            LocationProvider.AVAILABLE -> Log.d("debug", "LocationProvider.AVAILABLE")
-            LocationProvider.OUT_OF_SERVICE -> Log.d("debug", "LocationProvider.OUT_OF_SERVICE")
-            LocationProvider.TEMPORARILY_UNAVAILABLE -> Log.d(
-                "debug",
-                "LocationProvider.TEMPORARILY_UNAVAILABLE"
-            )
-        }
-    }
-
-
-
-    override fun onProviderEnabled(provider: String) {
-        menssage?.text = "GPS activado"
-    }
-
-    override fun onProviderDisabled(provider: String) {
-        menssage?.text ="GPS desactivado"
-    }
-
 
 }

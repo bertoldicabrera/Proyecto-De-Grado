@@ -29,8 +29,7 @@ class AR : AppCompatActivity() {
     private var atras_btn : Button? = null;
     private var esPrehistorico: Boolean=false
     private val fachada:Facade = Facade(this)
-   private var configu = Configuracion(titulo, link, renderizado, sonido)
-
+    private var configu = Configuracion(titulo, link, renderizado, sonido)
     private val REQUEST_LOCATION_PERMISSION : Int = 1
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +109,7 @@ class AR : AppCompatActivity() {
         val intentUri = createIntentUriExplicito(config, voAni)
         sceneViewerIntent.setData(intentUri);
         sceneViewerIntent.setPackage("com.google.ar.core");
-         startActivity(sceneViewerIntent);
+        startActivity(sceneViewerIntent);
 
     }
 

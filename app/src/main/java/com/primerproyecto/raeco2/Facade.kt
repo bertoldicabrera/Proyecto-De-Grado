@@ -24,17 +24,7 @@ if(iDLocalizacion!=-1)
      return animalSalida
     }
 
-    private fun animalPorDefecto(esprehistorico:Boolean):VoAnimal{
-        var voAnimalSaldia =VoAnimal(null, null, null,null,null,null)
-        if(esprehistorico)
-        {
-            voAnimalSaldia = VoAnimal("Ankylosaurus magniventris", "Ankylosaurus magniventris","https://es.wikipedia.org/wiki/Ankylosaurus_magniventris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/ankylosaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/ankylosaurus/scene.gltf","")
-        }
-        else{
-            voAnimalSaldia = VoAnimal("Mapache", "Mapache", "https://es.wikipedia.org/wiki/Procyon", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/mapache/scene.gltf", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/mapache/scene.gltf", "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/mapache/mapache.mp3?raw=true")
-        }
-        return voAnimalSaldia
-    }
+
 
     fun crearBd(context: MainActivity): String? {
         var mensaje: String? = null
@@ -48,6 +38,17 @@ if(iDLocalizacion!=-1)
         return mensaje
     }
 
+    private fun animalPorDefecto(esprehistorico:Boolean):VoAnimal{
+        var voAnimalSaldia =VoAnimal(null, null, null,null,null,null)
+        if(esprehistorico)
+        {
+            voAnimalSaldia = VoAnimal("Ankylosaurus magniventris", "Ankylosaurus magniventris","https://es.wikipedia.org/wiki/Ankylosaurus_magniventris", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/prehistoria/ankylosaurus/scene.gltf","https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/preHistoria/ankylosaurus/scene.gltf","")
+        }
+        else{
+            voAnimalSaldia = VoAnimal("Mapache", "Mapache", "https://es.wikipedia.org/wiki/Procyon", "https://gitlab.com/bertoldicabrera/animales3d/-/raw/main/mapache/scene.gltf", "https://raw.githubusercontent.com/bertoldicabrera/RecursosRaeco/main/mapache/scene.gltf", "https://github.com/bertoldicabrera/RecursosRaeco/blob/main/mapache/mapache.mp3?raw=true")
+        }
+        return voAnimalSaldia
+    }
     private fun obtenerRegionAnimal(localizacion: VoLocalizacion, esPrehistorico: Boolean):Int{
         var latitud = localizacion.obtenerLatitud()
         var longitud =localizacion.obtenerLongitud()
